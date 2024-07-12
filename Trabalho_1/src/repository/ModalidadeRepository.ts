@@ -1,10 +1,14 @@
 import { idText } from "typescript";
 import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
+import { getEstoqueList, getModalidadeList, getVendaList } from "../global/database";
+import { Venda } from "../model/Venda";
 
 export class ProductRepository{
-    productList: Modalidade[] = [];
-    estoqueList: Estoque[] = [];
+    productList: Modalidade[] = getModalidadeList();
+    estoqueList: Estoque[] = getEstoqueList();
+    vendaList: Venda[] = getVendaList();
+
 
     
     insereProduto(product: Modalidade){
@@ -16,7 +20,7 @@ export class ProductRepository{
     }
 
     filtraModalidadePorId(ModalidadeId: number): Estoque|undefined{
-        return this.estoqueListList.find(product => product.id === ModalidadeId);
+        return this.estoqueList.find(product => product.id === ModalidadeId);
     }
 
     filtraTodosProdutos():Modalidade[]{
