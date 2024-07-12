@@ -23,6 +23,12 @@ export class ProductService{
         return this.productRepository.filtraProdutoPorId(idNumber);
     }
 
+    consultarId(ModalidadeId: any): Estoque|undefined{
+        const idNumber: number = parseInt(ModalidadeId, 10);
+        console.log(ModalidadeId)
+        return this.productRepository.filtraModalidadePorId(idNumber);
+    }
+
     getProducts(): Modalidade[]{
        return this.productRepository.filtraTodosProdutos();
     }

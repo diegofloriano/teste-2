@@ -2,11 +2,13 @@ import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
 import { EstoqueRepository } from "../repository/EstoqueRepository";
 import { ProductService } from "../service/ModalidadeService";
+import { ProductRepository } from "../repository/ModalidadeRepository";
 
 export class EstoqueService{
 
     productService: ProductService = new ProductService();
-
+    
+    productRepository: ProductRepository = new ProductRepository();
 
     estoqueRepository: EstoqueRepository = new EstoqueRepository();
 
@@ -19,7 +21,7 @@ export class EstoqueService{
             throw new Error("Quantidade não pode ser negativa");
         }
 
-        let idEncontrado = this.consultarProduto(ModalidadeId) ;
+        let idEncontrado = this.productService.consultarId(ModalidadeId) ;
         if (!idEncontrado){
             throw new Error("Id nao encontrado !!!") ;
         }

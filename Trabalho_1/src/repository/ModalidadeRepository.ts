@@ -1,8 +1,11 @@
+import { idText } from "typescript";
 import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
 
 export class ProductRepository{
     productList: Modalidade[] = [];
+    estoqueList: Estoque[] = [];
+
     
     insereProduto(product: Modalidade){
         this.productList.push(product);
@@ -10,6 +13,10 @@ export class ProductRepository{
 
     filtraProdutoPorId(id:number): Modalidade|undefined{
         return this.productList.find(product => product.id === id);
+    }
+
+    filtraModalidadePorId(ModalidadeId: number): Estoque|undefined{
+        return this.estoqueListList.find(product => product.id === ModalidadeId);
     }
 
     filtraTodosProdutos():Modalidade[]{
