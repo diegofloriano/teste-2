@@ -18,6 +18,12 @@ export class EstoqueService{
         if(quantidade < 0){
             throw new Error("Quantidade não pode ser negativa");
         }
+
+        let idEncontrado = this.consultarProduto(ModalidadeId) ;
+        if (!idEncontrado){
+            throw new Error("Id nao encontrado !!!") ;
+        }
+
         const novoEstoque = new Estoque(id, ModalidadeId, quantidade, precoVenda);
         this.estoqueRepository.insereEstoque(novoEstoque);
         return novoEstoque;
