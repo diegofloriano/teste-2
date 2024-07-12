@@ -43,12 +43,17 @@ export function listaEstoques(req: Request, res: Response){
     }
 };
 
-export function deletarEstoque (req: Request, res: Response) {
+export function deletarEstoque(req: Request, res: Response){
     try {
-        estoqueService.deletarEstoque(req.query.id);
-        res.status(200).json({message:"Estoque deletado com sucesso !"}) ;
-    } catch (error: any ){
-        res.status(400).json({message : error.message});
+        const novoEstoque = estoqueService.deletarEstoque(req.body);
+        res.status(201).json(
+        {
+        mensagem:" Quantidade deletada com sucesso !",
+        produto: novoEstoque
+        }
+        );
+    } catch(error: any){
+        res.status(400).json({message: error.message}) ;
     }
 };
 
@@ -57,7 +62,7 @@ export function atualizarEstoque(req: Request, res: Response){
         const novoEstoque = estoqueService.atualizarEstoque(req.body);
         res.status(201).json(
         {
-        mensagem:" Estoque atualizado com sucesso !",
+        mensagem:" Quantidade adicionada com sucesso !",
         produto: novoEstoque
         }
         );

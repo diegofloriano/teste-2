@@ -1,15 +1,18 @@
+import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
 import { ProductRepository } from "../repository/ModalidadeRepository";
+
+
 export class ProductService{
 
     productRepository: ProductRepository = new ProductRepository();
 
     cadastrarProduto(produtoData: any): Modalidade {
-        const { nome, vegano, id, preco } = produtoData;
-        if(!nome || !vegano === undefined || !id || !preco){
+        const { nome, vegano, id} = produtoData;
+        if(!nome || !vegano === undefined || !id){
             throw new Error("Informações incompletas");
         }
-        const novoProduto = new Modalidade(nome, vegano, id, preco);
+        const novoProduto = new Modalidade(nome, vegano, id);
         this.productRepository.insereProduto(novoProduto);
         return novoProduto;
     }
@@ -34,8 +37,8 @@ export class ProductService{
     }
 
     atualizarProduto(produtoData: any): Modalidade{
-        const {id, nome, vegano, preco} = produtoData;
-        if (!nome || !vegano === undefined ||!id || !preco){
+        const {id, nome, vegano} = produtoData;
+        if (!nome || !vegano === undefined ||!id){
             throw new Error("Informacoes incompletas");
         }
         
@@ -45,7 +48,6 @@ export class ProductService{
         }
         produtoEncontrado.nome = nome ;
         produtoEncontrado.vegano = vegano ;
-        produtoEncontrado.preco = preco ;
         this.productRepository.atualizaProduto(produtoEncontrado);
         return produtoEncontrado;
         }

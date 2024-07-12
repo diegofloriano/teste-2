@@ -1,3 +1,4 @@
+import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
 
 export class ProductRepository{

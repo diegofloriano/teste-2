@@ -18,8 +18,9 @@ export class EstoqueRepository{
     deletaEstoque(produto: Estoque) {
         const index = this.estoqueList.indexOf(produto);
         if(index !== -1){
-           this.estoqueList.splice(index, 1);
+            this.estoqueList[index] = produto ;
         }
+        return index;
     }
 
     atualizaEstoque(produto: Estoque): number{

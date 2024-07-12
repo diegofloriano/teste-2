@@ -1,4 +1,3 @@
-import { ProductRepository } from "../repository/ModalidadeRepository";
 import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
 import { EstoqueRepository } from "../repository/EstoqueRepository";
@@ -6,7 +5,7 @@ import { ProductService } from "../service/ModalidadeService";
 
 export class EstoqueService{
 
-    productRepository: ProductRepository = new ProductRepository();
+    productService: ProductService = new ProductService();
 
 
     estoqueRepository: EstoqueRepository = new EstoqueRepository();
@@ -19,13 +18,10 @@ export class EstoqueService{
         if(quantidade < 0){
             throw new Error("Quantidade não pode ser negativa");
         }
-        let modalidadeEncontrada = this.productRepository.filtraProdutoPorId(ModalidadeId);
-        if(!modalidadeEncontrada){
-            throw new Error("Modalidade Invalida !") ;
-        }
         const novoEstoque = new Estoque(id, ModalidadeId, quantidade, precoVenda);
         this.estoqueRepository.insereEstoque(novoEstoque);
         return novoEstoque;
+        
     }
 
     consultarEstoque(id: any, undefined?: undefined): Estoque|undefined{
@@ -38,14 +34,26 @@ export class EstoqueService{
        return this.estoqueRepository.filtraTodosEstoques();
     }
 
-    deletarEstoque(id: any){
-        const product = this.consultarEstoque(id, undefined);
-        if (!product){
-            throw new Error("Produto nao encontrado") ;
+    deletarEstoque(estoqueData: any): Estoque{
+        const {id, quantidade, ModalidadeId, precoVenda} = estoqueData;
+        if (!id || !quantidade ||!ModalidadeId || !precoVenda){
+            if(quantidade < 0){
+                throw new Error("Informacoes incompletas");
+            }
         }
-        
-        this.estoqueRepository.deletaEstoque(product);
-    }
+        let estoqueEncontrado = this.consultarEstoque(id, undefined ) ;
+        if (!estoqueEncontrado){
+            throw new Error("Estoque nao cadastrado !!!") ;
+        }
+        if (quantidade <= 0 || quantidade > estoqueEncontrado.quantidade) {
+            throw new Error("Quantidade inválida para exclusão");
+        }
+        estoqueEncontrado.ModalidadeId = ModalidadeId ;
+        estoqueEncontrado.quantidade -= quantidade ;
+        estoqueEncontrado.precoVenda = precoVenda ;
+        this.estoqueRepository.deletaEstoque(estoqueEncontrado);
+        return estoqueEncontrado;
+        }
 
     atualizarEstoque(estoqueData: any): Estoque{
         const {id, quantidade, ModalidadeId, precoVenda} = estoqueData;
@@ -59,8 +67,11 @@ export class EstoqueService{
         if (!estoqueEncontrado){
             throw new Error("Estoque nao cadastrado !!!") ;
         }
+        if (quantidade <= 0 || quantidade > estoqueEncontrado.quantidade) {
+            throw new Error("Quantidade inválida para soma");
+        }
         estoqueEncontrado.ModalidadeId = ModalidadeId ;
-        estoqueEncontrado.quantidade = quantidade ;
+        estoqueEncontrado.quantidade += quantidade ;
         estoqueEncontrado.precoVenda = precoVenda ;
         this.estoqueRepository.atualizaEstoque(estoqueEncontrado);
         return estoqueEncontrado;
