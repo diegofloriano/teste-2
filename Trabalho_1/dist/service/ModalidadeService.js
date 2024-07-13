@@ -8,11 +8,11 @@ class ProductService {
         this.productRepository = new ModalidadeRepository_1.ProductRepository();
     }
     cadastrarProduto(produtoData) {
-        const { nome, vegano, id, preco } = produtoData;
-        if (!nome || !vegano === undefined || !id || !preco) {
+        const { nome, vegano, id } = produtoData;
+        if (!nome || !vegano === undefined || !id) {
             throw new Error("Informações incompletas");
         }
-        const novoProduto = new Modalidade_1.Modalidade(nome, vegano, id, preco);
+        const novoProduto = new Modalidade_1.Modalidade(nome, vegano, id);
         this.productRepository.insereProduto(novoProduto);
         return novoProduto;
     }
@@ -20,6 +20,11 @@ class ProductService {
         const idNumber = parseInt(id, 10);
         console.log(id);
         return this.productRepository.filtraProdutoPorId(idNumber);
+    }
+    consultarId(ModalidadeId) {
+        const idNumber = parseInt(ModalidadeId, 10);
+        console.log(ModalidadeId);
+        return this.productRepository.filtraModalidadePorId(idNumber);
     }
     getProducts() {
         return this.productRepository.filtraTodosProdutos();
@@ -32,8 +37,8 @@ class ProductService {
         this.productRepository.deletaProduto(product);
     }
     atualizarProduto(produtoData) {
-        const { id, nome, vegano, preco } = produtoData;
-        if (!nome || !vegano === undefined || !id || !preco) {
+        const { id, nome, vegano } = produtoData;
+        if (!nome || !vegano === undefined || !id) {
             throw new Error("Informacoes incompletas");
         }
         let produtoEncontrado = this.consultarProduto(id);
@@ -42,7 +47,6 @@ class ProductService {
         }
         produtoEncontrado.nome = nome;
         produtoEncontrado.vegano = vegano;
-        produtoEncontrado.preco = preco;
         this.productRepository.atualizaProduto(produtoEncontrado);
         return produtoEncontrado;
     }

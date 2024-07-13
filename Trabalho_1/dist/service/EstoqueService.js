@@ -4,9 +4,11 @@ exports.EstoqueService = void 0;
 const Estoque_1 = require("../model/Estoque");
 const EstoqueRepository_1 = require("../repository/EstoqueRepository");
 const ModalidadeService_1 = require("../service/ModalidadeService");
+const ModalidadeRepository_1 = require("../repository/ModalidadeRepository");
 class EstoqueService {
     constructor() {
         this.productService = new ModalidadeService_1.ProductService();
+        this.productRepository = new ModalidadeRepository_1.ProductRepository();
         this.estoqueRepository = new EstoqueRepository_1.EstoqueRepository();
     }
     cadastrarEstoque(estoqueData) {
@@ -17,6 +19,10 @@ class EstoqueService {
         if (quantidade < 0) {
             throw new Error("Quantidade não pode ser negativa");
         }
+        let idEncontrado = this.consultarId(ModalidadeId);
+        if (!idEncontrado) {
+            throw new Error("Id nao encontrado !!!");
+        }
         const novoEstoque = new Estoque_1.Estoque(id, ModalidadeId, quantidade, precoVenda);
         this.estoqueRepository.insereEstoque(novoEstoque);
         return novoEstoque;
@@ -25,6 +31,9 @@ class EstoqueService {
         const idNumber = parseInt(id, 10);
         console.log(id);
         return this.estoqueRepository.filtraEstoquePorId(idNumber);
+    }
+    consultarId(ModalidadeId) {
+        return this.productRepository.filtraProdutoPorId(ModalidadeId);
     }
     getProducts() {
         return this.estoqueRepository.filtraTodosEstoques();

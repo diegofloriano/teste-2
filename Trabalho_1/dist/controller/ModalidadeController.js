@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.atualizarProduto = exports.deletarProduto = exports.listaProdutos = exports.pesquisarProdutoPorID = exports.cadastrarProduto = void 0;
+exports.cadastrarProduto = cadastrarProduto;
+exports.pesquisarProdutoPorID = pesquisarProdutoPorID;
+exports.listaProdutos = listaProdutos;
+exports.deletarProduto = deletarProduto;
+exports.atualizarProduto = atualizarProduto;
 const ModalidadeService_1 = require("../service/ModalidadeService");
 const productService = new ModalidadeService_1.ProductService();
 function cadastrarProduto(req, res) {
@@ -15,7 +19,6 @@ function cadastrarProduto(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
-exports.cadastrarProduto = cadastrarProduto;
 ;
 function pesquisarProdutoPorID(req, res) {
     try {
@@ -34,7 +37,6 @@ function pesquisarProdutoPorID(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
-exports.pesquisarProdutoPorID = pesquisarProdutoPorID;
 ;
 function listaProdutos(req, res) {
     try {
@@ -44,7 +46,6 @@ function listaProdutos(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
-exports.listaProdutos = listaProdutos;
 ;
 function deletarProduto(req, res) {
     try {
@@ -55,7 +56,6 @@ function deletarProduto(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
-exports.deletarProduto = deletarProduto;
 ;
 function atualizarProduto(req, res) {
     try {
@@ -69,5 +69,4 @@ function atualizarProduto(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
-exports.atualizarProduto = atualizarProduto;
 ;
