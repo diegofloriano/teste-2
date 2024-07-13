@@ -21,7 +21,7 @@ export class EstoqueService{
             throw new Error("Quantidade não pode ser negativa");
         }
 
-        let idEncontrado = this.productService.consultarId(ModalidadeId) ;
+        let idEncontrado = this.consultarId(ModalidadeId) ;
         if (!idEncontrado){
             throw new Error("Id nao encontrado !!!") ;
         }
@@ -38,6 +38,10 @@ export class EstoqueService{
         return this.estoqueRepository.filtraEstoquePorId(idNumber);
     }
 
+    consultarId(ModalidadeId: number): Modalidade|undefined{
+        return this.productRepository.filtraProdutoPorId(ModalidadeId);
+    }
+    
     getProducts(): Estoque[]{
        return this.estoqueRepository.filtraTodosEstoques();
     }
