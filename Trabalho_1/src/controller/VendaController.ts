@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { ProductService } from "../service/VendaService";
+import { VendaService } from "../service/VendaService";
 import { Venda } from "../model/Venda";
-const productService = new ProductService();
+const vendaService = new VendaService();
 
 export function cadastrarVenda(req: Request, res: Response){
     try {
-        const novaVenda = productService.cadastrarVenda(req.body);
+        const novaVenda = vendaService.cadastrarVenda(req.body);
         res.status(201).json(
             {
                 mensagem:"Venda adicionada com sucesso!",
@@ -19,7 +19,7 @@ export function cadastrarVenda(req: Request, res: Response){
 
 export function pesquisarVendaPorID (req: Request, res: Response){
     try {
-        const Venda = productService.consultarVenda(req.query.id);
+        const Venda = vendaService.consultarVenda(req.query.id);
         if(Venda){
         res.status(200).json(
             {
@@ -37,7 +37,7 @@ export function pesquisarVendaPorID (req: Request, res: Response){
 
 export function listaVendas(req: Request, res: Response){
     try {
-        res.status(200).json(productService.getProducts());
+        res.status(200).json(vendaService.getProducts());
     } catch (error: any) {
         res.status(400).json({ message: error.message});
     }

@@ -1,12 +1,11 @@
 export class ItemVenda{
     EstoqueId: number;
     quantidade: number;
-    preco: number;
+    
 
-    constructor(EstoqueId:number, quantidade: number, preco: number){
+    constructor(EstoqueId:number, quantidade: number){
         this.EstoqueId = EstoqueId;
         this.quantidade = quantidade;
-        this.preco = preco;
     }
 }
 

@@ -1,13 +1,10 @@
 import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
 import { EstoqueRepository } from "../repository/EstoqueRepository";
-import { ProductService } from "../service/ModalidadeService";
 import { ProductRepository } from "../repository/ModalidadeRepository";
 
 export class EstoqueService{
 
-    productService: ProductService = new ProductService();
-    
     productRepository: ProductRepository = new ProductRepository();
 
     estoqueRepository: EstoqueRepository = new EstoqueRepository();
@@ -16,6 +13,10 @@ export class EstoqueService{
         const { id, ModalidadeId, quantidade, precoVenda } = estoqueData;
         if(!id || !ModalidadeId || !quantidade || !precoVenda){
             throw new Error("Informações incompletas");
+        }
+        let idExiste = this.consultarEstoque(id);
+        if(idExiste){
+            throw new Error("ID já Existente!");
         }
         if(quantidade < 0){
             throw new Error("Quantidade não pode ser negativa");

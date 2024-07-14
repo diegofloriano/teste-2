@@ -12,6 +12,10 @@ class ProductService {
         if (!nome || !vegano === undefined || !id) {
             throw new Error("Informações incompletas");
         }
+        let idExiste = this.consultarProduto(id);
+        if (idExiste) {
+            throw new Error("ID já Existente!");
+        }
         const novoProduto = new Modalidade_1.Modalidade(nome, vegano, id);
         this.productRepository.insereProduto(novoProduto);
         return novoProduto;

@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cadastrarVenda = cadastrarVenda;
-exports.pesquisarVendaPorID = pesquisarVendaPorID;
-exports.listaVendas = listaVendas;
+exports.listaVendas = exports.pesquisarVendaPorID = exports.cadastrarVenda = void 0;
 const VendaService_1 = require("../service/VendaService");
 const productService = new VendaService_1.ProductService();
 function cadastrarVenda(req, res) {
@@ -17,6 +15,7 @@ function cadastrarVenda(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
+exports.cadastrarVenda = cadastrarVenda;
 ;
 function pesquisarVendaPorID(req, res) {
     try {
@@ -35,6 +34,7 @@ function pesquisarVendaPorID(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
+exports.pesquisarVendaPorID = pesquisarVendaPorID;
 ;
 function listaVendas(req, res) {
     try {
@@ -44,4 +44,5 @@ function listaVendas(req, res) {
         res.status(400).json({ message: error.message });
     }
 }
+exports.listaVendas = listaVendas;
 ;

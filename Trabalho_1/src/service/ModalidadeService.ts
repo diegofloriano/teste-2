@@ -12,6 +12,10 @@ export class ProductService{
         if(!nome || !vegano === undefined || !id){
             throw new Error("Informações incompletas");
         }
+        let idExiste = this.consultarProduto(id);
+        if(idExiste){
+            throw new Error("ID já Existente!");
+        }
         const novoProduto = new Modalidade(nome, vegano, id);
         this.productRepository.insereProduto(novoProduto);
         return novoProduto;
@@ -21,12 +25,6 @@ export class ProductService{
         const idNumber: number = parseInt(id, 10);
         console.log(id)
         return this.productRepository.filtraProdutoPorId(idNumber);
-    }
-
-    consultarId(ModalidadeId: any): Estoque|undefined{
-        const idNumber: number = parseInt(ModalidadeId, 10);
-        console.log(ModalidadeId)
-        return this.productRepository.filtraModalidadePorId(idNumber);
     }
 
     getProducts(): Modalidade[]{

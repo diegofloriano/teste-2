@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Venda = exports.ItemVenda = void 0;
 class ItemVenda {
-    constructor(EstoqueId, quantidade, preco) {
+    constructor(EstoqueId, quantidade) {
         this.EstoqueId = EstoqueId;
         this.quantidade = quantidade;
-        this.preco = preco;
     }
 }
 exports.ItemVenda = ItemVenda;

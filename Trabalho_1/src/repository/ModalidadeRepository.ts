@@ -1,4 +1,3 @@
-import { idText } from "typescript";
 import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
 import { getEstoqueList, getModalidadeList, getVendaList } from "../global/database";
@@ -11,8 +10,9 @@ export class ProductRepository{
 
 
     
-    insereProduto(product: Modalidade){
+    insereProduto(product: Modalidade):void{
         this.productList.push(product);
+        this.productList.sort((a,b) => a.id - b.id);
     }
 
     filtraProdutoPorId(id:number): Modalidade|undefined{

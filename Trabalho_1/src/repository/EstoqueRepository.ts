@@ -1,32 +1,43 @@
+import { getEstoqueList, getItemVendaList, getModalidadeList, getVendaList } from "../global/database";
 import { Estoque } from "../model/Estoque";
+import { Modalidade } from "../model/Modalidade";
+import { ItemVenda, Venda } from "../model/Venda";
 
 export class EstoqueRepository{
-    estoqueList: Estoque[] = [];
-    
-    insereEstoque(product: Estoque){
-        this.estoqueList.push(product);
+    productList: Modalidade[] = getModalidadeList();
+    estoqueList: Estoque[] = getEstoqueList();
+    vendaList: Venda[] = getVendaList();
+    itemVendaList: ItemVenda[] = getItemVendaList()
+
+    insereEstoque(estoque: Estoque){
+        this.estoqueList.push(estoque);
+        this.estoqueList.sort((a,b) => a.id - b.id);
     }
 
     filtraEstoquePorId(id:number): Estoque|undefined{
-        return this.estoqueList.find(product => product.id === id);
+        return this.estoqueList.find(estoque => estoque.id === id);
+    }
+
+    filtraEstoquePorVenda(Estoqueid :number): ItemVenda|undefined{
+        return this.itemVendaList.find(estoque => estoque.EstoqueId === Estoqueid);
     }
 
     filtraTodosEstoques():Estoque[]{
         return this.estoqueList;
     }
 
-    deletaEstoque(produto: Estoque) {
-        const index = this.estoqueList.indexOf(produto);
+    deletaEstoque(estoque: Estoque) {
+        const index = this.estoqueList.indexOf(estoque);
         if(index !== -1){
-            this.estoqueList[index] = produto ;
+            this.estoqueList[index] = estoque ;
         }
         return index;
     }
 
-    atualizaEstoque(produto: Estoque): number{
-        const index = this.estoqueList.indexOf(produto) ;
+    atualizaEstoque(estoque: Estoque): number{
+        const index = this.estoqueList.indexOf(estoque) ;
         if(index !== -1){
-            this.estoqueList[index] = produto ;
+            this.estoqueList[index] = estoque ;
         }
         return index;
     }
