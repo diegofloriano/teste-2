@@ -1,15 +1,17 @@
-import { getEstoqueList, getModalidadeList, getVendaList } from "../global/database";
+import { getEstoqueList, getItemVendaList, getModalidadeList, getVendaList } from "../global/database";
 import { Estoque } from "../model/Estoque";
 import { Modalidade } from "../model/Modalidade";
-import { Venda } from "../model/Venda";
+import { ItemVenda, Venda } from "../model/Venda";
 
 export class VendaRepository{
     productList: Modalidade[] = getModalidadeList();
     estoqueList: Estoque[] = getEstoqueList();
     vendaList: Venda[] = getVendaList();
+    itemVendaList: ItemVenda[] = getItemVendaList()
+
     
-    insereVenda(venda: Venda){
-        this.vendaList.push(venda);
+    insereVenda(item: ItemVenda){
+        this.itemVendaList.push(item);
     }
 
     filtraVendaPorId(id:number): Venda|undefined{

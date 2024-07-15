@@ -1,18 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductRepository = void 0;
-class ProductRepository {
+exports.VendaRepository = void 0;
+const database_1 = require("../global/database");
+class VendaRepository {
     constructor() {
-        this.productList = [];
+        this.productList = (0, database_1.getModalidadeList)();
+        this.estoqueList = (0, database_1.getEstoqueList)();
+        this.vendaList = (0, database_1.getVendaList)();
+        this.itemVendaList = (0, database_1.getItemVendaList)();
     }
-    insereVenda(product) {
-        this.productList.push(product);
+    insereVenda(item) {
+        this.itemVendaList.push(item);
     }
     filtraVendaPorId(id) {
-        return this.productList.find(product => product.id === id);
+        return this.vendaList.find(venda => venda.id === id);
     }
     filtraTodasVendas() {
-        return this.productList;
+        return this.vendaList;
     }
 }
-exports.ProductRepository = ProductRepository;
+exports.VendaRepository = VendaRepository;

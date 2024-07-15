@@ -9,22 +9,18 @@ export class VendaService{
     vendaRepository: VendaRepository = new VendaRepository();
     estoqueRepository: EstoqueRepository = new EstoqueRepository();
 
-    cadastrarVenda(vendaData: any): Venda {
-        const { id, cpf, total, itens, quantidade, EstoqueId, preco } = vendaData;
-        if(!id || !cpf || !total || !itens|| !quantidade|| !EstoqueId|| !preco ){
+    cadastrarVenda(vendaData: any): ItemVenda {
+        const { quantidade, EstoqueId} = vendaData;
+        if(!quantidade|| !EstoqueId){
             throw new Error("Informações incompletas");
-        }
-        let idExiste = this.consultarVenda(id);
-        if(idExiste){
-            throw new Error("ID já Existente!");
         }
         let idEncontrado = this.consultarId(EstoqueId) ;
         if (!idEncontrado){
             throw new Error("Id nao encontrado !!!") ;
         }
-        const novaVenda = new Venda(id, cpf, total, itens);
-        this.vendaRepository.insereVenda(novaVenda);
-        return novaVenda;
+        const novoItem = new ItemVenda(EstoqueId, quantidade)
+        this.vendaRepository.insereVenda(novoItem);
+        return novoItem;
     }
 
     consultarVenda(id: any, undefined?: undefined): Venda|undefined{

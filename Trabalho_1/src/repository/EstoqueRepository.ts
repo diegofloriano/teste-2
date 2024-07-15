@@ -18,8 +18,8 @@ export class EstoqueRepository{
         return this.estoqueList.find(estoque => estoque.id === id);
     }
 
-    filtraEstoquePorVenda(Estoqueid :number): ItemVenda|undefined{
-        return this.itemVendaList.find(estoque => estoque.EstoqueId === Estoqueid);
+    filtraEstoquePorVenda(EstoqueId: number): ItemVenda|undefined{
+        return this.itemVendaList.find(estoque => estoque.EstoqueId === EstoqueId);
     }
 
     filtraTodosEstoques():Estoque[]{

@@ -1,28 +1,37 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductService = void 0;
-const Venda_1 = require("../model/Venda");
+exports.VendaService = void 0;
 const VendaRepository_1 = require("../repository/VendaRepository");
-class ProductService {
+const Venda_1 = require("../model/Venda");
+const EstoqueRepository_1 = require("../repository/EstoqueRepository");
+class VendaService {
     constructor() {
-        this.productRepository = new VendaRepository_1.ProductRepository();
+        this.vendaRepository = new VendaRepository_1.VendaRepository();
+        this.estoqueRepository = new EstoqueRepository_1.EstoqueRepository();
     }
     cadastrarVenda(vendaData) {
-        const { id, cpf, total, itens, quantidade, EstoqueId, preco } = vendaData;
-        if (!id || !cpf || !total || !itens || !quantidade || !EstoqueId || !preco) {
+        const { quantidade, EstoqueId } = vendaData;
+        if (!quantidade || !EstoqueId) {
             throw new Error("Informações incompletas");
         }
-        const novoProduto = new Venda_1.Venda(id, cpf, total, itens);
-        this.productRepository.insereVenda(novoProduto);
-        return novoProduto;
+        let idEncontrado = this.consultarId(EstoqueId);
+        if (!idEncontrado) {
+            throw new Error("Id nao encontrado !!!");
+        }
+        const novoItem = new Venda_1.ItemVenda(EstoqueId, quantidade);
+        this.vendaRepository.insereVenda(novoItem);
+        return novoItem;
     }
     consultarVenda(id, undefined) {
         const idNumber = parseInt(id, 10);
         console.log(id);
-        return this.productRepository.filtraVendaPorId(idNumber);
+        return this.vendaRepository.filtraVendaPorId(idNumber);
+    }
+    consultarId(EstoqueId) {
+        return this.estoqueRepository.filtraEstoquePorVenda(EstoqueId);
     }
     getProducts() {
-        return this.productRepository.filtraTodasVendas();
+        return this.vendaRepository.filtraTodasVendas();
     }
 }
-exports.ProductService = ProductService;
+exports.VendaService = VendaService;

@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getVendaList = exports.getEstoqueList = exports.getModalidadeList = void 0;
+exports.getItemVendaList = exports.getVendaList = exports.getEstoqueList = exports.getModalidadeList = void 0;
 const modalidadeList = [];
 const estoqueList = [];
 const vendaList = [];
+const itemVendaList = [];
 function getModalidadeList() {
     return modalidadeList;
 }
@@ -16,3 +17,7 @@ function getVendaList() {
     return vendaList;
 }
 exports.getVendaList = getVendaList;
+function getItemVendaList() {
+    return itemVendaList;
+}
+exports.getItemVendaList = getItemVendaList;

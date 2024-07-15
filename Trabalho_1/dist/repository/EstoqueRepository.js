@@ -1,30 +1,38 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EstoqueRepository = void 0;
+const database_1 = require("../global/database");
 class EstoqueRepository {
     constructor() {
-        this.estoqueList = [];
+        this.productList = (0, database_1.getModalidadeList)();
+        this.estoqueList = (0, database_1.getEstoqueList)();
+        this.vendaList = (0, database_1.getVendaList)();
+        this.itemVendaList = (0, database_1.getItemVendaList)();
     }
-    insereEstoque(product) {
-        this.estoqueList.push(product);
+    insereEstoque(estoque) {
+        this.estoqueList.push(estoque);
+        this.estoqueList.sort((a, b) => a.id - b.id);
     }
     filtraEstoquePorId(id) {
-        return this.estoqueList.find(product => product.id === id);
+        return this.estoqueList.find(estoque => estoque.id === id);
+    }
+    filtraEstoquePorVenda(EstoqueId) {
+        return this.itemVendaList.find(estoque => estoque.EstoqueId === EstoqueId);
     }
     filtraTodosEstoques() {
         return this.estoqueList;
     }
-    deletaEstoque(produto) {
-        const index = this.estoqueList.indexOf(produto);
+    deletaEstoque(estoque) {
+        const index = this.estoqueList.indexOf(estoque);
         if (index !== -1) {
-            this.estoqueList[index] = produto;
+            this.estoqueList[index] = estoque;
         }
         return index;
     }
-    atualizaEstoque(produto) {
-        const index = this.estoqueList.indexOf(produto);
+    atualizaEstoque(estoque) {
+        const index = this.estoqueList.indexOf(estoque);
         if (index !== -1) {
-            this.estoqueList[index] = produto;
+            this.estoqueList[index] = estoque;
         }
         return index;
     }

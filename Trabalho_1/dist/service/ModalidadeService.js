@@ -25,11 +25,6 @@ class ProductService {
         console.log(id);
         return this.productRepository.filtraProdutoPorId(idNumber);
     }
-    consultarId(ModalidadeId) {
-        const idNumber = parseInt(ModalidadeId, 10);
-        console.log(ModalidadeId);
-        return this.productRepository.filtraModalidadePorId(idNumber);
-    }
     getProducts() {
         return this.productRepository.filtraTodosProdutos();
     }

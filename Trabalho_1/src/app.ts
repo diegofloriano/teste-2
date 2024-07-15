@@ -24,11 +24,9 @@ app.get("/api/modalidade/todas", listaProdutos)
 app.put("/api/modalidade", atualizarProduto ) ;
 app.delete("/api/modalidade", deletarProduto ) ;
 
-app.post("/api/Vendas", cadastrarVenda);
-app.get("/api/Vendas", pesquisarVendaPorID)
-app.get("/api/Vendas/todas", listaVendas)
-
-
+app.post("/api/vendas", cadastrarVenda);
+app.get("/api/vendas", pesquisarVendaPorID)
+app.get("/api/vendas/todas", listaVendas)
 
 
 app.listen(PORT, logInfo);

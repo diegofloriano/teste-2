@@ -3,11 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EstoqueService = void 0;
 const Estoque_1 = require("../model/Estoque");
 const EstoqueRepository_1 = require("../repository/EstoqueRepository");
-const ModalidadeService_1 = require("../service/ModalidadeService");
 const ModalidadeRepository_1 = require("../repository/ModalidadeRepository");
 class EstoqueService {
     constructor() {
-        this.productService = new ModalidadeService_1.ProductService();
         this.productRepository = new ModalidadeRepository_1.ProductRepository();
         this.estoqueRepository = new EstoqueRepository_1.EstoqueRepository();
     }
@@ -15,6 +13,10 @@ class EstoqueService {
         const { id, ModalidadeId, quantidade, precoVenda } = estoqueData;
         if (!id || !ModalidadeId || !quantidade || !precoVenda) {
             throw new Error("Informações incompletas");
+        }
+        let idExiste = this.consultarEstoque(id);
+        if (idExiste) {
+            throw new Error("ID já Existente!");
         }
         if (quantidade < 0) {
             throw new Error("Quantidade não pode ser negativa");
