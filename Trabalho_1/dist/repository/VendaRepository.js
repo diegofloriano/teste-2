@@ -9,8 +9,9 @@ class VendaRepository {
         this.vendaList = (0, database_1.getVendaList)();
         this.itemVendaList = (0, database_1.getItemVendaList)();
     }
-    insereVenda(item) {
-        this.itemVendaList.push(item);
+    insereVenda(venda) {
+        this.vendaList.push(venda);
+        this.productList.sort((a, b) => a.id - b.id);
     }
     filtraVendaPorId(id) {
         return this.vendaList.find(venda => venda.id === id);

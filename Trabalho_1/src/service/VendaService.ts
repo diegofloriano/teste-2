@@ -9,8 +9,16 @@ export class VendaService{
     vendaRepository: VendaRepository = new VendaRepository();
     estoqueRepository: EstoqueRepository = new EstoqueRepository();
 
-    cadastrarVenda(vendaData: any): ItemVenda {
-        const { quantidade, EstoqueId} = vendaData;
+    cadastrarVenda(vendaData: any, itemData: any): Venda {
+        const {id, total, cpf, itens} = vendaData
+        if(!id|| !total || !cpf || !itens){
+            throw new Error("Informações incompletas");
+        }
+        let idExiste = this.consultarVenda(id);
+        if(idExiste){
+            throw new Error("ID já Existente!");
+        }
+        const { quantidade, EstoqueId} = itemData;
         if(!quantidade|| !EstoqueId){
             throw new Error("Informações incompletas");
         }
@@ -18,9 +26,9 @@ export class VendaService{
         if (!idEncontrado){
             throw new Error("Id nao encontrado !!!") ;
         }
-        const novoItem = new ItemVenda(EstoqueId, quantidade)
-        this.vendaRepository.insereVenda(novoItem);
-        return novoItem;
+        const novaVenda = new Venda(id, total,cpf, itens[itemData])
+        this.vendaRepository.insereVenda(novaVenda);
+        return novaVenda;
     }
 
     consultarVenda(id: any, undefined?: undefined): Venda|undefined{
@@ -29,8 +37,8 @@ export class VendaService{
         return this.vendaRepository.filtraVendaPorId(idNumber);
     }
 
-    consultarId(EstoqueId: number): ItemVenda|undefined{
-        return this.estoqueRepository.filtraEstoquePorVenda(EstoqueId);
+    consultarId(EstoqueId: number): Estoque|undefined{
+        return this.estoqueRepository.filtraEstoquePorId(EstoqueId);
     }
 
     getProducts(): Venda[]{

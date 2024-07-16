@@ -10,8 +10,9 @@ export class VendaRepository{
     itemVendaList: ItemVenda[] = getItemVendaList()
 
     
-    insereVenda(item: ItemVenda){
-        this.itemVendaList.push(item);
+    insereVenda(venda: Venda){
+        this.vendaList.push(venda);
+        this.productList.sort((a,b) => a.id - b.id);
     }
 
     filtraVendaPorId(id:number): Venda|undefined{

@@ -5,7 +5,7 @@ const vendaService = new VendaService();
 
 export function cadastrarVenda(req: Request, res: Response){
     try {
-        const novaVenda = vendaService.cadastrarVenda(req.body);
+        const novaVenda = vendaService.cadastrarVenda(req.body, req.body);
         res.status(201).json(
             {
                 mensagem:"Venda adicionada com sucesso!",
