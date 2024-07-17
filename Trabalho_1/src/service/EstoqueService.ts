@@ -89,6 +89,22 @@ export class EstoqueService{
         this.estoqueRepository.atualizaEstoque(estoqueEncontrado);
         return estoqueEncontrado;
         }
-        
+
+        deletarQuantidade(id: number, quantidade: number){
+            let estoqueEncontrado = this.consultarEstoque(id, undefined ) ;
+            if (!estoqueEncontrado){
+                throw new Error("Estoque nao cadastrado !!!") ;
+            } 
+            estoqueEncontrado.quantidade -= quantidade;
+            this.estoqueRepository.deletaEstoque(estoqueEncontrado);
+        }
+
+        consultarPreco(EstoqueId: number): number {
+            const estoque = this.consultarEstoque(EstoqueId);
+            if (estoque) {
+                return estoque.precoVenda;
+            }
+            throw new Error("Estoque não encontrado!");
+        }
 }
 

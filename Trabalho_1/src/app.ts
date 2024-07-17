@@ -4,7 +4,7 @@ import { atualizarEstoque, cadastrarEstoque, listaEstoques, pesquisarEstoquePorI
 import { cadastrarVenda, listaVendas, pesquisarVendaPorID } from "./controller/VendaController";
 
 const app = express();
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT ?? 2000;
 app.use(express.json());
 
 

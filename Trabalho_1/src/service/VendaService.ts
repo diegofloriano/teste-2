@@ -2,31 +2,46 @@ import { Estoque } from "../model/Estoque";
 import { Venda } from "../model/Venda";
 import { VendaRepository } from "../repository/VendaRepository";
 import { ItemVenda } from "../model/Venda";
+import { EstoqueService } from "./EstoqueService";
 import { EstoqueRepository } from "../repository/EstoqueRepository";
 
 export class VendaService{
 
     vendaRepository: VendaRepository = new VendaRepository();
+    estoqueService: EstoqueService = new EstoqueService();
     estoqueRepository: EstoqueRepository = new EstoqueRepository();
 
-    cadastrarVenda(vendaData: any, itemData: any): Venda {
-        const {id, total, cpf, itens} = vendaData
-        if(!id|| !total || !cpf || !itens){
+    cadastrarVenda(vendaData: any): Venda {
+        const {id, cpf, itens} = vendaData
+        if(!id || !cpf || !itens){
             throw new Error("Informações incompletas");
         }
         let idExiste = this.consultarVenda(id);
         if(idExiste){
             throw new Error("ID já Existente!");
         }
-        const { quantidade, EstoqueId} = itemData;
-        if(!quantidade|| !EstoqueId){
+        const itemVendaList: ItemVenda[] = [];
+        let total = 0
+        for(const item of itens){
+            const {quantidade, EstoqueId} = item;
+            if(!quantidade|| !EstoqueId){
             throw new Error("Informações incompletas");
+            }
+            let idEncontrado = this.consultarId(EstoqueId) ;
+            if (!idEncontrado){
+                throw new Error("Id nao encontrado !!!") ;
+            }
+            this.estoqueService.deletarQuantidade(EstoqueId, quantidade)
+
+            const itemVenda= new ItemVenda(EstoqueId, quantidade);
+            itemVendaList.push(itemVenda);
+
+            const preco = this.estoqueService.consultarPreco(EstoqueId);
+            total += quantidade * preco;
+
         }
-        let idEncontrado = this.consultarId(EstoqueId) ;
-        if (!idEncontrado){
-            throw new Error("Id nao encontrado !!!") ;
-        }
-        const novaVenda = new Venda(id, total,cpf, itens[itemData])
+
+        const novaVenda = new Venda(id, total,cpf, itemVendaList)
         this.vendaRepository.insereVenda(novaVenda);
         return novaVenda;
     }
@@ -41,6 +56,9 @@ export class VendaService{
         return this.estoqueRepository.filtraEstoquePorId(EstoqueId);
     }
 
+    consultarPreco(EstoqueId: number): Estoque|undefined{
+        return this.estoqueRepository.filtraPrecoPorId(EstoqueId);
+    }
     getProducts(): Venda[]{
        return this.vendaRepository.filtraTodasVendas();
     }

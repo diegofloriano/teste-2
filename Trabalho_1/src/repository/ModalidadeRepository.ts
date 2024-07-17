@@ -19,10 +19,6 @@ export class ProductRepository{
         return this.productList.find(product => product.id === id);
     }
 
-    filtraModalidadePorId(ModalidadeId: number): Estoque|undefined{
-        return this.estoqueList.find(product => product.id === ModalidadeId);
-    }
-
     filtraTodosProdutos():Modalidade[]{
         return this.productList;
     }

@@ -5,7 +5,7 @@ const VendaService_1 = require("../service/VendaService");
 const vendaService = new VendaService_1.VendaService();
 function cadastrarVenda(req, res) {
     try {
-        const novaVenda = vendaService.cadastrarVenda(req.body, req.body);
+        const novaVenda = vendaService.cadastrarVenda(req.body);
         res.status(201).json({
             mensagem: "Venda adicionada com sucesso!",
             produto: novaVenda
