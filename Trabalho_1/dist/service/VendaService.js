@@ -6,11 +6,13 @@ const VendaRepository_1 = require("../repository/VendaRepository");
 const Venda_2 = require("../model/Venda");
 const EstoqueService_1 = require("./EstoqueService");
 const EstoqueRepository_1 = require("../repository/EstoqueRepository");
+const ModalidadeService_1 = require("./ModalidadeService");
 class VendaService {
     constructor() {
         this.vendaRepository = new VendaRepository_1.VendaRepository();
         this.estoqueService = new EstoqueService_1.EstoqueService();
         this.estoqueRepository = new EstoqueRepository_1.EstoqueRepository();
+        this.productService = new ModalidadeService_1.ProductService();
     }
     cadastrarVenda(vendaData) {
         const { id, cpf, itens } = vendaData;
@@ -38,7 +40,7 @@ class VendaService {
             itemVendaList.push(itemVenda);
             const preco = this.estoqueService.consultarPreco(EstoqueId);
             total += quantidade * preco;
-            //const nome = this.estoqueService.consultarNome(EstoqueId)
+            const nome = this.productService.consultarNome(EstoqueId);
         }
         const novaVenda = new Venda_1.Venda(id, cpf, total, itemVendaList);
         this.vendaRepository.insereVenda(novaVenda);

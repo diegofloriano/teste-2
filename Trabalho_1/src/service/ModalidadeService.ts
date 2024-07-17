@@ -55,6 +55,15 @@ export class ProductService{
         this.productRepository.atualizaProduto(produtoEncontrado);
         return produtoEncontrado;
         }
+
+        consultarNome(EstoqueId: number): string {
+            const estoque = this.consultarProduto(EstoqueId);
+            if (estoque) {
+                return estoque.nome;
+            }
+            throw new Error("Estoque não encontrado!");
+        }
         
+
 }
 

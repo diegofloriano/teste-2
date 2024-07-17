@@ -4,12 +4,15 @@ import { VendaRepository } from "../repository/VendaRepository";
 import { ItemVenda } from "../model/Venda";
 import { EstoqueService } from "./EstoqueService";
 import { EstoqueRepository } from "../repository/EstoqueRepository";
+import { ProductRepository } from "../repository/ModalidadeRepository";
+import { ProductService } from "./ModalidadeService";
 
 export class VendaService{
 
     vendaRepository: VendaRepository = new VendaRepository();
     estoqueService: EstoqueService = new EstoqueService();
     estoqueRepository: EstoqueRepository = new EstoqueRepository();
+    productService: ProductService = new ProductService();
 
     cadastrarVenda(vendaData: any): Venda {
         const {id, cpf, itens} = vendaData
@@ -40,7 +43,7 @@ export class VendaService{
             const preco = this.estoqueService.consultarPreco(EstoqueId);
             total += quantidade * preco;
 
-            //const nome = this.productService.consultarNome(EstoqueId)
+            const nome = this.productService.consultarNome(EstoqueId)
         }
 
         const novaVenda = new Venda(id, cpf, total, itemVendaList);
