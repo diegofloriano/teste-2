@@ -14,6 +14,7 @@ class VendaService {
     }
     cadastrarVenda(vendaData) {
         const { id, cpf, itens } = vendaData;
+        console.log("itens de venda: ", id, cpf, itens);
         if (!id || !cpf || !itens) {
             throw new Error("Informações incompletas");
         }
@@ -32,11 +33,14 @@ class VendaService {
             if (!idEncontrado) {
                 throw new Error("Id nao encontrado !!!");
             }
-            this.estoqueService.deletarEstoque(EstoqueId);
+            this.estoqueService.deletarQuantidade(EstoqueId, quantidade);
             const itemVenda = new Venda_2.ItemVenda(EstoqueId, quantidade);
             itemVendaList.push(itemVenda);
+            const preco = this.estoqueService.consultarPreco(EstoqueId);
+            total += quantidade * preco;
+            //const nome = this.estoqueService.consultarNome(EstoqueId)
         }
-        const novaVenda = new Venda_1.Venda(id, total, cpf, itemVendaList);
+        const novaVenda = new Venda_1.Venda(id, cpf, total, itemVendaList);
         this.vendaRepository.insereVenda(novaVenda);
         return novaVenda;
     }

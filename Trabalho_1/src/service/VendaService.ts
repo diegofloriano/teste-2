@@ -13,6 +13,7 @@ export class VendaService{
 
     cadastrarVenda(vendaData: any): Venda {
         const {id, cpf, itens} = vendaData
+        console.log("itens de venda: ", id, cpf,  itens)
         if(!id || !cpf || !itens){
             throw new Error("Informações incompletas");
         }
@@ -21,7 +22,7 @@ export class VendaService{
             throw new Error("ID já Existente!");
         }
         const itemVendaList: ItemVenda[] = [];
-        let total = 0
+        let total = 0;
         for(const item of itens){
             const {quantidade, EstoqueId} = item;
             if(!quantidade|| !EstoqueId){
@@ -39,9 +40,10 @@ export class VendaService{
             const preco = this.estoqueService.consultarPreco(EstoqueId);
             total += quantidade * preco;
 
+            //const nome = this.productService.consultarNome(EstoqueId)
         }
 
-        const novaVenda = new Venda(id, total,cpf, itemVendaList)
+        const novaVenda = new Venda(id, cpf, total, itemVendaList);
         this.vendaRepository.insereVenda(novaVenda);
         return novaVenda;
     }
