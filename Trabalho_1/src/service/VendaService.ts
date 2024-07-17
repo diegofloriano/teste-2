@@ -37,13 +37,14 @@ export class VendaService{
             }
             this.estoqueService.deletarQuantidade(EstoqueId, quantidade)
 
-            const itemVenda= new ItemVenda(EstoqueId, quantidade);
+            const nome = this.productService.consultarNome(EstoqueId)
+
+            const itemVenda= new ItemVenda(EstoqueId, quantidade, nome);
             itemVendaList.push(itemVenda);
 
             const preco = this.estoqueService.consultarPreco(EstoqueId);
             total += quantidade * preco;
 
-            const nome = this.productService.consultarNome(EstoqueId)
         }
 
         const novaVenda = new Venda(id, cpf, total, itemVendaList);

@@ -1,11 +1,13 @@
 export class ItemVenda{
     EstoqueId: number;
     quantidade: number;
+    nome: string;
     
 
-    constructor(EstoqueId:number, quantidade: number){
+    constructor(EstoqueId:number, quantidade: number, nome: string){
         this.EstoqueId = EstoqueId;
         this.quantidade = quantidade;
+        this.nome = nome;
     }
 }
 

@@ -36,11 +36,11 @@ class VendaService {
                 throw new Error("Id nao encontrado !!!");
             }
             this.estoqueService.deletarQuantidade(EstoqueId, quantidade);
-            const itemVenda = new Venda_2.ItemVenda(EstoqueId, quantidade);
+            const nome = this.productService.consultarNome(EstoqueId);
+            const itemVenda = new Venda_2.ItemVenda(EstoqueId, quantidade, nome);
             itemVendaList.push(itemVenda);
             const preco = this.estoqueService.consultarPreco(EstoqueId);
             total += quantidade * preco;
-            const nome = this.productService.consultarNome(EstoqueId);
         }
         const novaVenda = new Venda_1.Venda(id, cpf, total, itemVendaList);
         this.vendaRepository.insereVenda(novaVenda);
