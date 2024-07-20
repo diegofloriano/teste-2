@@ -1,12 +1,12 @@
-import { Modalidade } from "../model/Livro";
-import { ProductRepository } from "../repository/ModalidadeRepository";
+import { Livro } from "../model/Books";
+import { BookRepository } from "../repository/BookRepository";
 
 
-export class ProductService{
+export class BookService{
 
-    productRepository: ProductRepository = new ProductRepository();
+    productRepository: BookRepository = new BookRepository();
 
-    cadastrarLivro(produtoData: any): Modalidade {
+    cadastrarLivro(produtoData: any): Livro {
         const { nome, vegano, id} = produtoData;
         if(!nome || !vegano === undefined || !id){
             throw new Error("Informações incompletas");
@@ -15,19 +15,19 @@ export class ProductService{
         if(idExiste){
             throw new Error("ID já Existente!");
         }
-        const novoProduto = new Modalidade(nome, vegano, id);
-        this.productRepository.insereProduto(novoProduto);
-        return novoProduto;
+        const novoLivro = new Livro(nome, vegano, id);
+        this.bookRepository.insereLivro(novoLivro);
+        return novoLivro;
     }
 
-    consultarLivro(id: any): Modalidade|undefined{
+    consultarLivro(id: any): Livro|undefined{
         const idNumber: number = parseInt(id, 10);
         console.log(id)
-        return this.productRepository.filtraProdutoPorId(idNumber);
+        return this.bookRepository.filtraLivroPorId(idNumber);
     }
 
-    getProducts(): Modalidade[]{
-       return this.productRepository.filtraTodosProdutos();
+    getProducts(): Livro[]{
+       return this.bookRepository.filtraTodosLivros();
     }
 
     deletarLivro(id: any){
@@ -39,7 +39,7 @@ export class ProductService{
         this.productRepository.deletaLivro(product);
     }
 
-    atualizarLivro(produtoData: any): Modalidade{
+    atualizarLivro(produtoData: any): Livro{
         const {id, nome, vegano} = produtoData;
         if (!nome || !vegano === undefined ||!id){
             throw new Error("Informacoes incompletas");

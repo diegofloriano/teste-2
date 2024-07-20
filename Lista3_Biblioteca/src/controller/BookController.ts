@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { ProductService } from "../service/LivroService";
-import { Modalidade } from "../model/Livro";
-const productService = new ProductService();
+import { BookService } from "../service/BookService";
+import { Livro } from "../model/Books";
+const productService = new BookService();
 
 export function cadastrarLivro(req: Request, res: Response){
     try {
-        const novoProduto = productService.cadastrarLivro(req.body);
+        const novoProduto = bookService.cadastrarLivro(req.body);
         res.status(201).json(
             {
-                mensagem:"Produto adicionado com sucesso!",
-                produto:novoProduto
+                mensagem:"Livro adicionado com sucesso!",
+                produto:novoLivro
             }
             );
     } catch (error: any) {

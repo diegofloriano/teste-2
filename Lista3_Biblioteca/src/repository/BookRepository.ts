@@ -1,7 +1,7 @@
 import { executarComandoSQL } from "../database/mysql";
-import { Product } from "../model/Book";
+import { Book } from "../model/Books";
 
-export class ProductRepository{
+export class BookRepository{
 
     constructor(){
         this.createTable();
@@ -23,14 +23,14 @@ export class ProductRepository{
         }
     }
 
-    async insertProduct(name: string, price: number) :Promise<Product>{
+    async insertProduct(name: string, price: number) :Promise<Book>{
         const query = "INSERT INTO vendas.Product (name, price) VALUES (?, ?)" ;
 
         try {
             const resultado = await executarComandoSQL(query, [name, price]);
             console.log('Produto inserido com sucesso, ID: ', resultado.insertId);
-            const product = new Product(resultado.insertId,name, price);
-            return new Promise<Product>((resolve)=>{
+            const product = new Book(resultado.insertId,name, price);
+            return new Promise<Book>((resolve)=>{
                 resolve(product);
             })
         } catch (err) {
@@ -39,14 +39,14 @@ export class ProductRepository{
         }
     }
 
-    async updateProduct(id: number, name: string, price: number) :Promise<Product>{
+    async updateProduct(id: number, name: string, price: number) :Promise<Book>{
         const query = "UPDATE vendas.product set name = ?, price = ? where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [name, price, id]);
             console.log('Produto atualizado com sucesso, ID: ', resultado);
-            const product = new Product(id, name, price);
-            return new Promise<Product>((resolve)=>{
+            const product = new Book(id, name, price);
+            return new Promise<Book>((resolve)=>{
                 resolve(product);
             })
         } catch (err:any) {
@@ -55,14 +55,14 @@ export class ProductRepository{
         }
     }
 
-    async deleteProduct(id: number, name:string, price:number) :Promise<Product>{
+    async deleteProduct(id: number, name:string, price:number) :Promise<Book>{
         const query = "DELETE FROM vendas.product where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Produto deletado com sucesso, ID: ', resultado);
-            const product = new Product(id, name, price);
-            return new Promise<Product>((resolve)=>{
+            const product = new Book(id, name, price);
+            return new Promise<Book>((resolve)=>{
                 resolve(product);
             })
         } catch (err:any) {
@@ -71,13 +71,13 @@ export class ProductRepository{
         }
     }
 
-    async filterProduct(id: number) :Promise<Product>{
+    async filterProduct(id: number) :Promise<Book>{
         const query = "SELECT * FROM vendas.product where id = ?" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Produto localizado com sucesso, ID: ', resultado);
-            return new Promise<Product>((resolve)=>{
+            return new Promise<Book>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -86,12 +86,12 @@ export class ProductRepository{
         }
     }
 
-    async filterAllProduct() :Promise<Product[]>{
+    async filterAllProduct() :Promise<Book[]>{
         const query = "SELECT * FROM vendas.product" ;
 
         try {
             const resultado = await executarComandoSQL(query, []);
-            return new Promise<Product[]>((resolve)=>{
+            return new Promise<Book[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
