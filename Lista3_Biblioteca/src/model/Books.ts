@@ -1,4 +1,4 @@
-export class Livro{
+export class Book{
     title: string;
     author: string;
     publishedDate: string;

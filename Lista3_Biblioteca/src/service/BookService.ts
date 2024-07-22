@@ -6,22 +6,22 @@ export class BookService{
 
     productRepository: BookRepository = new BookRepository();
 
-    cadastrarLivro(produtoData: any): Livro {
-        const { nome, vegano, id} = produtoData;
-        if(!nome || !vegano === undefined || !id){
+    cadastrarLivro(livroData: any): Livro {
+        const { title, isbn } = livroData;
+        if(!title || !isbn){
             throw new Error("Informações incompletas");
         }
-        let idExiste = this.consultarLivro(id);
+        let idExiste = this.consultarLivro(isbn);
         if(idExiste){
             throw new Error("ID já Existente!");
         }
-        const novoLivro = new Livro(nome, vegano, id);
+        const novoLivro = new Livro(isbn);
         this.bookRepository.insereLivro(novoLivro);
         return novoLivro;
     }
 
-    consultarLivro(id: any): Livro|undefined{
-        const idNumber: number = parseInt(id, 10);
+    consultarLivro(isbn: any): Livro|undefined{
+        const idNumber: number = parseInt(isbn, 10);
         console.log(id)
         return this.bookRepository.filtraLivroPorId(idNumber);
     }
@@ -30,8 +30,8 @@ export class BookService{
        return this.bookRepository.filtraTodosLivros();
     }
 
-    deletarLivro(id: any){
-        const product = this.consultarLivro(id);
+    deletarLivro(isbn: any){
+        const product = this.consultarLivro(isbn);
         if (!product){
             throw new Error("Produto nao encontrado") ;
         }
@@ -39,8 +39,8 @@ export class BookService{
         this.productRepository.deletaLivro(product);
     }
 
-    atualizarLivro(produtoData: any): Livro{
-        const {id, nome, vegano} = produtoData;
+    atualizarLivro(livroData: any): Livro{
+        const {id, nome, vegano} = livroData;
         if (!nome || !vegano === undefined ||!id){
             throw new Error("Informacoes incompletas");
         }
@@ -54,15 +54,6 @@ export class BookService{
         this.productRepository.atualizaLivro(produtoEncontrado);
         return produtoEncontrado;
         }
-
-        consultarNome(EstoqueId: number): string {
-            const estoque = this.consultarLivro(EstoqueId);
-            if (estoque) {
-                return estoque.nome;
-            }
-            throw new Error("Estoque não encontrado!");
-        }
-        
 
 }
 
