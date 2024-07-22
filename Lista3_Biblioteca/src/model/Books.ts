@@ -1,4 +1,5 @@
 export class Book{
+    id: number;
     title: string;
     author: string;
     publishedDate: string;
@@ -9,7 +10,9 @@ export class Book{
 
 
 
-    constructor(title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string ){
+
+    constructor(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string ){
+        this.id = id || 0;
         this.title = title || '';
         this.author = author || '';
         this.publishedDate = publishedDate || '';

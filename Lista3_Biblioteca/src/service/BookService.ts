@@ -1,59 +1,58 @@
-import { Livro } from "../model/Books";
+import { Book } from "../model/Books";
 import { BookRepository } from "../repository/BookRepository";
-
 
 export class BookService{
 
-    productRepository: BookRepository = new BookRepository();
+    bookRepository: BookRepository = new BookRepository();
 
-    cadastrarLivro(livroData: any): Livro {
-        const { title, isbn } = livroData;
-        if(!title || !isbn){
+    async cadastrarLivro(livroData: any): Promise<Book> {
+        const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
+        if(!title || !author || !publishedDate || !isbn || !pages || !language || !publisher ){
             throw new Error("Informações incompletas");
         }
-        let idExiste = this.consultarLivro(isbn);
-        if(idExiste){
-            throw new Error("ID já Existente!");
-        }
-        const novoLivro = new Livro(isbn);
-        this.bookRepository.insereLivro(novoLivro);
+
+        const novoLivro =  await this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
+        console.log("Service - Insert ", novoLivro);
         return novoLivro;
     }
 
-    consultarLivro(isbn: any): Livro|undefined{
-        const idNumber: number = parseInt(isbn, 10);
-        console.log(id)
-        return this.bookRepository.filtraLivroPorId(idNumber);
+    async atualizarLivro(livroData: any): Promise<Book> {
+        const { id, name, price } = livroData;
+        if(!name || !price || !id ){
+            throw new Error("Informações incompletas");
+        }
+
+        const livro =  await this.bookRepository.updateBook(id,name, price);
+        console.log("Service - Update ", livro);
+        return livro;
     }
 
-    getProducts(): Livro[]{
-       return this.bookRepository.filtraTodosLivros();
+    async deletarLivro(livroData: any): Promise<Book> {
+        const { id, name, price } = livroData;
+        if(!name || !price || !id ){
+            throw new Error("Informações incompletas");
+        }
+
+        const livro =  await this.bookRepository.deleteBook(id,name, price);
+        console.log("Service - Delete ", livro);
+        return livro;
     }
 
-    deletarLivro(isbn: any){
-        const product = this.consultarLivro(isbn);
-        if (!product){
-            throw new Error("Produto nao encontrado") ;
+    async filtrarLivro(livroData: any): Promise<Book> {
+        if(!livroData ){
+            throw new Error("Informações incompletas");
         }
-        
-        this.productRepository.deletaLivro(product);
+        const id = parseInt(livroData, 10);
+
+        const livro =  await this.bookRepository.filterBook(id);
+        console.log("Service - Filtrar", livro);
+        return livro;
     }
 
-    atualizarLivro(livroData: any): Livro{
-        const {id, nome, vegano} = livroData;
-        if (!nome || !vegano === undefined ||!id){
-            throw new Error("Informacoes incompletas");
-        }
-        
-        let produtoEncontrado = this.consultarLivro(id) ;
-        if (!produtoEncontrado){
-            throw new Error("Produto nao cadastrado !!!") ;
-        }
-        produtoEncontrado.nome = nome ;
-        produtoEncontrado.vegano = vegano ;
-        this.productRepository.atualizaLivro(produtoEncontrado);
-        return produtoEncontrado;
-        }
+    async listarTodosLivros(): Promise<Book[]> {
+        const livro =  await this.bookRepository.filterAllBooks();
+        console.log("Service - Filtrar Todos", livro);
+        return livro;
+    }
 
 }
-
