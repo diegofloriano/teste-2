@@ -37,7 +37,7 @@ export function pesquisarVendaPorID (req: Request, res: Response){
 
 export function listaVendas(req: Request, res: Response){
     try {
-        res.status(200).json(vendaService.getProducts());
+        res.status(200).json(vendaService.getVendas());
     } catch (error: any) {
         res.status(400).json({ message: error.message});
     }

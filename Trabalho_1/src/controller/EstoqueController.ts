@@ -28,7 +28,7 @@ export function pesquisarEstoquePorID (req: Request, res: Response){
             }
             );
         }else{
-            res.status(404).json({mensagem:"Estoque não encontrado."});
+            res.status(404).json({mensagem:"Estoque não encontrado. c"});
         }
     } catch (error: any) {
         res.status(400).json({ message: error.message});
@@ -37,7 +37,7 @@ export function pesquisarEstoquePorID (req: Request, res: Response){
 
 export function listaEstoques(req: Request, res: Response){
     try {
-        res.status(200).json(estoqueService.getProducts());
+        res.status(200).json(estoqueService.getEstoque());
     } catch (error: any) {
         res.status(400).json({ message: error.message});
     }

@@ -10,11 +10,14 @@ class ItemVenda {
 }
 exports.ItemVenda = ItemVenda;
 class Venda {
-    constructor(id, cpf, total, itens) {
-        this.id = id;
+    constructor(cpf, total, itens) {
+        this.id = this.geraId();
         this.cpf = cpf;
         this.total = total;
         this.itens = itens;
+    }
+    geraId() {
+        return Date.now();
     }
 }
 exports.Venda = Venda;

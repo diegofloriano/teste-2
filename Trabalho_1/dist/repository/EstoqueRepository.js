@@ -11,13 +11,12 @@ class EstoqueRepository {
     }
     insereEstoque(estoque) {
         this.estoqueList.push(estoque);
-        this.estoqueList.sort((a, b) => a.id - b.id);
     }
     filtraEstoquePorId(id) {
         return this.estoqueList.find(estoque => estoque.id === id);
     }
     filtraPrecoPorId(id) {
-        return this.estoqueList.find(estoque => estoque.precoVenda);
+        return this.estoqueList.find(estoque => estoque.precoVenda === id);
     }
     filtraTodosEstoques() {
         return this.estoqueList;

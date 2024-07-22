@@ -19,7 +19,7 @@ export function cadastrarProduto(req: Request, res: Response){
 
 export function pesquisarProdutoPorID (req: Request, res: Response){
     try {
-        const Modalidade = productService.consultarProduto(req.query.id);
+        const Modalidade = productService.consultarProduto(req.query.id, req.query.nome);
         if(Modalidade){
         res.status(200).json(
             {

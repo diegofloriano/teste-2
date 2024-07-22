@@ -9,7 +9,7 @@ const ModalidadeController_1 = require("./controller/ModalidadeController");
 const EstoqueController_1 = require("./controller/EstoqueController");
 const VendaController_1 = require("./controller/VendaController");
 const app = (0, express_1.default)();
-const PORT = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 2000;
+const PORT = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000;
 app.use(express_1.default.json());
 function logInfo() {
     console.log(`API em execução no URL: http:localhost:${PORT}`);

@@ -18,11 +18,15 @@ export class Venda{
     itens: ItemVenda[];
 
 
-    constructor(id:number, cpf: number, total: number, itens: ItemVenda[]){
-        this.id = id;
+    constructor(cpf: number, total: number, itens: ItemVenda[]){
+        this.id = this.geraId();
         this.cpf = cpf;
         this.total = total;
         this.itens = itens;
+    }
+
+    private geraId():number{
+        return Date.now();
     }
 
     

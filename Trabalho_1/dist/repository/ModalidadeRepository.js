@@ -10,10 +10,15 @@ class ProductRepository {
     }
     insereProduto(product) {
         this.productList.push(product);
-        this.productList.sort((a, b) => a.id - b.id);
     }
     filtraProdutoPorId(id) {
         return this.productList.find(product => product.id === id);
+    }
+    filtraProdutoPorNome(nome) {
+        return this.productList.find(product => product.nome === nome);
+    }
+    filtraProdutoPorNomeId(id, nome) {
+        return this.productList.find(product => product.nome === nome && product.id === id);
     }
     filtraTodosProdutos() {
         return this.productList;

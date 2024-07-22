@@ -12,11 +12,18 @@ export class ProductRepository{
     
     insereProduto(product: Modalidade):void{
         this.productList.push(product);
-        this.productList.sort((a,b) => a.id - b.id);
     }
 
     filtraProdutoPorId(id:number): Modalidade|undefined{
         return this.productList.find(product => product.id === id);
+    }
+
+    filtraProdutoPorNome(nome:string): Modalidade|undefined{
+        return this.productList.find(product => product.nome === nome);
+    }
+
+    filtraProdutoPorNomeId(id:number, nome:string): Modalidade|undefined{
+        return this.productList.find(product => product.nome === nome && product.id ===id);
     }
 
     filtraTodosProdutos():Modalidade[]{

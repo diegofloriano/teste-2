@@ -11,7 +11,6 @@ export class EstoqueRepository{
 
     insereEstoque(estoque: Estoque){
         this.estoqueList.push(estoque);
-        this.estoqueList.sort((a,b) => a.id - b.id);
     }
 
     filtraEstoquePorId(id:number): Estoque|undefined{
@@ -19,7 +18,7 @@ export class EstoqueRepository{
     }
 
     filtraPrecoPorId(id:number): Estoque|undefined{
-        return this.estoqueList.find(estoque => estoque.precoVenda);
+        return this.estoqueList.find(estoque => estoque.precoVenda === id);
     }
 
     filtraTodosEstoques():Estoque[]{

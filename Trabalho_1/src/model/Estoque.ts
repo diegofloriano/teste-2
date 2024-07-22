@@ -4,10 +4,15 @@ export class Estoque{
     quantidade: number;
     precoVenda: number;
 
-    constructor(id: number, ModalidadeId:number, quantidade:number, precoVenda: number){
-        this.id = id;
+    constructor(ModalidadeId:number, quantidade:number, precoVenda: number){
+        this.id = this.geraId();
         this.ModalidadeId = ModalidadeId;
         this.quantidade = quantidade;
         this.precoVenda = precoVenda;
     }
+
+    private geraId():number{
+        return Date.now();
+    }
+
 }

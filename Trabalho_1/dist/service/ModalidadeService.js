@@ -8,28 +8,42 @@ class ProductService {
         this.productRepository = new ModalidadeRepository_1.ProductRepository();
     }
     cadastrarProduto(produtoData) {
-        const { nome, vegano, id } = produtoData;
-        if (!nome || !vegano === undefined || !id) {
+        const { nome, vegano } = produtoData;
+        if (!nome || !vegano === undefined) {
             throw new Error("Informações incompletas");
         }
-        let idExiste = this.consultarProduto(id);
+        let idExiste = this.consultarProduto(undefined, nome);
         if (idExiste) {
-            throw new Error("ID já Existente!");
+            throw new Error("Produto já Existente!");
         }
-        const novoProduto = new Modalidade_1.Modalidade(nome, vegano, id);
+        const novoProduto = new Modalidade_1.Modalidade(nome, vegano);
         this.productRepository.insereProduto(novoProduto);
         return novoProduto;
     }
-    consultarProduto(id) {
-        const idNumber = parseInt(id, 10);
+    consultarProduto(id, nome) {
+        if (id && nome) {
+            console.log("Com ID e Nome");
+            const idNumber = parseInt(id, 10);
+            return this.productRepository.filtraProdutoPorNomeId(idNumber, nome);
+        }
+        else if (id) {
+            console.log("Com ID");
+            const idNumber = parseInt(id, 10);
+            return this.productRepository.filtraProdutoPorId(idNumber);
+        }
+        else if (nome) {
+            console.log("Nome");
+            return this.productRepository.filtraProdutoPorNome(nome);
+        }
         console.log(id);
-        return this.productRepository.filtraProdutoPorId(idNumber);
+        return undefined;
     }
     getProducts() {
-        return this.productRepository.filtraTodosProdutos();
+        return this.productRepository.filtraTodosProdutos().sort((a, b) => a.id - b.id);
+        ;
     }
     deletarProduto(id) {
-        const product = this.consultarProduto(id);
+        const product = this.consultarProduto(id, undefined);
         if (!product) {
             throw new Error("Produto nao encontrado");
         }
@@ -40,7 +54,7 @@ class ProductService {
         if (!nome || !vegano === undefined || !id) {
             throw new Error("Informacoes incompletas");
         }
-        let produtoEncontrado = this.consultarProduto(id);
+        let produtoEncontrado = this.consultarProduto(id, undefined);
         if (!produtoEncontrado) {
             throw new Error("Produto nao cadastrado !!!");
         }
@@ -49,12 +63,12 @@ class ProductService {
         this.productRepository.atualizaProduto(produtoEncontrado);
         return produtoEncontrado;
     }
-    consultarNome(EstoqueId) {
-        const estoque = this.consultarProduto(EstoqueId);
+    consultarNome(id) {
+        const estoque = this.consultarProduto(id, undefined);
         if (estoque) {
             return estoque.nome;
         }
-        throw new Error("Estoque não encontrado!");
+        throw new Error("Estoque não encontrado! m");
     }
 }
 exports.ProductService = ProductService;
