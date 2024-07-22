@@ -1,5 +1,5 @@
 import express from "express";
-import { cadastrarLivro, pesquisarLivroPorID, listaLivro, atualizarLivro, deletarLivro } from "./controller/BookController";
+import { cadastrarLivro, pesquisarLivroPorID, filtrarLivro, atualizarLivro, deletarLivro } from "./controller/BookController";
 
 const app = express();
 const PORT = process.env.PORT ?? 2000;
@@ -12,7 +12,7 @@ function logInfo(){
 
 app.post("/api/books", cadastrarLivro);
 app.get("/api/books", pesquisarLivroPorID)
-app.get("/api/books/todas", listaLivro)
+app.get("/api/books/todas", filtrarLivro)
 app.put("/api/books", atualizarLivro ) ;
 app.delete("/api/books/:id", deletarLivro ) ;
 
