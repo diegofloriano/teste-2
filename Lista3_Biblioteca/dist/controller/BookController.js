@@ -9,7 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listarTodosLivro = exports.filtrarLivro = exports.deletarLivro = exports.atualizarLivro = exports.cadastrarLivro = void 0;
+exports.cadastrarLivro = cadastrarLivro;
+exports.atualizarLivro = atualizarLivro;
+exports.deletarLivro = deletarLivro;
+exports.filtrarLivro = filtrarLivro;
+exports.listarTodosLivro = listarTodosLivro;
 const BookService_1 = require("../service/BookService");
 const bookService = new BookService_1.BookService();
 function cadastrarLivro(req, res) {
@@ -26,7 +30,6 @@ function cadastrarLivro(req, res) {
         }
     });
 }
-exports.cadastrarLivro = cadastrarLivro;
 ;
 function atualizarLivro(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -42,7 +45,6 @@ function atualizarLivro(req, res) {
         }
     });
 }
-exports.atualizarLivro = atualizarLivro;
 ;
 function deletarLivro(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -58,7 +60,6 @@ function deletarLivro(req, res) {
         }
     });
 }
-exports.deletarLivro = deletarLivro;
 ;
 function filtrarLivro(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -74,7 +75,6 @@ function filtrarLivro(req, res) {
         }
     });
 }
-exports.filtrarLivro = filtrarLivro;
 ;
 function listarTodosLivro(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -90,5 +90,4 @@ function listarTodosLivro(req, res) {
         }
     });
 }
-exports.listarTodosLivro = listarTodosLivro;
 ;
