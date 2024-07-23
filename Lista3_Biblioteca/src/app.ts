@@ -12,8 +12,8 @@ function logInfo(){
 
 app.post("/api/books", cadastrarLivro);
 app.get("/api/books/todas", listarTodosLivro)
-app.get("/api/books", filtrarLivro)
-app.put("/api/books", atualizarLivro ) ;
+app.get("/api/books/:id", filtrarLivro)
+app.put("/api/books/:id", atualizarLivro ) ;
 app.delete("/api/books/:id", deletarLivro ) ;
 
 

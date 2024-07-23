@@ -21,8 +21,13 @@ class BookRepository {
             const query = `
         CREATE TABLE IF NOT EXISTS library.Book (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            price DECIMAL(10,2) NOT NULL
+            title VARCHAR(255) NOT NULL,
+            author VARCHAR(255) NOT NULL,
+            publishedDate VARCHAR(255) NOT NULL,
+            isbn VARCHAR(255) NOT NULL,
+            pages DECIMAL(10,2) NOT NULL,
+            language VARCHAR(255) NOT NULL,
+            publisher VARCHAR(255) NOT NULL
         )`;
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, []);
@@ -54,7 +59,7 @@ class BookRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const query = "UPDATE library.book set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;";
             try {
-                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id, title, author, publishedDate, isbn, pages, language, publisher]);
+                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
                 console.log('Livro atualizado com sucesso, ID: ', resultado);
                 const book = new Books_1.Book(id, title, author, publishedDate, isbn, pages, language, publisher);
                 return new Promise((resolve) => {
@@ -67,13 +72,13 @@ class BookRepository {
             }
         });
     }
-    deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher) {
+    deleteBook(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const query = "DELETE FROM library.book where id = ?;";
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
                 console.log('Produto deletado com sucesso, ID: ', resultado);
-                const book = new Books_1.Book(id, title, author, publishedDate, isbn, pages, language, publisher);
+                const book = new Books_1.Book(id);
                 return new Promise((resolve) => {
                     resolve(book);
                 });
@@ -84,7 +89,7 @@ class BookRepository {
             }
         });
     }
-    filterBook(id) {
+    filterBookId(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const query = "SELECT * FROM library.book where id = ?";
             try {
@@ -96,6 +101,22 @@ class BookRepository {
             }
             catch (err) {
                 console.error(`Falha ao procurar o livro de ID ${id} gerando o erro: ${err}`);
+                throw err;
+            }
+        });
+    }
+    filterBookIsbn(isbn) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = "SELECT * FROM library.book where isbn = ?";
+            try {
+                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [isbn]);
+                console.log('Livro localizado com sucesso, ISBN: ', resultado);
+                return new Promise((resolve) => {
+                    resolve(resultado);
+                });
+            }
+            catch (err) {
+                console.error(`Falha ao procurar o livro de ISBN ${isbn} gerando o erro: ${err}`);
                 throw err;
             }
         });

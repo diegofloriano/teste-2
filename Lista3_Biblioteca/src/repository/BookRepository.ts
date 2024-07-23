@@ -15,9 +15,9 @@ export class BookRepository{
             author VARCHAR(255) NOT NULL,
             publishedDate VARCHAR(255) NOT NULL,
             isbn VARCHAR(255) NOT NULL,
-            pages DECIMAL(10,2) NOT NULL
+            pages DECIMAL(10,2) NOT NULL,
             language VARCHAR(255) NOT NULL,
-            publisher VARCHAR(255) NOT NULL,
+            publisher VARCHAR(255) NOT NULL
         )`;
 
         try {
@@ -48,7 +48,7 @@ export class BookRepository{
         const query = "UPDATE library.book set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [id, title, author, publishedDate, isbn, pages, language, publisher]);
+            const resultado = await executarComandoSQL(query, [id]);
             console.log('Livro atualizado com sucesso, ID: ', resultado);
             const book = new Book(id, title, author, publishedDate, isbn, pages, language, publisher);
             return new Promise<Book>((resolve)=>{
@@ -60,13 +60,13 @@ export class BookRepository{
         }
     }
 
-    async deleteBook(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Book>{
+    async deleteBook(id: number) :Promise<Book>{
         const query = "DELETE FROM library.book where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Produto deletado com sucesso, ID: ', resultado);
-            const book = new Book(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const book = new Book(id);
             return new Promise<Book>((resolve)=>{
                 resolve(book);
             })
@@ -76,7 +76,7 @@ export class BookRepository{
         }
     }
 
-    async filterBook(id: number) :Promise<Book>{
+    async filterBookId(id: number) :Promise<Book>{
         const query = "SELECT * FROM library.book where id = ?" ;
 
         try {
@@ -87,6 +87,21 @@ export class BookRepository{
             })
         } catch (err:any) {
             console.error(`Falha ao procurar o livro de ID ${id} gerando o erro: ${err}`);
+            throw err;
+        }
+    }
+
+    async filterBookIsbn(isbn: string) :Promise<Book>{
+        const query = "SELECT * FROM library.book where isbn = ?" ;
+
+        try {
+            const resultado = await executarComandoSQL(query, [isbn]);
+            console.log('Livro localizado com sucesso, ISBN: ', resultado);
+            return new Promise<Book>((resolve)=>{
+                resolve(resultado);
+            })
+        } catch (err:any) {
+            console.error(`Falha ao procurar o livro de ISBN ${isbn} gerando o erro: ${err}`);
             throw err;
         }
     }

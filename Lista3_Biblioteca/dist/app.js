@@ -13,8 +13,8 @@ function logInfo() {
     console.log(`API em execução no URL: http:localhost:${PORT}`);
 }
 app.post("/api/books", BookController_1.cadastrarLivro);
-app.get("/api/books", BookController_1.listarTodosLivro);
-app.get("/api/books/todas", BookController_1.filtrarLivro);
-app.put("/api/books", BookController_1.atualizarLivro);
+app.get("/api/books/todas", BookController_1.listarTodosLivro);
+app.get("/api/books/:id", BookController_1.filtrarLivro);
+app.put("/api/books/:id", BookController_1.atualizarLivro);
 app.delete("/api/books/:id", BookController_1.deletarLivro);
 app.listen(PORT, logInfo);

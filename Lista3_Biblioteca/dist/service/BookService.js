@@ -21,9 +21,28 @@ class BookService {
             if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
                 throw new Error("Informações incompletas");
             }
+            let livroExiste = yield this.consultarLivro(undefined, isbn);
+            if (livroExiste) {
+                throw new Error("Livro com ISBN já Existente!");
+            }
             const novoLivro = yield this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
             console.log("Service - Insert ", novoLivro);
             return novoLivro;
+        });
+    }
+    consultarLivro(id, isbn) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (id) {
+                console.log("Com ID");
+                const idNumber = parseInt(id, 10);
+                return this.bookRepository.filterBookId(idNumber);
+            }
+            else if (isbn) {
+                console.log("ISBN");
+                return this.bookRepository.filterBookIsbn(isbn);
+            }
+            console.log(id);
+            return id || isbn;
         });
     }
     atualizarLivro(livroData) {
@@ -32,6 +51,11 @@ class BookService {
             if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
                 throw new Error("Informações incompletas");
             }
+            const id = parseInt(livroData, 10);
+            let livroExiste = yield this.consultarLivro(id, undefined);
+            if (!livroExiste) {
+                throw new Error("Livro não Existente!");
+            }
             const livro = yield this.bookRepository.updateBook(title, author, publishedDate, isbn, pages, language, publisher);
             console.log("Service - Update ", livro);
             return livro;
@@ -39,11 +63,15 @@ class BookService {
     }
     deletarLivro(livroData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-            if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+            if (!livroData) {
                 throw new Error("Informações incompletas");
             }
-            const livro = yield this.bookRepository.deleteBook(title, author, publishedDate, isbn, pages, language, publisher);
+            const id = parseInt(livroData, 10);
+            let livroExiste = yield this.consultarLivro(id, undefined);
+            if (!livroExiste) {
+                throw new Error("Livro não Existente!");
+            }
+            const livro = yield this.bookRepository.deleteBook(livroData);
             console.log("Service - Delete ", livro);
             return livro;
         });
@@ -54,7 +82,11 @@ class BookService {
                 throw new Error("Informações incompletas");
             }
             const id = parseInt(livroData, 10);
-            const livro = yield this.bookRepository.filterBook(id);
+            let livroExiste = yield this.consultarLivro(id, undefined);
+            if (!livroExiste) {
+                throw new Error("Livro não Existente!");
+            }
+            const livro = yield this.bookRepository.filterBookId(id);
             console.log("Service - Filtrar", livro);
             return livro;
         });
