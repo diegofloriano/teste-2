@@ -1,5 +1,5 @@
 import express from "express";
-import { cadastrarLivro, pesquisarLivroPorID, filtrarLivro, atualizarLivro, deletarLivro } from "./controller/BookController";
+import { cadastrarLivro, listarTodosLivro, filtrarLivro, atualizarLivro, deletarLivro } from "./controller/BookController";
 
 const app = express();
 const PORT = process.env.PORT ?? 2000;
@@ -11,8 +11,8 @@ function logInfo(){
 }
 
 app.post("/api/books", cadastrarLivro);
-app.get("/api/books", pesquisarLivroPorID)
-app.get("/api/books/todas", filtrarLivro)
+app.get("/api/books/todas", listarTodosLivro)
+app.get("/api/books", filtrarLivro)
 app.put("/api/books", atualizarLivro ) ;
 app.delete("/api/books/:id", deletarLivro ) ;
 

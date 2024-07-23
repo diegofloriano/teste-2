@@ -17,23 +17,23 @@ export class BookService{
     }
 
     async atualizarLivro(livroData: any): Promise<Book> {
-        const { id, name, price } = livroData;
-        if(!name || !price || !id ){
+        const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
+        if(!title || !author || !publishedDate || !isbn || !pages || !language || !publisher ){
             throw new Error("Informações incompletas");
         }
 
-        const livro =  await this.bookRepository.updateBook(id,name, price);
+        const livro =  await this.bookRepository.updateBook(title, author, publishedDate, isbn, pages, language, publisher);
         console.log("Service - Update ", livro);
         return livro;
     }
 
     async deletarLivro(livroData: any): Promise<Book> {
-        const { id, name, price } = livroData;
-        if(!name || !price || !id ){
+        const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
+        if(!title || !author || !publishedDate || !isbn || !pages || !language || !publisher ){
             throw new Error("Informações incompletas");
         }
 
-        const livro =  await this.bookRepository.deleteBook(id,name, price);
+        const livro =  await this.bookRepository.deleteBook(title, author, publishedDate, isbn, pages, language, publisher);
         console.log("Service - Delete ", livro);
         return livro;
     }

@@ -19,7 +19,7 @@ class BookRepository {
     createTable() {
         return __awaiter(this, void 0, void 0, function* () {
             const query = `
-        CREATE TABLE IF NOT EXISTS Vendas.Product (
+        CREATE TABLE IF NOT EXISTS library.Book (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             price DECIMAL(10,2) NOT NULL
@@ -33,76 +33,76 @@ class BookRepository {
             }
         });
     }
-    insertProduct(name, price) {
+    insertBook(title, author, publishedDate, isbn, pages, language, publisher) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = "INSERT INTO vendas.Product (name, price) VALUES (?, ?)";
+            const query = "INSERT INTO library.Book (title, author, publishedDate, isbn, pages, language, publisher) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try {
-                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [name, price]);
-                console.log('Produto inserido com sucesso, ID: ', resultado.insertId);
-                const product = new Books_1.Book(resultado.insertId, name, price);
+                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [title, author, publishedDate, isbn, pages, language, publisher]);
+                console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
+                const book = new Books_1.Book(resultado.insertId, title, author, publishedDate, isbn, pages, language, publisher);
                 return new Promise((resolve) => {
-                    resolve(product);
+                    resolve(book);
                 });
             }
             catch (err) {
-                console.error('Erro ao inserir o produto:', err);
+                console.error('Erro ao inserir o livro:', err);
                 throw err;
             }
         });
     }
-    updateProduct(id, name, price) {
+    updateBook(id, title, author, publishedDate, isbn, pages, language, publisher) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = "UPDATE vendas.product set name = ?, price = ? where id = ?;";
+            const query = "UPDATE library.book set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;";
             try {
-                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [name, price, id]);
-                console.log('Produto atualizado com sucesso, ID: ', resultado);
-                const product = new Books_1.Book(id, name, price);
+                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id, title, author, publishedDate, isbn, pages, language, publisher]);
+                console.log('Livro atualizado com sucesso, ID: ', resultado);
+                const book = new Books_1.Book(id, title, author, publishedDate, isbn, pages, language, publisher);
                 return new Promise((resolve) => {
-                    resolve(product);
+                    resolve(book);
                 });
             }
             catch (err) {
-                console.error(`Erro ao atualizar o produto de ID ${id} gerando o erro: ${err}`);
+                console.error(`Erro ao atualizar o livro de ID ${id} gerando o erro: ${err}`);
                 throw err;
             }
         });
     }
-    deleteProduct(id, name, price) {
+    deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = "DELETE FROM vendas.product where id = ?;";
+            const query = "DELETE FROM library.book where id = ?;";
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
                 console.log('Produto deletado com sucesso, ID: ', resultado);
-                const product = new Books_1.Book(id, name, price);
+                const book = new Books_1.Book(id, title, author, publishedDate, isbn, pages, language, publisher);
                 return new Promise((resolve) => {
-                    resolve(product);
+                    resolve(book);
                 });
             }
             catch (err) {
-                console.error(`Falha ao deletar o produto de ID ${id} gerando o erro: ${err}`);
+                console.error(`Falha ao deletar o livro de ID ${id} gerando o erro: ${err}`);
                 throw err;
             }
         });
     }
-    filterProduct(id) {
+    filterBook(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = "SELECT * FROM vendas.product where id = ?";
+            const query = "SELECT * FROM library.book where id = ?";
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
-                console.log('Produto localizado com sucesso, ID: ', resultado);
+                console.log('Livro localizado com sucesso, ID: ', resultado);
                 return new Promise((resolve) => {
                     resolve(resultado);
                 });
             }
             catch (err) {
-                console.error(`Falha ao procurar o produto de ID ${id} gerando o erro: ${err}`);
+                console.error(`Falha ao procurar o livro de ID ${id} gerando o erro: ${err}`);
                 throw err;
             }
         });
     }
-    filterAllProduct() {
+    filterAllBooks() {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = "SELECT * FROM vendas.product";
+            const query = "SELECT * FROM library.book";
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, []);
                 return new Promise((resolve) => {
@@ -110,7 +110,7 @@ class BookRepository {
                 });
             }
             catch (err) {
-                console.error(`Falha ao listar os produtos gerando o erro: ${err}`);
+                console.error(`Falha ao listar os livros gerando o erro: ${err}`);
                 throw err;
             }
         });

@@ -1,60 +1,70 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookService = void 0;
-const Books_1 = require("../model/Books");
 const BookRepository_1 = require("../repository/BookRepository");
 class BookService {
     constructor() {
-        this.productRepository = new BookRepository_1.BookRepository();
+        this.bookRepository = new BookRepository_1.BookRepository();
     }
-    cadastrarLivro(produtoData) {
-        const { nome, vegano, id } = produtoData;
-        if (!nome || !vegano === undefined || !id) {
-            throw new Error("Informações incompletas");
-        }
-        let idExiste = this.consultarLivro(id);
-        if (idExiste) {
-            throw new Error("ID já Existente!");
-        }
-        const novoLivro = new Books_1.Livro(nome, vegano, id);
-        this.bookRepository.insereLivro(novoLivro);
-        return novoLivro;
+    cadastrarLivro(livroData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
+            if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+                throw new Error("Informações incompletas");
+            }
+            const novoLivro = yield this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
+            console.log("Service - Insert ", novoLivro);
+            return novoLivro;
+        });
     }
-    consultarLivro(id) {
-        const idNumber = parseInt(id, 10);
-        console.log(id);
-        return this.bookRepository.filtraLivroPorId(idNumber);
+    atualizarLivro(livroData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
+            if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+                throw new Error("Informações incompletas");
+            }
+            const livro = yield this.bookRepository.updateBook(title, author, publishedDate, isbn, pages, language, publisher);
+            console.log("Service - Update ", livro);
+            return livro;
+        });
     }
-    getProducts() {
-        return this.bookRepository.filtraTodosLivros();
+    deletarLivro(livroData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
+            if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+                throw new Error("Informações incompletas");
+            }
+            const livro = yield this.bookRepository.deleteBook(title, author, publishedDate, isbn, pages, language, publisher);
+            console.log("Service - Delete ", livro);
+            return livro;
+        });
     }
-    deletarLivro(id) {
-        const product = this.consultarLivro(id);
-        if (!product) {
-            throw new Error("Produto nao encontrado");
-        }
-        this.productRepository.deletaLivro(product);
+    filtrarLivro(livroData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!livroData) {
+                throw new Error("Informações incompletas");
+            }
+            const id = parseInt(livroData, 10);
+            const livro = yield this.bookRepository.filterBook(id);
+            console.log("Service - Filtrar", livro);
+            return livro;
+        });
     }
-    atualizarLivro(produtoData) {
-        const { id, nome, vegano } = produtoData;
-        if (!nome || !vegano === undefined || !id) {
-            throw new Error("Informacoes incompletas");
-        }
-        let produtoEncontrado = this.consultarLivro(id);
-        if (!produtoEncontrado) {
-            throw new Error("Produto nao cadastrado !!!");
-        }
-        produtoEncontrado.nome = nome;
-        produtoEncontrado.vegano = vegano;
-        this.productRepository.atualizaLivro(produtoEncontrado);
-        return produtoEncontrado;
-    }
-    consultarNome(EstoqueId) {
-        const estoque = this.consultarLivro(EstoqueId);
-        if (estoque) {
-            return estoque.nome;
-        }
-        throw new Error("Estoque não encontrado!");
+    listarTodosLivros() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const livro = yield this.bookRepository.filterAllBooks();
+            console.log("Service - Filtrar Todos", livro);
+            return livro;
+        });
     }
 }
 exports.BookService = BookService;

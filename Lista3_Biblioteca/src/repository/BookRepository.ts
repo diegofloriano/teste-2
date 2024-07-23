@@ -11,8 +11,13 @@ export class BookRepository{
         const query = `
         CREATE TABLE IF NOT EXISTS library.Book (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            price DECIMAL(10,2) NOT NULL
+            title VARCHAR(255) NOT NULL,
+            author VARCHAR(255) NOT NULL,
+            publishedDate VARCHAR(255) NOT NULL,
+            isbn VARCHAR(255) NOT NULL,
+            pages DECIMAL(10,2) NOT NULL
+            language VARCHAR(255) NOT NULL,
+            publisher VARCHAR(255) NOT NULL,
         )`;
 
         try {
