@@ -64,7 +64,7 @@ function deletarLivro(req, res) {
 function filtrarLivro(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const livro = yield bookService.filtrarLivro(req.query.id);
+            const livro = yield bookService.filtrarLivro(req.query.id, req.query.isbn);
             res.status(200).json({
                 mensagem: "Livro encontrado com sucesso!",
                 livro: livro

@@ -72,13 +72,13 @@ class BookRepository {
             }
         });
     }
-    deleteBook(id) {
+    deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = "DELETE FROM library.book where id = ?;";
+            const query = "DELETE FROM library.book  where id = ?;";
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
                 console.log('Produto deletado com sucesso, ID: ', resultado);
-                const book = new Books_1.Book(id);
+                const book = new Books_1.Book(id, title, author, publishedDate, isbn, pages, language, publisher);
                 return new Promise((resolve) => {
                     resolve(book);
                 });

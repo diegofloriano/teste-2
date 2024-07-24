@@ -60,13 +60,13 @@ export class BookRepository{
         }
     }
 
-    async deleteBook(id: number) :Promise<Book>{
-        const query = "DELETE FROM library.book where id = ?;" ;
+    async deleteBook(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Book>{
+        const query = "DELETE FROM library.book  where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Produto deletado com sucesso, ID: ', resultado);
-            const book = new Book(id);
+            const book = new Book(id, title, author, publishedDate, isbn, pages, language, publisher);
             return new Promise<Book>((resolve)=>{
                 resolve(book);
             })

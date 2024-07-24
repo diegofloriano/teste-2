@@ -21,6 +21,10 @@ class BookService {
             if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
                 throw new Error("Informações incompletas");
             }
+            const existe = yield this.filtrarLivro(undefined, isbn);
+            if (existe) {
+                throw new Error("ISBN já existe!");
+            }
             const novoLivro = yield this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
             console.log("Service - Insert", novoLivro);
             return novoLivro;
@@ -37,25 +41,31 @@ class BookService {
             return livroAtualizado;
         });
     }
-    deletarLivro(id) {
+    deletarLivro(livroData) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!id) {
-                throw new Error("ID não fornecido");
+            const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
+            if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+                throw new Error("Informações incompletas");
             }
-            const livroId = parseInt(id, 10);
-            yield this.bookRepository.deleteBook(livroId);
-            console.log("Service - Delete", livroId);
+            const livroDeletado = yield this.bookRepository.deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher);
+            console.log("Service - Delete", livroDeletado);
+            return livroDeletado;
         });
     }
-    filtrarLivro(livroData) {
+    filtrarLivro(id, isbn) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!livroData) {
-                throw new Error("ID não fornecido");
+            if (id) {
+                const idNumber = parseInt(id);
+                const livro = yield this.bookRepository.filterBookId(idNumber);
+                console.log("Service - Filtrar", livro);
+                return livro;
             }
-            const id = parseInt(livroData, 10);
-            const livro = yield this.bookRepository.filterBookId(id);
-            console.log("Service - Filtrar", livro);
-            return livro;
+            else if (isbn) {
+                const livro = yield this.bookRepository.filterBookIsbn(isbn);
+                console.log("Service - Filtrar", livro);
+                return livro;
+            }
+            throw new Error("ISBN ou ID não fornecidos!");
         });
     }
     listarTodosLivros() {

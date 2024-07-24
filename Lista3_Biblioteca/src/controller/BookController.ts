@@ -47,7 +47,7 @@ export async function deletarLivro (req: Request, res: Response){
 
 export async function filtrarLivro (req: Request, res: Response){
     try {
-        const livro = await bookService.filtrarLivro(req.query.id);
+        const livro = await bookService.filtrarLivro(req.query.id, req.query.isbn);
         res.status(200).json(
             {
                 mensagem:"Livro encontrado com sucesso!",
