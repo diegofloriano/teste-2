@@ -48,7 +48,7 @@ export class BookService {
 
     async filtrarLivro(id:  any, isbn: any): Promise<Book> {
         if (id) {
-            const idNumber = parseInt(id)
+            const idNumber : number = parseInt(id)
             const livro = await this.bookRepository.filterBookId(idNumber);
             console.log("Service - Filtrar", livro);
             return livro;
@@ -61,6 +61,7 @@ export class BookService {
         }
 
          throw new Error("ISBN ou ID não fornecidos!");
+        
 
     }
     
