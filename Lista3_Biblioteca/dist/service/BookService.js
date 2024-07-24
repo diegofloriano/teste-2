@@ -21,27 +21,9 @@ class BookService {
             if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
                 throw new Error("Informações incompletas");
             }
-            // let livroExiste = await this.consultarLivro(undefined, isbn);
-            // if (livroExiste) {
-            //     throw new Error("Livro com ISBN já existente!");
-            // }
             const novoLivro = yield this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
             console.log("Service - Insert", novoLivro);
             return novoLivro;
-        });
-    }
-    consultarLivro(id, isbn) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (id !== undefined) {
-                console.log("Com ID");
-                return yield this.bookRepository.filterBookId(id);
-            }
-            else if (isbn) {
-                console.log("ISBN");
-                return yield this.bookRepository.filterBookIsbn(isbn);
-            }
-            console.log("ID ou ISBN não fornecidos");
-            return undefined;
         });
     }
     atualizarLivro(livroData) {
@@ -50,11 +32,7 @@ class BookService {
             if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
                 throw new Error("Informações incompletas");
             }
-            let livroExiste = yield this.consultarLivro(parseInt(id, 10), undefined);
-            if (!livroExiste) {
-                throw new Error("Livro não existente!");
-            }
-            const livroAtualizado = yield this.bookRepository.updateBook(parseInt(id, 10), title, author, publishedDate, isbn, pages, language, publisher);
+            const livroAtualizado = yield this.bookRepository.updateBook(id, title, author, publishedDate, isbn, pages, language, publisher);
             console.log("Service - Update", livroAtualizado);
             return livroAtualizado;
         });
@@ -65,24 +43,17 @@ class BookService {
                 throw new Error("ID não fornecido");
             }
             const livroId = parseInt(id, 10);
-            let livroExiste = yield this.consultarLivro(livroId, undefined);
-            if (!livroExiste) {
-                throw new Error("Livro não existente!");
-            }
             yield this.bookRepository.deleteBook(livroId);
             console.log("Service - Delete", livroId);
         });
     }
-    filtrarLivro(id) {
+    filtrarLivro(livroData) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!id) {
+            if (!livroData) {
                 throw new Error("ID não fornecido");
             }
-            const livroId = parseInt(id, 10);
-            let livro = yield this.consultarLivro(livroId, undefined);
-            if (!livro) {
-                throw new Error("Livro não existente!");
-            }
+            const id = parseInt(livroData, 10);
+            const livro = yield this.bookRepository.filterBookId(id);
             console.log("Service - Filtrar", livro);
             return livro;
         });

@@ -23,7 +23,7 @@ export class BookService {
         }
 
 
-        const livroAtualizado = await this.bookRepository.updateBook(parseInt(id, 10), title, author, publishedDate, isbn, pages, language, publisher);
+        const livroAtualizado = await this.bookRepository.updateBook(id, title, author, publishedDate, isbn, pages, language, publisher);
         console.log("Service - Update", livroAtualizado);
         return livroAtualizado;
     }
@@ -39,13 +39,13 @@ export class BookService {
         console.log("Service - Delete", livroId);
     }
 
-    async filtrarLivro(livro: any): Promise<Book> {
-        if (!livro) {
+    async filtrarLivro(livroData: any): Promise<Book> {
+        if (!livroData) {
             throw new Error("ID não fornecido");
         }
-        const id = parseInt(livro, 10);
+        const id = parseInt(livroData, 10);
 
-
+        const livro = await this.bookRepository.filterBookId(id);
         console.log("Service - Filtrar", livro);
         return livro;
     }

@@ -59,7 +59,7 @@ class BookRepository {
         return __awaiter(this, void 0, void 0, function* () {
             const query = "UPDATE library.book set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;";
             try {
-                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
+                const resultado = yield (0, mysql_1.executarComandoSQL)(query, [title, author, publishedDate, isbn, pages, language, publisher, id]);
                 console.log('Livro atualizado com sucesso, ID: ', resultado);
                 const book = new Books_1.Book(id, title, author, publishedDate, isbn, pages, language, publisher);
                 return new Promise((resolve) => {

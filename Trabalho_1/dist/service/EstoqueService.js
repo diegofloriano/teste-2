@@ -54,8 +54,11 @@ class EstoqueService {
         if (!estoqueEncontrado) {
             throw new Error("Estoque nao cadastrado !!!");
         }
-        if (quantidade <= 0 || quantidade > estoqueEncontrado.quantidade) {
-            throw new Error("Quantidade inválida para exclusão");
+        if (quantidade <= 0) {
+            throw new Error("Quantidade inválida para Exclusão");
+        }
+        if (quantidade > estoqueEncontrado.quantidade) {
+            throw new Error("Estoque Insuficiente!");
         }
         estoqueEncontrado.ModalidadeId;
         estoqueEncontrado.quantidade -= quantidade;
@@ -74,7 +77,7 @@ class EstoqueService {
         if (!estoqueEncontrado) {
             throw new Error("Estoque nao cadastrado !!!");
         }
-        if (quantidade <= 0 || quantidade > estoqueEncontrado.quantidade) {
+        if (quantidade <= 0) {
             throw new Error("Quantidade inválida para soma");
         }
         estoqueEncontrado.ModalidadeId;
@@ -88,8 +91,11 @@ class EstoqueService {
         if (!estoqueEncontrado) {
             throw new Error("Estoque nao cadastrado !!!");
         }
-        if (quantidade <= 0 || quantidade > estoqueEncontrado.quantidade) {
+        if (quantidade <= 0) {
             throw new Error("Quantidade inválida para Venda");
+        }
+        if (quantidade > estoqueEncontrado.quantidade) {
+            throw new Error("Estoque Insuficiente!");
         }
         estoqueEncontrado.quantidade -= quantidade;
         this.estoqueRepository.deletaEstoque(estoqueEncontrado);
