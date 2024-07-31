@@ -76,13 +76,13 @@ export class BookRepository{
         }
     }
 
-    async filterBookId(id: number) :Promise<Book[]|undefined>{
+    async filterBookId(id: number) :Promise<Book[]|undefined>{ //lista ou null
         const query = "SELECT * FROM library.book where id = ?" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Livro localizado com sucesso, ID: ', resultado);
-            return new Promise<Book[]|undefined>((resolve)=>{
+            return new Promise<Book[]|undefined>((resolve)=>{  //lista ou null
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -91,13 +91,13 @@ export class BookRepository{
         }
     }
 
-    async filterBookIsbn(isbn: string) :Promise<Book[]|undefined>{
+    async filterBookIsbn(isbn: string) :Promise<Book[]|undefined>{ //lista ou null
         const query = "SELECT * FROM library.book where isbn = ?" ;
 
         try {
             const resultado = await executarComandoSQL(query, [isbn]);
             console.log('Livro localizado com sucesso, ISBN: ', resultado);
-            return new Promise<Book[]|undefined>((resolve)=>{
+            return new Promise<Book[]|undefined>((resolve)=>{  //lista ou null
                 resolve(resultado);
             })
         } catch (err:any) {

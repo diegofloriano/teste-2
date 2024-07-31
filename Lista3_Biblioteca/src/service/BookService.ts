@@ -13,10 +13,10 @@ export class BookService {
         }
 
         const existe = await this.filtrarLivro(undefined, isbn);
-        console.log(existe?.length);
-        const quantidadeCadastrada: number = existe?.length || 0;
-        if(quantidadeCadastrada > 0 ){
-            throw new Error("ISBN já existe!");
+        console.log(existe?.length); //retorna o tamanho da lista
+        const quantidadeCadastrada: number = existe?.length || 0; //se retornar algum undefined(null) quantidadeCadastrada recebe 0
+        if(quantidadeCadastrada > 0 ){ //se tiver alguem na lista, ou seja, maior que 0
+            throw new Error("ISBN já existe!"); //erro
         }
 
         const novoLivro = await this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
@@ -51,7 +51,7 @@ export class BookService {
     async filtrarLivro(id: any, isbn: any): Promise<Book[]|undefined> {
         if(id){
             const idNumber : number = parseInt(id)
-            const livros: Book[]|undefined = await this.bookRepository.filterBookId(idNumber);
+            const livros: Book[]|undefined = await this.bookRepository.filterBookId(idNumber);  //você sempre recebe uma lista do mysql2 (Book[])
             console.log("Service - Filtrar", livros);
             return livros;
         }
