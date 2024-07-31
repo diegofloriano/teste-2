@@ -22,7 +22,8 @@ class BookService {
                 throw new Error("Informações incompletas");
             }
             const existe = yield this.filtrarLivro(undefined, isbn);
-            if (existe === isbn) {
+            console.log(existe);
+            if (existe) {
                 throw new Error("ISBN já existe!");
             }
             const novoLivro = yield this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
@@ -56,16 +57,16 @@ class BookService {
         return __awaiter(this, void 0, void 0, function* () {
             if (id) {
                 const idNumber = parseInt(id);
-                const livro = yield this.bookRepository.filterBookId(idNumber);
-                console.log("Service - Filtrar", livro);
-                return livro;
+                const livros = yield this.bookRepository.filterBookId(idNumber);
+                console.log("Service - Filtrar", livros);
+                return livros;
             }
             else if (isbn) {
-                const livro = yield this.bookRepository.filterBookIsbn(isbn);
-                console.log("Service - Filtrar", livro);
-                return livro;
+                const livros = yield this.bookRepository.filterBookIsbn(isbn);
+                console.log("Service - Filtrar", livros);
+                return livros;
             }
-            throw new Error("ISBN ou ID não fornecidos!");
+            return undefined;
         });
     }
     listarTodosLivros() {

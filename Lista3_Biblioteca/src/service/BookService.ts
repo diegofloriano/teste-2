@@ -13,6 +13,7 @@ export class BookService {
         }
 
         const existe = await this.filtrarLivro(undefined, isbn);
+        console.log(existe);
         if(existe){
             throw new Error("ISBN já existe!");
         }
@@ -46,21 +47,21 @@ export class BookService {
         return livroDeletado;
     }
 
-    async filtrarLivro(id:  any, isbn: any): Promise<Book> {
-        if (id) {
+    async filtrarLivro(id: any, isbn: any): Promise<Book[]|undefined> {
+        if(id){
             const idNumber : number = parseInt(id)
-            const livro = await this.bookRepository.filterBookId(idNumber);
-            console.log("Service - Filtrar", livro);
-            return livro;
+            const livros: Book[]|undefined = await this.bookRepository.filterBookId(idNumber);
+            console.log("Service - Filtrar", livros);
+            return livros;
         }
         
         else if(isbn){
-            const livro = await this.bookRepository.filterBookIsbn(isbn);
-            console.log("Service - Filtrar", livro);
-            return livro;
+            const livros: Book[]|undefined = await this.bookRepository.filterBookIsbn(isbn);
+            console.log("Service - Filtrar", livros);
+            return livros;
         }
+        return undefined;
 
-         throw new Error("ISBN ou ID não fornecidos!");
         
 
     }
