@@ -94,6 +94,9 @@ class BookRepository {
             const query = "SELECT * FROM library.book where id = ?";
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
+                if (resultado.length == 0) {
+                    console.error("Id não encontrado");
+                }
                 console.log('Livro localizado com sucesso, ID: ', resultado);
                 return new Promise((resolve) => {
                     resolve(resultado);

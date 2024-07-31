@@ -80,7 +80,10 @@ export class BookRepository{
         const query = "SELECT * FROM library.book where id = ?" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [id]);
+            const resultado: Book[] = await executarComandoSQL(query, [id]);
+            if(resultado.length == 0){
+                console.error("Id não encontrado");
+            }
             console.log('Livro localizado com sucesso, ID: ', resultado);
             return new Promise<Book[]|undefined>((resolve)=>{  //lista ou null
                 resolve(resultado);

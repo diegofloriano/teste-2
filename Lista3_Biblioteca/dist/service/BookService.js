@@ -22,10 +22,10 @@ class BookService {
                 throw new Error("Informações incompletas");
             }
             const existe = yield this.filtrarLivro(undefined, isbn);
-            console.log(existe === null || existe === void 0 ? void 0 : existe.length);
-            const quantidadeCadastrada = (existe === null || existe === void 0 ? void 0 : existe.length) || 0;
-            if (quantidadeCadastrada > 0) {
-                throw new Error("ISBN já existe!");
+            console.log(existe === null || existe === void 0 ? void 0 : existe.length); //retorna o tamanho da lista
+            const quantidadeCadastrada = (existe === null || existe === void 0 ? void 0 : existe.length) || 0; //se retornar algum undefined(null) quantidadeCadastrada recebe 0
+            if (quantidadeCadastrada > 0) { //se tiver alguem na lista, ou seja, maior que 0
+                throw new Error("ISBN já existe!"); //erro
             }
             const novoLivro = yield this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
             console.log("Service - Insert", novoLivro);
@@ -58,7 +58,7 @@ class BookService {
         return __awaiter(this, void 0, void 0, function* () {
             if (id) {
                 const idNumber = parseInt(id);
-                const livros = yield this.bookRepository.filterBookId(idNumber);
+                const livros = yield this.bookRepository.filterBookId(idNumber); //você sempre recebe uma lista do mysql2 (Book[])
                 console.log("Service - Filtrar", livros);
                 return livros;
             }

@@ -64,8 +64,6 @@ export class BookService {
 
         return undefined;
 
-        
-
     }
     
     async listarTodosLivros(): Promise<Book[]> {
