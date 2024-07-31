@@ -13,8 +13,9 @@ export class BookService {
         }
 
         const existe = await this.filtrarLivro(undefined, isbn);
-        console.log(existe);
-        if(existe){
+        console.log(existe?.length);
+        const quantidadeCadastrada: number = existe?.length || 0;
+        if(quantidadeCadastrada > 0 ){
             throw new Error("ISBN já existe!");
         }
 
@@ -60,6 +61,7 @@ export class BookService {
             console.log("Service - Filtrar", livros);
             return livros;
         }
+
         return undefined;
 
         

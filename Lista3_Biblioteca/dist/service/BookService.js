@@ -22,8 +22,9 @@ class BookService {
                 throw new Error("Informações incompletas");
             }
             const existe = yield this.filtrarLivro(undefined, isbn);
-            console.log(existe);
-            if (existe) {
+            console.log(existe === null || existe === void 0 ? void 0 : existe.length);
+            const quantidadeCadastrada = (existe === null || existe === void 0 ? void 0 : existe.length) || 0;
+            if (quantidadeCadastrada > 0) {
                 throw new Error("ISBN já existe!");
             }
             const novoLivro = yield this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
