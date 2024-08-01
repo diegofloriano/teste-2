@@ -81,7 +81,7 @@ export class BookRepository{
 
         try {
             const resultado: Book[] = await executarComandoSQL(query, [id]);
-            if(resultado.length == 0){
+            if(resultado.length === 0){
                 console.error("Id não encontrado");
             }
             console.log('Livro localizado com sucesso, ID: ', resultado);

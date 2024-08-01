@@ -72,13 +72,13 @@ class BookRepository {
             }
         });
     }
-    deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher) {
+    deleteBook(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const query = "DELETE FROM library.book  where id = ?;";
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
                 console.log('Produto deletado com sucesso, ID: ', resultado);
-                const book = new Books_1.Book(id, title, author, publishedDate, isbn, pages, language, publisher);
+                const book = new Books_1.Book(id);
                 return new Promise((resolve) => {
                     resolve(book);
                 });
@@ -94,7 +94,7 @@ class BookRepository {
             const query = "SELECT * FROM library.book where id = ?";
             try {
                 const resultado = yield (0, mysql_1.executarComandoSQL)(query, [id]);
-                if (resultado.length == 0) {
+                if (resultado.length === 0) {
                     console.error("Id não encontrado");
                 }
                 console.log('Livro localizado com sucesso, ID: ', resultado);

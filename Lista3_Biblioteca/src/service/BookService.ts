@@ -29,7 +29,7 @@ export class BookService {
         if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
             throw new Error("Informações incompletas");
         }
-
+        await this.filtrarLivro(id, undefined);
 
         const livroAtualizado = await this.bookRepository.updateBook(id, title, author, publishedDate, isbn, pages, language, publisher);
         console.log("Service - Update", livroAtualizado);
@@ -41,7 +41,7 @@ export class BookService {
         if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
             throw new Error("Informações incompletas");
         }
-
+        await this.filtrarLivro(id, undefined);
 
         const livroDeletado = await this.bookRepository.deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher);
         console.log("Service - Delete", livroDeletado);
@@ -52,6 +52,9 @@ export class BookService {
         if(id){
             const idNumber : number = parseInt(id)
             const livros: Book[]|undefined = await this.bookRepository.filterBookId(idNumber);  //você sempre recebe uma lista do mysql2 (Book[])
+            if(livros?.length ===0){
+                throw new Error("Id não encontrado");
+            }
             console.log("Service - Filtrar", livros);
             return livros;
         }

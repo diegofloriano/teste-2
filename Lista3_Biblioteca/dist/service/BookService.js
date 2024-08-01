@@ -38,18 +38,19 @@ class BookService {
             if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
                 throw new Error("Informações incompletas");
             }
+            yield this.filtrarLivro(id, undefined);
             const livroAtualizado = yield this.bookRepository.updateBook(id, title, author, publishedDate, isbn, pages, language, publisher);
             console.log("Service - Update", livroAtualizado);
             return livroAtualizado;
         });
     }
-    deletarLivro(livroData) {
+    deletarLivro(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-            if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+            if (!id) {
                 throw new Error("Informações incompletas");
             }
-            const livroDeletado = yield this.bookRepository.deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher);
+            yield this.filtrarLivro(id, undefined);
+            const livroDeletado = yield this.bookRepository.deleteBook(id);
             console.log("Service - Delete", livroDeletado);
             return livroDeletado;
         });
@@ -59,6 +60,9 @@ class BookService {
             if (id) {
                 const idNumber = parseInt(id);
                 const livros = yield this.bookRepository.filterBookId(idNumber); //você sempre recebe uma lista do mysql2 (Book[])
+                if ((livros === null || livros === void 0 ? void 0 : livros.length) === 0) {
+                    throw new Error("Id não encontrado");
+                }
                 console.log("Service - Filtrar", livros);
                 return livros;
             }
