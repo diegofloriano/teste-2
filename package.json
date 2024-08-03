@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "mysql2": "^3.11.0"
+    "mysql2": "^3.11.0",
+    "swagger-ui-express": "^5.0.1",
+    "tsoa": "^6.4.0"
   }
 }
