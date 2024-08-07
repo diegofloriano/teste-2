@@ -9,7 +9,7 @@ export class UsuarioRepository{
 
     private async createTable() {
         const query = `
-        CREATE TABLE IF NOT EXISTS library.Book (
+        CREATE TABLE IF NOT EXISTS library.Usuario (
             id INT AUTO_INCREMENT PRIMARY KEY,
             title VARCHAR(255) NOT NULL,
             author VARCHAR(255) NOT NULL,
@@ -28,15 +28,15 @@ export class UsuarioRepository{
         }
     }
 
-    async insertBook(title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Book>{
-        const query = "INSERT INTO library.Book (title, author, publishedDate, isbn, pages, language, publisher) VALUES (?, ?, ?, ?, ?, ?, ?)" ;
+    async insertUsuario(title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Usuario>{
+        const query = "INSERT INTO library.Usuario (title, author, publishedDate, isbn, pages, language, publisher) VALUES (?, ?, ?, ?, ?, ?, ?)" ;
 
         try {
             const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher]);
             console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
-            const book = new Book(resultado.insertId, title, author, publishedDate, isbn, pages, language, publisher);
-            return new Promise<Book>((resolve)=>{
-                resolve(book);
+            const Usuario = new Usuario(resultado.insertId, title, author, publishedDate, isbn, pages, language, publisher);
+            return new Promise<Usuario>((resolve)=>{
+                resolve(Usuario);
             })
         } catch (err) {
             console.error('Erro ao inserir o livro:', err);
@@ -44,15 +44,15 @@ export class UsuarioRepository{
         }
     }
 
-    async updateBook( id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Book>{
-        const query = "UPDATE library.book set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;" ;
+    async updateUsuario( id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Usuario>{
+        const query = "UPDATE library.Usuario set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher, id]);
             console.log('Livro atualizado com sucesso, ID: ', resultado);
-            const book = new Book(id, title, author, publishedDate, isbn, pages, language, publisher);
-            return new Promise<Book>((resolve)=>{
-                resolve(book);
+            const Usuario = new Usuario(id, title, author, publishedDate, isbn, pages, language, publisher);
+            return new Promise<Usuario>((resolve)=>{
+                resolve(Usuario);
             })
         } catch (err:any) {
             console.error(`Erro ao atualizar o livro de ID ${id} gerando o erro: ${err}`);
@@ -60,15 +60,15 @@ export class UsuarioRepository{
         }
     }
 
-    async deleteBook(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Book>{
-        const query = "DELETE FROM library.book  where id = ?;" ;
+    async deleteUsuario(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Usuario>{
+        const query = "DELETE FROM library.Usuario  where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Produto deletado com sucesso, ID: ', resultado);
-            const book = new Book(id, title, author, publishedDate, isbn, pages, language, publisher);
-            return new Promise<Book>((resolve)=>{
-                resolve(book);
+            const Usuario = new Usuario(id, title, author, publishedDate, isbn, pages, language, publisher);
+            return new Promise<Usuario>((resolve)=>{
+                resolve(Usuario);
             })
         } catch (err:any) {
             console.error(`Falha ao deletar o livro de ID ${id} gerando o erro: ${err}`);
@@ -76,16 +76,16 @@ export class UsuarioRepository{
         }
     }
 
-    async filterBookId(id: number) :Promise<Book[]|undefined>{ //lista ou null
-        const query = "SELECT * FROM library.book where id = ?" ;
+    async filterUsuarioId(id: number) :Promise<Usuario[]|undefined>{ //lista ou null
+        const query = "SELECT * FROM library.Usuario where id = ?" ;
 
         try {
-            const resultado: Book[] = await executarComandoSQL(query, [id]);
+            const resultado: Usuario[] = await executarComandoSQL(query, [id]);
             if(resultado.length === 0){
                 console.error("Id não encontrado");
             }
             console.log('Livro localizado com sucesso, ID: ', resultado);
-            return new Promise<Book[]|undefined>((resolve)=>{  //lista ou null
+            return new Promise<Usuario[]|undefined>((resolve)=>{  //lista ou null
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -94,13 +94,13 @@ export class UsuarioRepository{
         }
     }
 
-    async filterBookIsbn(isbn: string) :Promise<Book[]|undefined>{ //lista ou null
-        const query = "SELECT * FROM library.book where isbn = ?" ;
+    async filterUsuarioIsbn(isbn: string) :Promise<Usuario[]|undefined>{ //lista ou null
+        const query = "SELECT * FROM library.Usuario where isbn = ?" ;
 
         try {
             const resultado = await executarComandoSQL(query, [isbn]);
             console.log('Livro localizado com sucesso, ISBN: ', resultado);
-            return new Promise<Book[]|undefined>((resolve)=>{  //lista ou null
+            return new Promise<Usuario[]|undefined>((resolve)=>{  //lista ou null
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -109,12 +109,12 @@ export class UsuarioRepository{
         }
     }
 
-    async filterAllBooks() :Promise<Book[]>{
-        const query = "SELECT * FROM library.book" ;
+    async filterAllUsuarios() :Promise<Usuario[]>{
+        const query = "SELECT * FROM library.Usuario" ;
 
         try {
             const resultado = await executarComandoSQL(query, []);
-            return new Promise<Book[]>((resolve)=>{
+            return new Promise<Usuario[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
