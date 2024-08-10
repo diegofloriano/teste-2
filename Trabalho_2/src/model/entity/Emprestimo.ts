@@ -1,19 +1,35 @@
+import { stringParaData, verificaFormatoData } from "../../util/DataUtil";
 export class Emprestimo{
     id: number;
-    livroid: string;
-    usuarioid: string;
+    livroId: string;
+    usuarioId: string;
     dataEmprestimo: Date;
-    dataDevolução: Date;
+    dataDevolucao: Date;
 
 
 
 
-    constructor(id?: number, livroid?:string, usuarioid?: string, dataEmprestimo?: Date, dataDevolução?:Date){
+    constructor(id?: number, livroId?:string, usuarioId?: string, dataEmprestimo?: string, dataDevolucao?:string){
+        this.validatesInformation(livroId, usuarioId, dataEmprestimo, dataDevolucao);
         this.id = id || 0;
-        this.livroid = livroid || '';
-        this.usuarioid = usuarioid || '';
-        this.dataEmprestimo = dataEmprestimo || Date;
-        this.dataDevolução = dataDevolução || Date;
+        this.livroId = livroId || '';
+        this.usuarioId = usuarioId || '';
+        this.dataEmprestimo = stringParaData(dataEmprestimo || '');
+        this.dataDevolucao = stringParaData(dataDevolucao || '');
     }
 
+    private validatesInformation(livroId:any, usuarioId:any, dataEmprestimo:any, dataDevolucao:any){
+        let error ='';
+        if (typeof livroId !== 'string' || typeof usuarioId !== 'number' || typeof dataEmprestimo !== 'string' || typeof dataDevolucao !== 'string') {
+            error += ("Informações incompletas ou incorretas. ");
+        }
+
+        if(!verificaFormatoData(dataEmprestimo)){
+            error += ("A data deve possuir o formato: dd/MM/yyyy");
+        }
+
+        if(error != ''){
+            throw new Error(error);
+        }
+    }
 }

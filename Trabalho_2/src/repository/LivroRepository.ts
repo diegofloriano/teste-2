@@ -11,13 +11,10 @@ export class LivroRepository{
         const query = `
         CREATE TABLE IF NOT EXISTS library.Livro (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
-            author VARCHAR(255) NOT NULL,
-            publishedDate VARCHAR(255) NOT NULL,
-            isbn VARCHAR(255) NOT NULL,
-            pages DECIMAL(10,2) NOT NULL,
-            language VARCHAR(255) NOT NULL,
-            publisher VARCHAR(255) NOT NULL
+            titulo VARCHAR(255) NOT NULL,
+            autor VARCHAR(255) NOT NULL,
+            categoriaId INT NOT NULL,
+           
         )`;
 
         try {
