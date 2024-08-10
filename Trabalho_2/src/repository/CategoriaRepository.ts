@@ -23,13 +23,13 @@ export class CategoriaRepository{
         }
     }
 
-    async insertCategoria(title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Categoria>{
-        const query = "INSERT INTO library.Categoria (title, author, publishedDate, isbn, pages, language, publisher) VALUES (?, ?, ?, ?, ?, ?, ?)" ;
+    async insertCategoria(nome?: string) :Promise<Categoria>{
+        const query = "INSERT INTO library.Categoria (nome) VALUES (?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher]);
+            const resultado = await executarComandoSQL(query, [nome]);
             console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
-            const Categoria = new Categoria(resultado.insertId, title);
+            const Categoria = new Categoria(resultado.insertId, nome);
             return new Promise<Categoria>((resolve)=>{
                 resolve(Categoria);
             })
@@ -39,13 +39,13 @@ export class CategoriaRepository{
         }
     }
 
-    async updateCategoria( id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Categoria>{
-        const query = "UPDATE library.Categoria set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;" ;
+    async updateCategoria( id?: number, nome?:string) :Promise<Categoria>{
+        const query = "UPDATE library.Categoria set nome = ? where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher, id]);
+            const resultado = await executarComandoSQL(query, [nome, id]);
             console.log('Livro atualizado com sucesso, ID: ', resultado);
-            const Categoria = new Categoria(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const Categoria = new Categoria(id, nome);
             return new Promise<Categoria>((resolve)=>{
                 resolve(Categoria);
             })
@@ -55,13 +55,13 @@ export class CategoriaRepository{
         }
     }
 
-    async deleteCategoria(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Categoria>{
+    async deleteCategoria(id?: number, nome?:string) :Promise<Categoria>{
         const query = "DELETE FROM library.Categoria  where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Produto deletado com sucesso, ID: ', resultado);
-            const Categoria = new Categoria(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const Categoria = new Categoria(id, nome);
             return new Promise<Categoria>((resolve)=>{
                 resolve(Categoria);
             })

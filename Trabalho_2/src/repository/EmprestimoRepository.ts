@@ -25,13 +25,13 @@ export class EmprestimoRepository{
         }
     }
 
-    async insertEmprestimo(title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Emprestimo>{
-        const query = "INSERT INTO library.Emprestimo (title, author, publishedDate, isbn, pages, language, publisher) VALUES (?, ?, ?, ?, ?, ?, ?)" ;
+    async insertEmprestimo(livroId?:number, usuarioId?: number, dataEmprestimo?: string, dataDevolucao?:string) :Promise<Emprestimo>{
+        const query = "INSERT INTO library.Emprestimo (livroId, usuarioId, dataEmprestimo, dataDevolucao) VALUES (?, ?, ?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher]);
+            const resultado = await executarComandoSQL(query, [livroId, usuarioId, dataEmprestimo, dataDevolucao]);
             console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
-            const Emprestimo = new Emprestimo(resultado.insertId, title, author, publishedDate, isbn, pages, language, publisher);
+            const Emprestimo = new Emprestimo(resultado.insertId, livroId, usuarioId, dataEmprestimo, dataDevolucao);
             return new Promise<Emprestimo>((resolve)=>{
                 resolve(Emprestimo);
             })
@@ -41,13 +41,13 @@ export class EmprestimoRepository{
         }
     }
 
-    async updateEmprestimo( id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Emprestimo>{
+    async updateEmprestimo( id?: number,livroId?:number, usuarioId?: number, dataEmprestimo?: string, dataDevolucao?:string) :Promise<Emprestimo>{
         const query = "UPDATE library.Emprestimo set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher, id]);
+            const resultado = await executarComandoSQL(query, [livroId, usuarioId, dataEmprestimo, dataDevolucao, id]);
             console.log('Livro atualizado com sucesso, ID: ', resultado);
-            const Emprestimo = new Emprestimo(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const Emprestimo = new Emprestimo(id, livroId, usuarioId, dataEmprestimo, dataDevolucao);
             return new Promise<Emprestimo>((resolve)=>{
                 resolve(Emprestimo);
             })
@@ -57,13 +57,13 @@ export class EmprestimoRepository{
         }
     }
 
-    async deleteEmprestimo(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Emprestimo>{
+    async deleteEmprestimo(id?: number,livroId?:number, usuarioId?: number, dataEmprestimo?: string, dataDevolucao?:string) :Promise<Emprestimo>{
         const query = "DELETE FROM library.Emprestimo  where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Produto deletado com sucesso, ID: ', resultado);
-            const Emprestimo = new Emprestimo(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const Emprestimo = new Emprestimo(id, livroId, usuarioId, dataEmprestimo, dataDevolucao);
             return new Promise<Emprestimo>((resolve)=>{
                 resolve(Emprestimo);
             })
