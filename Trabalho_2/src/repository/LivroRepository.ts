@@ -25,13 +25,13 @@ export class LivroRepository{
         }
     }
 
-    async insertLivro(title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Livro>{
-        const query = "INSERT INTO library.Livro (title, author, publishedDate, isbn, pages, language, publisher) VALUES (?, ?, ?, ?, ?, ?, ?)" ;
+    async insertLivro(titulo?:string, autor?: string, categoriaId?: number) :Promise<Livro>{
+        const query = "INSERT INTO library.Livro (titulo, autor, categoriaId) VALUES (?, ?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher]);
+            const resultado = await executarComandoSQL(query, [titulo, autor, categoriaId]);
             console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
-            const Livro = new Livro(resultado.insertId, title, author, publishedDate, isbn, pages, language, publisher);
+            const Livro = new Livro(resultado.insertId, titulo, autor, categoriaId);
             return new Promise<Livro>((resolve)=>{
                 resolve(Livro);
             })
@@ -41,13 +41,13 @@ export class LivroRepository{
         }
     }
 
-    async updateLivro( id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Livro>{
-        const query = "UPDATE library.Livro set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;" ;
+    async updateLivro( id?: number,titulo?:string, autor?: string, categoriaId?: number) :Promise<Livro>{
+        const query = "UPDATE library.Livro set titulo = ?, autor = ?, categoriaId = ? where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher, id]);
+            const resultado = await executarComandoSQL(query, [titulo, autor, categoriaId, id]);
             console.log('Livro atualizado com sucesso, ID: ', resultado);
-            const Livro = new Livro(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const Livro = new Livro(id, titulo, autor, categoriaId);
             return new Promise<Livro>((resolve)=>{
                 resolve(Livro);
             })
@@ -57,13 +57,13 @@ export class LivroRepository{
         }
     }
 
-    async deleteLivro(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Livro>{
+    async deleteLivro(id?: number, titulo?:string, autor?: string, categoriaId?: number) :Promise<Livro>{
         const query = "DELETE FROM library.Livro  where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Produto deletado com sucesso, ID: ', resultado);
-            const Livro = new Livro(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const Livro = new Livro(id, titulo, autor, categoriaId);
             return new Promise<Livro>((resolve)=>{
                 resolve(Livro);
             })
