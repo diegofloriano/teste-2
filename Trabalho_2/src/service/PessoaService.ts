@@ -1,77 +1,77 @@
 import { parseJsonSourceFileConfigFileContent } from "typescript";
-import { Book } from "../model/Books";
-import { BookRepository } from "../repository/PessoaRepository";
+import { Pessoa } from "../model/entity/Pessoa";
+import { PessoaRepository } from "../repository/PessoaRepository";
 
-export class BookService {
+export class PessoaService {
 
-    bookRepository: BookRepository = new BookRepository();
+    PessoaRepository: PessoaRepository = new PessoaRepository();
 
-    async cadastrarLivro(livroData: any): Promise<Book> {
-        const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async cadastrarPessoa(pessoaData: any): Promise<Pessoa> {
+        const { nome, email } = pessoaData;
+        if (!nome || !email) {
             throw new Error("Informações incompletas");
         }
 
-        const existe = await this.filtrarLivro(undefined, isbn);
+        const existe = await this.filtrarPessoa(undefined, isbn);
         console.log(existe?.length); //retorna o tamanho da lista
         const quantidadeCadastrada: number = existe?.length || 0; //se retornar algum undefined(null) quantidadeCadastrada recebe 0
         if(quantidadeCadastrada > 0 ){ //se tiver alguem na lista, ou seja, maior que 0
             throw new Error("ISBN já existe!"); //erro
         }
 
-        const novoLivro = await this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Insert", novoLivro);
-        return novoLivro;
+        const novoPessoa = await this.PessoaRepository.insertPessoa(nome, email);
+        console.log("Service - Insert", novoPessoa);
+        return novoPessoa;
     }
 
-    async atualizarLivro(livroData: any): Promise<Book> {
-        const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async atualizarPessoa(pessoaData: any): Promise<Pessoa> {
+        const { id, nome, email } = pessoaData;
+        if (!id || !nome || !email) {
             throw new Error("Informações incompletas");
         }
-        await this.filtrarLivro(id, undefined);
+        await this.filtrarPessoa(id, undefined);
 
-        const livroAtualizado = await this.bookRepository.updateBook(id, title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Update", livroAtualizado);
-        return livroAtualizado;
+        const PessoaAtualizado = await this.PessoaRepository.updatePessoa(id, nome, email);
+        console.log("Service - Update", PessoaAtualizado);
+        return PessoaAtualizado;
     }
 
-    async deletarLivro(livroData: any): Promise<Book> {
-        const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async deletarPessoa(pessoaData: any): Promise<Pessoa> {
+        const { id, nome, email } = pessoaData;
+        if (!id || !nome || !email) {
             throw new Error("Informações incompletas");
         }
-        await this.filtrarLivro(id, undefined);
+        await this.filtrarPessoa(id, undefined);
 
-        const livroDeletado = await this.bookRepository.deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Delete", livroDeletado);
-        return livroDeletado;
+        const PessoaDeletado = await this.PessoaRepository.deletePessoa(id, nome, email);
+        console.log("Service - Delete", PessoaDeletado);
+        return PessoaDeletado;
     }
 
-    async filtrarLivro(id: any, isbn: any): Promise<Book[]|undefined> {
+    async filtrarPessoa(id: any, isbn: any): Promise<Pessoa[]|undefined> {
         if(id){
             const idNumber : number = parseInt(id)
-            const livros: Book[]|undefined = await this.bookRepository.filterBookId(idNumber);  //você sempre recebe uma lista do mysql2 (Book[])
-            if(livros?.length ===0){
+            const pessoas: Pessoa[]|undefined = await this.PessoaRepository.filterPessoaId(idNumber);  //você sempre recebe uma lista do mysql2 (Pessoa[])
+            if(pessoas?.length ===0){
                 throw new Error("Id não encontrado");
             }
-            console.log("Service - Filtrar", livros);
-            return livros;
+            console.log("Service - Filtrar", pessoas);
+            return pessoas;
         }
         
         else if(isbn){
-            const livros: Book[]|undefined = await this.bookRepository.filterBookIsbn(isbn);
-            console.log("Service - Filtrar", livros);
-            return livros;
+            const pessoas: Pessoa[]|undefined = await this.PessoaRepository.filterPessoaIsbn(isbn);
+            console.log("Service - Filtrar", pessoas);
+            return pessoas;
         }
 
         return undefined;
 
     }
     
-    async listarTodosLivros(): Promise<Book[]> {
-        const livros = await this.bookRepository.filterAllBooks();
-        console.log("Service - Listar Todos", livros);
-        return livros;
+    async listarTodosPessoas(): Promise<Pessoa[]> {
+        const pessoas = await this.PessoaRepository.filterAllPessoas();
+        console.log("Service - Listar Todos", pessoas);
+        return pessoas;
     }
 }

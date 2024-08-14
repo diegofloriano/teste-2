@@ -1,14 +1,14 @@
 import { parseJsonSourceFileConfigFileContent } from "typescript";
-import { Book } from "../model/Books";
-import { BookRepository } from "../repository/PessoaRepository";
+import { Usuario } from "../model/entity/Usuario";
+import { UsuarioRepository } from "../repository/UsuarioRepository";
 
-export class BookService {
+export class UsuarioService {
 
-    bookRepository: BookRepository = new BookRepository();
+    UsuarioRepository: UsuarioRepository = new UsuarioRepository();
 
-    async cadastrarLivro(livroData: any): Promise<Book> {
-        const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async cadastrarLivro(usuarioData: any): Promise<Usuario> {
+        const { nome, email, senha } = usuarioData;
+        if (!nome || !email || !senha) {
             throw new Error("Informações incompletas");
         }
 
@@ -19,39 +19,39 @@ export class BookService {
             throw new Error("ISBN já existe!"); //erro
         }
 
-        const novoLivro = await this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Insert", novoLivro);
-        return novoLivro;
+        const novoUsuario = await this.UsuarioRepository.insertUsuario(nome, email, senha);
+        console.log("Service - Insert", novoUsuario);
+        return novoUsuario;
     }
 
-    async atualizarLivro(livroData: any): Promise<Book> {
-        const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async atualizarLivro(usuarioData: any): Promise<Usuario> {
+        const { id, nome, email, senha } = usuarioData;
+        if (!id || !nome || !email || !senha) {
             throw new Error("Informações incompletas");
         }
         await this.filtrarLivro(id, undefined);
 
-        const livroAtualizado = await this.bookRepository.updateBook(id, title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Update", livroAtualizado);
-        return livroAtualizado;
+        const usuarioAtualizado = await this.UsuarioRepository.updateUsuario(id, nome, email, senha);
+        console.log("Service - Update", usuarioAtualizado);
+        return usuarioAtualizado;
     }
 
-    async deletarLivro(livroData: any): Promise<Book> {
-        const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async deletarLivro(usuarioData: any): Promise<Usuario> {
+        const { id, nome, email, senha } = usuarioData;
+        if (!id || !nome || !email || !senha) {
             throw new Error("Informações incompletas");
         }
         await this.filtrarLivro(id, undefined);
 
-        const livroDeletado = await this.bookRepository.deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Delete", livroDeletado);
-        return livroDeletado;
+        const usuarioDeletado = await this.UsuarioRepository.deleteUsuario(id, nome, email, senha);
+        console.log("Service - Delete", usuarioDeletado);
+        return usuarioDeletado;
     }
 
-    async filtrarLivro(id: any, isbn: any): Promise<Book[]|undefined> {
+    async filtrarLivro(id: any, isbn: any): Promise<Usuario[]|undefined> {
         if(id){
             const idNumber : number = parseInt(id)
-            const livros: Book[]|undefined = await this.bookRepository.filterBookId(idNumber);  //você sempre recebe uma lista do mysql2 (Book[])
+            const livros: Usuario[]|undefined = await this.UsuarioRepository.filterUsuarioId(idNumber);  //você sempre recebe uma lista do mysql2 (Usuario[])
             if(livros?.length ===0){
                 throw new Error("Id não encontrado");
             }
@@ -60,7 +60,7 @@ export class BookService {
         }
         
         else if(isbn){
-            const livros: Book[]|undefined = await this.bookRepository.filterBookIsbn(isbn);
+            const livros: Usuario[]|undefined = await this.UsuarioRepository.filterUsuarioIsbn(isbn);
             console.log("Service - Filtrar", livros);
             return livros;
         }
@@ -69,8 +69,8 @@ export class BookService {
 
     }
     
-    async listarTodosLivros(): Promise<Book[]> {
-        const livros = await this.bookRepository.filterAllBooks();
+    async listarTodosLivros(): Promise<Usuario[]> {
+        const livros = await this.UsuarioRepository.filterAllUsuarios();
         console.log("Service - Listar Todos", livros);
         return livros;
     }

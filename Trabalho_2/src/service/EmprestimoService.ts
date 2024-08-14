@@ -1,77 +1,77 @@
 import { parseJsonSourceFileConfigFileContent } from "typescript";
-import { Book } from "../model/Books";
-import { BookRepository } from "../repository/PessoaRepository";
+import { Emprestimo } from "../model/entity/Emprestimo";
+import { EmprestimoRepository } from "../repository/EmprestimoRepository";
 
-export class BookService {
+export class EmprestimoService {
 
-    bookRepository: BookRepository = new BookRepository();
+    EmprestimoRepository: EmprestimoRepository = new EmprestimoRepository();
 
-    async cadastrarLivro(livroData: any): Promise<Book> {
-        const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async cadastraremprestimo(emprestimoData: any): Promise<Emprestimo> {
+        const { emprestimoId, usuarioId, dataEmprestimo, dataDevolucao } = emprestimoData;
+        if (!emprestimoId || !usuarioId || !dataEmprestimo || !dataDevolucao) {
             throw new Error("Informações incompletas");
         }
 
-        const existe = await this.filtrarLivro(undefined, isbn);
+        const existe = await this.filtraremprestimo(undefined, isbn);
         console.log(existe?.length); //retorna o tamanho da lista
         const quantidadeCadastrada: number = existe?.length || 0; //se retornar algum undefined(null) quantidadeCadastrada recebe 0
         if(quantidadeCadastrada > 0 ){ //se tiver alguem na lista, ou seja, maior que 0
             throw new Error("ISBN já existe!"); //erro
         }
 
-        const novoLivro = await this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Insert", novoLivro);
-        return novoLivro;
+        const novoemprestimo = await this.EmprestimoRepository.insertEmprestimo(emprestimoId, usuarioId, dataEmprestimo, dataDevolucao);
+        console.log("Service - Insert", novoemprestimo);
+        return novoemprestimo;
     }
 
-    async atualizarLivro(livroData: any): Promise<Book> {
-        const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async atualizaremprestimo(emprestimoData: any): Promise<Emprestimo> {
+        const { id, emprestimoId, usuarioId, dataEmprestimo, dataDevolucao } = emprestimoData;
+        if (!id || !emprestimoId || !usuarioId || !dataEmprestimo || !dataDevolucao) {
             throw new Error("Informações incompletas");
         }
-        await this.filtrarLivro(id, undefined);
+        await this.filtraremprestimo(id, undefined);
 
-        const livroAtualizado = await this.bookRepository.updateBook(id, title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Update", livroAtualizado);
-        return livroAtualizado;
+        const emprestimoAtualizado = await this.EmprestimoRepository.updateEmprestimo(id, emprestimoId, usuarioId, dataEmprestimo, dataDevolucao);
+        console.log("Service - Update", emprestimoAtualizado);
+        return emprestimoAtualizado;
     }
 
-    async deletarLivro(livroData: any): Promise<Book> {
-        const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async deletaremprestimo(emprestimoData: any): Promise<Emprestimo> {
+        const { id, emprestimoId, usuarioId, dataEmprestimo, dataDevolucao } = emprestimoData;
+        if (!id || !emprestimoId || !usuarioId || !dataEmprestimo || !dataDevolucao) {
             throw new Error("Informações incompletas");
         }
-        await this.filtrarLivro(id, undefined);
+        await this.filtraremprestimo(id, undefined);
 
-        const livroDeletado = await this.bookRepository.deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher);
-        console.log("Service - Delete", livroDeletado);
-        return livroDeletado;
+        const emprestimoDeletado = await this.EmprestimoRepository.deleteEmprestimo(id, emprestimoId, usuarioId, dataEmprestimo, dataDevolucao);
+        console.log("Service - Delete", emprestimoDeletado);
+        return emprestimoDeletado;
     }
 
-    async filtrarLivro(id: any, isbn: any): Promise<Book[]|undefined> {
+    async filtraremprestimo(id: any, isbn: any): Promise<Emprestimo[]|undefined> {
         if(id){
             const idNumber : number = parseInt(id)
-            const livros: Book[]|undefined = await this.bookRepository.filterBookId(idNumber);  //você sempre recebe uma lista do mysql2 (Book[])
-            if(livros?.length ===0){
+            const emprestimos: Emprestimo[]|undefined = await this.EmprestimoRepository.filterEmprestimoId(idNumber);  //você sempre recebe uma lista do mysql2 (Emprestimo[])
+            if(emprestimos?.length ===0){
                 throw new Error("Id não encontrado");
             }
-            console.log("Service - Filtrar", livros);
-            return livros;
+            console.log("Service - Filtrar", emprestimos);
+            return emprestimos;
         }
         
         else if(isbn){
-            const livros: Book[]|undefined = await this.bookRepository.filterBookIsbn(isbn);
-            console.log("Service - Filtrar", livros);
-            return livros;
+            const emprestimos: Emprestimo[]|undefined = await this.EmprestimoRepository.filterEmprestimoIsbn(isbn);
+            console.log("Service - Filtrar", emprestimos);
+            return emprestimos;
         }
 
         return undefined;
 
     }
     
-    async listarTodosLivros(): Promise<Book[]> {
-        const livros = await this.bookRepository.filterAllBooks();
-        console.log("Service - Listar Todos", livros);
-        return livros;
+    async listarTodosemprestimos(): Promise<Emprestimo[]> {
+        const emprestimos = await this.EmprestimoRepository.filterAllEmprestimos();
+        console.log("Service - Listar Todos", emprestimos);
+        return emprestimos;
     }
 }

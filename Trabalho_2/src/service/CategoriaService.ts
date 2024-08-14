@@ -1,14 +1,14 @@
 import { parseJsonSourceFileConfigFileContent } from "typescript";
-import { Book } from "../model/Books";
-import { BookRepository } from "../repository/PessoaRepository";
+import { Categoria } from "../model/entity/Categoria";
+import { CategoriaRepository } from "../repository/CategoriaRepository";
 
-export class BookService {
+export class CategoriaService {
 
-    bookRepository: BookRepository = new BookRepository();
+    CategoriaRepository: CategoriaRepository = new CategoriaRepository();
 
-    async cadastrarLivro(livroData: any): Promise<Book> {
-        const { title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async cadastrarLivro(livroData: any): Promise<Categoria> {
+        const { nome } = livroData;
+        if (!nome) {
             throw new Error("Informações incompletas");
         }
 
@@ -19,39 +19,39 @@ export class BookService {
             throw new Error("ISBN já existe!"); //erro
         }
 
-        const novoLivro = await this.bookRepository.insertBook(title, author, publishedDate, isbn, pages, language, publisher);
+        const novoLivro = await this.CategoriaRepository.insertCategoria(nome);
         console.log("Service - Insert", novoLivro);
         return novoLivro;
     }
 
-    async atualizarLivro(livroData: any): Promise<Book> {
-        const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async atualizarLivro(livroData: any): Promise<Categoria> {
+        const { id, nome } = livroData;
+        if (!id || !nome) {
             throw new Error("Informações incompletas");
         }
         await this.filtrarLivro(id, undefined);
 
-        const livroAtualizado = await this.bookRepository.updateBook(id, title, author, publishedDate, isbn, pages, language, publisher);
+        const livroAtualizado = await this.CategoriaRepository.updateCategoria(id, nome);
         console.log("Service - Update", livroAtualizado);
         return livroAtualizado;
     }
 
-    async deletarLivro(livroData: any): Promise<Book> {
-        const { id, title, author, publishedDate, isbn, pages, language, publisher } = livroData;
-        if (!id || !title || !author || !publishedDate || !isbn || !pages || !language || !publisher) {
+    async deletarLivro(livroData: any): Promise<Categoria> {
+        const { id, nome } = livroData;
+        if (!id || !nome) {
             throw new Error("Informações incompletas");
         }
         await this.filtrarLivro(id, undefined);
 
-        const livroDeletado = await this.bookRepository.deleteBook(id, title, author, publishedDate, isbn, pages, language, publisher);
+        const livroDeletado = await this.CategoriaRepository.deleteCategoria(id, nome);
         console.log("Service - Delete", livroDeletado);
         return livroDeletado;
     }
 
-    async filtrarLivro(id: any, isbn: any): Promise<Book[]|undefined> {
+    async filtrarLivro(id: any, isbn: any): Promise<Categoria[]|undefined> {
         if(id){
             const idNumber : number = parseInt(id)
-            const livros: Book[]|undefined = await this.bookRepository.filterBookId(idNumber);  //você sempre recebe uma lista do mysql2 (Book[])
+            const livros: Categoria[]|undefined = await this.CategoriaRepository.filterCategoriaId(idNumber);  //você sempre recebe uma lista do mysql2 (Categoria[])
             if(livros?.length ===0){
                 throw new Error("Id não encontrado");
             }
@@ -60,7 +60,7 @@ export class BookService {
         }
         
         else if(isbn){
-            const livros: Book[]|undefined = await this.bookRepository.filterBookIsbn(isbn);
+            const livros: Categoria[]|undefined = await this.CategoriaRepository.filterCategoriaIsbn(isbn);
             console.log("Service - Filtrar", livros);
             return livros;
         }
@@ -69,8 +69,8 @@ export class BookService {
 
     }
     
-    async listarTodosLivros(): Promise<Book[]> {
-        const livros = await this.bookRepository.filterAllBooks();
+    async listarTodosLivros(): Promise<Categoria[]> {
+        const livros = await this.CategoriaRepository.filterAllCategorias();
         console.log("Service - Listar Todos", livros);
         return livros;
     }
