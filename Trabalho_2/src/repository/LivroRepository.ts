@@ -14,6 +14,7 @@ export class LivroRepository{
             titulo VARCHAR(255) NOT NULL,
             autor VARCHAR(255) NOT NULL,
             categoriaId INT NOT NULL,
+            FOREING KEY (categoriaId) REFERENCES Categoria(categoriaId)
            
         )`;
 
