@@ -1,4 +1,4 @@
-export class Livro{
+export class LivroDto{
     id: number;
     titulo: string;
     autor: string;

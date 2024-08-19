@@ -1,27 +1,95 @@
-import { Request, Response } from "express";
-import { ProductService } from "../service/ProductService";
-import { Controller, Route, Tags, Body, Res, Post, TsoaResponse } from "tsoa";
+import { LivroService } from "../service/LivroService";
+import { Body, Controller, Delete, Get, Path, Post, Put, Query, Res, Route, Tags, TsoaResponse } from "tsoa";
+import { LivroRequestDto } from "../model/dto/LivroRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
-import { ProductRequestDto } from "../model/dto/ProductRequestDto";
+import { LivroDto } from "../model/dto/LivroDto";
+import { Livro } from "../model/entity/LivroEntity";
 
-@Route("product")
-@Tags("Product")
-export class ProductController extends Controller{
-    productService = new ProductService();
+@Route("livro")
+@Tags("livro")
+export class LivroController extends Controller {
+    livroService = new LivroService();
 
     @Post()
-    async cadastrarProduto (
-    @Body () dto: ProductRequestDto,
-    @Res () fail: TsoaResponse<400, BasicResponseDto >,
-    @Res () success: TsoaResponse<201, BasicResponseDto>
-    ): Promise < | void > {
+    async cadastrarLivro(
+        @Body() dto: LivroRequestDto,
+        @Res() fail: TsoaResponse<400, BasicResponseDto>,
+        @Res() success: TsoaResponse<201, BasicResponseDto>
+    ): Promise<void> {
         try {
-            const product = await this . productService.cadastrarProduto (dto) ;
-            return success(201 , new BasicResponseDto("Produto criado com sucesso !", product)) ;
-        }catch (error: any ) {
-            return fail(400, new BasicResponseDto(error.message, undefined)) ;
+            const livro = await this.livroService.cadastrarLivro(dto);
+            return success(201, new BasicResponseDto("Livro criado com sucesso!", livro));
+        } catch (error: any) {
+            return fail(400, new BasicResponseDto(error.message, undefined));
         }
-     }
-    
+    }
+
+    @Put()
+    async atualizarLivro(
+        @Body() dto: LivroDto,
+        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
+        @Res() success: TsoaResponse<200, BasicResponseDto>
+    ): Promise<void> {
+        try {
+            const livro = await this.livroService.atualizarLivro(dto);
+            return success(200, new BasicResponseDto("Livro atualizado com sucesso!", livro));
+        } catch (error: any) {
+            return notFound(400, new BasicResponseDto(error.message, undefined));
+        }
+    }
+
+    @Delete()
+    async deletarLivro(
+        @Body() dto: LivroDto,
+        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
+        @Res() success: TsoaResponse<200, BasicResponseDto>
+    ): Promise<void> {
+        try {
+            const livro = await this.livroService.deletarLivro(dto);
+            return success(200, new BasicResponseDto("Livro deletado com sucesso!", livro));
+        } catch (error: any) {
+            return notFound(400, new BasicResponseDto(error.message, undefined));
+        }
+    }
+
+    @Get("id/{id}")
+    async filtrarLivroPorId(
+        @Path() id: number,
+        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
+        @Res() success: TsoaResponse<200, BasicResponseDto>
+    ): Promise<void> {
+        try {
+            const livro = await this.livroService.filtrarLivroById(id);
+            return success(200, new BasicResponseDto("Livro encontrado!", livro));
+        } catch (error: any) {
+            return notFound(400, new BasicResponseDto(error.message, undefined));
+        }
+    }
+
+    @Get()
+    async filtrarLivroPorNome(
+        @Query() name: string,
+        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
+        @Res() success: TsoaResponse<200, BasicResponseDto>
+    ): Promise<void> {
+        try {
+            const livros: livroEntity[] = await this.livroService.filtrarLivroByName(name);
+            return success(200, new BasicResponseDto("Livro encontrado!", livros));
+        } catch (error: any) {
+            return notFound(400, new BasicResponseDto(error.message, undefined));
+        }
+    }
+
+    @Get("all")
+    async listarTodosLivro(
+        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
+        @Res() success: TsoaResponse<200, BasicResponseDto>
+    ): Promise<void> {
+        try {
+            const livros: livroEntity[] = await this.livroService.listarTodosLivros();
+            return success(200, new BasicResponseDto("Livros listados com sucesso!", livros));
+        } catch (error: any) {
+            return notFound(400, new BasicResponseDto(error.message, undefined));
+        }
+    }
 }
-    

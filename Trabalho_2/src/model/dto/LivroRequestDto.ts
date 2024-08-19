@@ -1,5 +1,5 @@
 
-export class ProductRequestDto {
+export class LivroRequestDto {
     name: string;
     price: number;
     expirationDate: string;

@@ -1,5 +1,5 @@
 import { parseJsonSourceFileConfigFileContent } from "typescript";
-import { Livro } from "../model/entity/Livro";
+import { Livro } from "../model/entity/LivroEntity";
 import { LivroRepository } from "../repository/LivroRepository";
 
 export class LivroService {
