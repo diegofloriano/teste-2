@@ -6,19 +6,19 @@ export class PessoaService{
     pessoaRepository: PessoaRepository = new PessoaRepository();
 
     async cadastrarPessoa(pessoaData: any): Promise<PessoaEntity> {
-        const { idPessoa, senha} = pessoaData;
+        const { nome, email} = pessoaData;
         
-        const pessoa = new PessoaEntity(idPessoa, senha)
+        const pessoa = new PessoaEntity(nome, email)
 
-        const novopessoa =  await this.pessoaRepository.insertPessoa(pessoa);
-        console.log("Service - Insert ", novopessoa);
-        return novopessoa;
+        const novaPessoa =  await this.pessoaRepository.insertPessoa(pessoa);
+        console.log("Service - Insert ", novaPessoa);
+        return novaPessoa;
     }
 
     async atualizarPessoa(pessoaData: any): Promise<PessoaEntity> {
-        const { id, idPessoa, senha } = pessoaData;
+        const { id, nome, email } = pessoaData;
 
-        const pessoa = new PessoaEntity(id, idPessoa, senha)
+        const pessoa = new PessoaEntity(id, nome, email)
 
         await this.pessoaRepository.updatePessoa(pessoa);
         console.log("Service - Update ", pessoa);
@@ -26,9 +26,9 @@ export class PessoaService{
     }
 
     async deletarPessoa(pessoaData: any): Promise<PessoaEntity> {
-        const { id, idPessoa, senha } = pessoaData;
+        const { id, nome, email } = pessoaData;
 
-        const pessoa = new PessoaEntity(id, idPessoa, senha)
+        const pessoa = new PessoaEntity(id, nome, email)
 
         await this.pessoaRepository.deletePessoa(pessoa);
         console.log("Service - Delete ", pessoa);

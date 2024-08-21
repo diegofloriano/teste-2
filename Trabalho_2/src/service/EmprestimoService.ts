@@ -6,19 +6,19 @@ export class EmprestimoService{
     emprestimoRepository: EmprestimoRepository = new EmprestimoRepository();
 
     async cadastrarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
-        const { name, price, expirationDate } = emprestimoData;
+        const { livroId, usuarioId, dataEmprestimo, dataDevolução } = emprestimoData;
         
-        const emprestimo = new EmprestimoEntity(undefined, name, price, expirationDate)
+        const emprestimo = new EmprestimoEntity(undefined, livroId, usuarioId, dataEmprestimo, dataDevolução)
 
-        const novoemprestimo =  await this.emprestimoRepository.insertEmprestimo(emprestimo);
-        console.log("Service - Insert ", novoemprestimo);
-        return novoemprestimo;
+        const novoEmprestimo =  await this.emprestimoRepository.insertEmprestimo(emprestimo);
+        console.log("Service - Insert ", novoEmprestimo);
+        return novoEmprestimo;
     }
 
     async atualizarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
-        const { id, name, price, expirationDate } = emprestimoData;
+        const { id, livroId, usuarioId, dataEmprestimo, dataDevolução } = emprestimoData;
 
-        const emprestimo = new EmprestimoEntity(id, name, price, expirationDate)
+        const emprestimo = new EmprestimoEntity(id, livroId, usuarioId, dataEmprestimo, dataDevolução)
 
         await this.emprestimoRepository.updateEmprestimo(emprestimo);
         console.log("Service - Update ", emprestimo);
@@ -26,9 +26,9 @@ export class EmprestimoService{
     }
 
     async deletarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
-        const { id, name, price, expirationDate } = emprestimoData;
+        const { id, livroId, usuarioId, dataEmprestimo, dataDevolução } = emprestimoData;
 
-        const emprestimo = new EmprestimoEntity(id, name, price, expirationDate)
+        const emprestimo = new EmprestimoEntity(id, livroId, usuarioId, dataEmprestimo, dataDevolução)
 
         await this.emprestimoRepository.deleteEmprestimo(emprestimo);
         console.log("Service - Delete ", emprestimo);

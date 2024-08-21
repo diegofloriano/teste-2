@@ -6,19 +6,19 @@ export class LivroService{
     livroRepository: LivroRepository = new LivroRepository();
 
     async cadastrarLivro(livroData: any): Promise<LivroEntity> {
-        const { idPessoa, senha} = livroData;
+        const { titulo, autor, categoriaId} = livroData;
         
-        const livro = new LivroEntity(idPessoa, senha)
+        const livro = new LivroEntity(titulo, autor, categoriaId)
 
-        const novolivro =  await this.livroRepository.insertLivro(livro);
-        console.log("Service - Insert ", novolivro);
-        return novolivro;
+        const novoLivro =  await this.livroRepository.insertLivro(livro);
+        console.log("Service - Insert ", novoLivro);
+        return novoLivro;
     }
 
     async atualizarLivro(livroData: any): Promise<LivroEntity> {
-        const { id, idPessoa, senha } = livroData;
+        const { id, titulo, autor, categoriaId } = livroData;
 
-        const livro = new LivroEntity(id, idPessoa, senha)
+        const livro = new LivroEntity(id, titulo, autor, categoriaId)
 
         await this.livroRepository.updateLivro(livro);
         console.log("Service - Update ", livro);
@@ -26,9 +26,9 @@ export class LivroService{
     }
 
     async deletarLivro(livroData: any): Promise<LivroEntity> {
-        const { id, idPessoa, senha } = livroData;
+        const { id, titulo, autor, categoriaId } = livroData;
 
-        const livro = new LivroEntity(id, idPessoa, senha)
+        const livro = new LivroEntity(id, titulo, autor, categoriaId)
 
         await this.livroRepository.deleteLivro(livro);
         console.log("Service - Delete ", livro);

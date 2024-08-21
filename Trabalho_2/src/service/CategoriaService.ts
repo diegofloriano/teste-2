@@ -6,19 +6,19 @@ export class CategoriaService{
     categoriaRepository: CategoriaRepository = new CategoriaRepository();
 
     async cadastrarCategoria(categoriaData: any): Promise<CategoriaEntity> {
-        const { idPessoa, senha} = categoriaData;
+        const { nome } = categoriaData;
         
-        const categoria = new CategoriaEntity(idPessoa, senha)
+        const categoria = new CategoriaEntity(nome)
 
-        const novocategoria =  await this.categoriaRepository.insertCategoria(categoria);
-        console.log("Service - Insert ", novocategoria);
-        return novocategoria;
+        const novaCategoria =  await this.categoriaRepository.insertCategoria(categoria);
+        console.log("Service - Insert ", novaCategoria);
+        return novaCategoria;
     }
 
     async atualizarCategoria(categoriaData: any): Promise<CategoriaEntity> {
-        const { id, idPessoa, senha } = categoriaData;
+        const { id, nome } = categoriaData;
 
-        const categoria = new CategoriaEntity(id, idPessoa, senha)
+        const categoria = new CategoriaEntity(id, nome)
 
         await this.categoriaRepository.updateCategoria(categoria);
         console.log("Service - Update ", categoria);
@@ -26,9 +26,9 @@ export class CategoriaService{
     }
 
     async deletarCategoria(categoriaData: any): Promise<CategoriaEntity> {
-        const { id, idPessoa, senha } = categoriaData;
+        const { id, nome } = categoriaData;
 
-        const categoria = new CategoriaEntity(id, idPessoa, senha)
+        const categoria = new CategoriaEntity(id, nome)
 
         await this.categoriaRepository.deleteCategoria(categoria);
         console.log("Service - Delete ", categoria);
