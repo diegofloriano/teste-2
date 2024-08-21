@@ -13,13 +13,19 @@ export class UsuarioService{
         
         const usuario = new UsuarioEntity(undefined, senha, idPessoa)
 
+        const existe = await this.filtrarPessoaById(idPessoa);
+       
+        if(!existe ){ 
+            throw new Error("Pessoa não existe!");  
+        }
         const novoUsuario =  await this.usuarioRepository.insertUsuario(usuario);
         console.log("Service - Insert ", novoUsuario);
         return novoUsuario;
+        
     }
 
     async atualizarUsuario(usuarioData: any): Promise<UsuarioEntity> {
-        const {  senha,idPessoa } = usuarioData;
+        const { senha, idPessoa } = usuarioData;
 
         const usuario = new UsuarioEntity(undefined, senha, idPessoa)
 
@@ -54,12 +60,12 @@ export class UsuarioService{
         return usuarios;
     }
 
-    async filtrarPessoaById(usuarioData: any): Promise<PessoaEntity> {
-        const idNumber = parseInt(usuarioData, 10);
+    async filtrarPessoaById(CategoriaData: any): Promise<PessoaEntity> {
+        const idNumber = parseInt(CategoriaData, 10);
 
-        const pessoa =  await this.pessoaRepository.filterPessoaById(idNumber);
-        console.log("Service - Filtrar", pessoa);
-        return pessoa;
+        const Pessoa =  await this.pessoaRepository.filterPessoaById(idNumber);
+        console.log("Service - Filtrar", Pessoa);
+        return Pessoa;
     }
 
     async listarTodosUsuarios(): Promise<UsuarioEntity[]> {

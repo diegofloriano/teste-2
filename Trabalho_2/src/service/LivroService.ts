@@ -1,15 +1,24 @@
 import { LivroEntity } from "../model/entity/LivroEntity";
 import { LivroRepository } from "../repository/LivroRepository";
+import { CategoriaRepository } from "../repository/CategoriaRepository";
+import { CategoriaEntity } from "../model/entity/CategoriaEntity";
 
 export class LivroService{
-
+    categoriaRepository: CategoriaRepository = new CategoriaRepository();
     livroRepository: LivroRepository = new LivroRepository();
 
     async cadastrarLivro(livroData: any): Promise<LivroEntity> {
         const { titulo, autor, categoriaId} = livroData;
         
         const livro = new LivroEntity(undefined, titulo, autor, categoriaId)
+        
+        const existe = await this.filtrarCategoriaById(categoriaId);
+       
+        if(!existe ){ 
+            throw new Error("Categoria não existe!"); 
+        }
 
+        
         const novoLivro =  await this.livroRepository.insertLivro(livro);
         console.log("Service - Insert ", novoLivro);
         return novoLivro;
@@ -41,6 +50,14 @@ export class LivroService{
         const livro =  await this.livroRepository.filterLivroById(idNumber);
         console.log("Service - Filtrar", livro);
         return livro;
+    }
+
+    async filtrarCategoriaById(CategoriaData: any): Promise<CategoriaEntity> {
+        const idNumber = parseInt(CategoriaData, 10);
+
+        const Categoria =  await this.categoriaRepository.filterCategoriaById(idNumber);
+        console.log("Service - Filtrar", Categoria);
+        return Categoria;
     }
 
     async filtrarLivroByName(livroData: any): Promise<LivroEntity[]> {

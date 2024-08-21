@@ -14,7 +14,7 @@ export class LivroRepository{
             titulo VARCHAR(255) NOT NULL,
             autor VARCHAR(255) NOT NULL,
             categoriaId INT NOT NULL,
-            FOREIGN KEY (categoriaId) REFERENCES Categoria(categoriaId)
+            FOREIGN KEY (categoriaId) REFERENCES Categoria(id)
            
         )`;
 
@@ -87,6 +87,7 @@ export class LivroRepository{
         }
     }
 
+  
     async filterLivroByName(titulo: string) :Promise<LivroEntity[]>{
         const query = "SELECT * FROM library.Livro where titulo = ?" ;
 
