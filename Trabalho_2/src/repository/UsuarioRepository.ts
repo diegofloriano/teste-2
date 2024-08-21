@@ -11,10 +11,9 @@ export class UsuarioRepository{
         const query = `
         CREATE TABLE IF NOT EXISTS library.Usuario (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            idPessoa VARCHAR(255) NOT NULL,
             senha VARCHAR(255) NOT NULL,
-            FOREIGN KEY (idPessoa) REFERENCES Usuario(idPessoa)
-            
+            idPessoa INT NOT NULL,
+            FOREIGN KEY (idPessoa) REFERENCES library.Pessoa(idPessoa)
         )`;
 
         try {
@@ -26,10 +25,10 @@ export class UsuarioRepository{
     }
 
     async insertUsuario(usuario:UsuarioEntity) :Promise<UsuarioEntity>{
-        const query = "INSERT INTO library.Usuario (idPessoa, senha) VALUES (?, ?)" ;
+        const query = "INSERT INTO library.Usuario (senha, idPessoa) VALUES (?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [usuario.idPessoa, usuario.senha]);
+            const resultado = await executarComandoSQL(query, [usuario.senha, usuario.idPessoa ]);
             console.log('usuario inserido com sucesso, ID: ', resultado.insertId);
             usuario.id = resultado.insertId;
             return new Promise<UsuarioEntity>((resolve)=>{
@@ -42,10 +41,10 @@ export class UsuarioRepository{
     }
 
     async updateUsuario(usuario:UsuarioEntity) :Promise<UsuarioEntity>{
-        const query = "UPDATE library.Usuario set idPessoa = ?, senha = ? where id = ?;" ;
+        const query = "UPDATE library.Usuario set senha = ?, idPessoa = ? where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [usuario.idPessoa, usuario.senha, usuario.id]);
+            const resultado = await executarComandoSQL(query, [usuario.senha, usuario.idPessoa, usuario.id]);
             console.log('usuario atualizado com sucesso, ID: ', resultado);
             return new Promise<UsuarioEntity>((resolve)=>{
                 resolve(usuario);

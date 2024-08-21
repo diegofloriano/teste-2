@@ -22,8 +22,8 @@ const models: TsoaRoute.Models = {
     "UsuarioRequestDto": {
         "dataType": "refObject",
         "properties": {
-            "idPessoa": {"dataType":"double","required":true},
             "senha": {"dataType":"string","required":true},
+            "idPessoa": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -41,8 +41,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"double","required":true},
-            "idPessoa": {"dataType":"double","required":true},
             "senha": {"dataType":"string","required":true},
+            "idPessoa": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },

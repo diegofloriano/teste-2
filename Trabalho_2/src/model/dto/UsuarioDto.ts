@@ -1,12 +1,11 @@
 export class UsuarioDto{
     id: number;
-    idPessoa: number;
     senha: string;
+    idPessoa: number;
 
-    constructor(id?: any, idPessoa?:any, senha?: any){
+    constructor(id?: any, senha?: any, idPessoa?:any){
         this.id = id;
-        this.idPessoa = idPessoa;
         this.senha = senha;
-  
+        this.idPessoa = idPessoa;
     }
 }

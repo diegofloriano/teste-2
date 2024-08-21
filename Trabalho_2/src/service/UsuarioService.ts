@@ -9,16 +9,9 @@ export class UsuarioService{
     usuarioRepository: UsuarioRepository = new UsuarioRepository();
 
     async cadastrarUsuario(usuarioData: any): Promise<UsuarioEntity> {
-        const { idPessoa, senha} = usuarioData;
+        const {senha, idPessoa} = usuarioData;
         
-        const usuario = new UsuarioEntity(idPessoa, senha)
-
-        const existe = await this.filtrarPessoaById(idPessoa);
-        console.log(existe); //retorna o tamanho da lista
-        
-        if(existe === null ){
-            throw new Error("Pessoa não existe!"); 
-        }
+        const usuario = new UsuarioEntity(undefined, senha, idPessoa)
 
         const novoUsuario =  await this.usuarioRepository.insertUsuario(usuario);
         console.log("Service - Insert ", novoUsuario);
@@ -26,9 +19,9 @@ export class UsuarioService{
     }
 
     async atualizarUsuario(usuarioData: any): Promise<UsuarioEntity> {
-        const { idPessoa, senha } = usuarioData;
+        const {  senha,idPessoa } = usuarioData;
 
-        const usuario = new UsuarioEntity(undefined, idPessoa, senha)
+        const usuario = new UsuarioEntity(undefined, senha, idPessoa)
 
         await this.usuarioRepository.updateUsuario(usuario);
         console.log("Service - Update ", usuario);
@@ -36,9 +29,9 @@ export class UsuarioService{
     }
 
     async deletarUsuario(usuarioData: any): Promise<UsuarioEntity> {
-        const { id, idPessoa, senha } = usuarioData;
+        const { id, senha, idPessoa } = usuarioData;
 
-        const usuario = new UsuarioEntity(id, idPessoa, senha)
+        const usuario = new UsuarioEntity(id, senha, idPessoa)
 
         await this.usuarioRepository.deleteUsuario(usuario);
         console.log("Service - Delete ", usuario);

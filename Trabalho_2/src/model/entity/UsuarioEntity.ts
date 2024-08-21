@@ -1,14 +1,13 @@
 export class UsuarioEntity{
     id: number;
-    idPessoa: number;
     senha: string;
+    idPessoa: number;
    
 
-    constructor(id?: number, idPessoa?:number, senha?: string){
+    constructor(id?: number, senha?: string, idPessoa?:number){
         this.id = id || 0;
-        this.idPessoa = idPessoa || 0;
         this.senha = senha || '';
-  
+        this.idPessoa = idPessoa || 0;
     }
 
 }

@@ -1,10 +1,9 @@
 export class UsuarioRequestDto {
-    idPessoa: number;
     senha: string;
+    idPessoa: number;
    
-    constructor(idPessoa?:number, senha?: string){
-        this.idPessoa = idPessoa || 0;
+    constructor(senha?: string, idPessoa?:number){
         this.senha = senha || '';
-  
+        this.idPessoa = idPessoa || 0;
     }
 }

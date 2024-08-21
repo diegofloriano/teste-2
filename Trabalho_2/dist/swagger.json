@@ -9,17 +9,17 @@
 		"schemas": {
 			"UsuarioRequestDto": {
 				"properties": {
+					"senha": {
+						"type": "string"
+					},
 					"idPessoa": {
 						"type": "number",
 						"format": "double"
-					},
-					"senha": {
-						"type": "string"
 					}
 				},
 				"required": [
-					"idPessoa",
-					"senha"
+					"senha",
+					"idPessoa"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -44,18 +44,18 @@
 						"type": "number",
 						"format": "double"
 					},
+					"senha": {
+						"type": "string"
+					},
 					"idPessoa": {
 						"type": "number",
 						"format": "double"
-					},
-					"senha": {
-						"type": "string"
 					}
 				},
 				"required": [
 					"id",
-					"idPessoa",
-					"senha"
+					"senha",
+					"idPessoa"
 				],
 				"type": "object",
 				"additionalProperties": false
