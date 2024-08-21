@@ -6,13 +6,13 @@ export class UsuarioService {
 
     UsuarioRepository: UsuarioRepository = new UsuarioRepository();
 
-    async cadastrarLivro(usuarioData: any): Promise<Usuario> {
+    async cadastrarUsuario(usuarioData: any): Promise<Usuario> {
         const { nome, email, senha } = usuarioData;
         if (!nome || !email || !senha) {
             throw new Error("Informações incompletas");
         }
 
-        const existe = await this.filtrarLivro(undefined, isbn);
+        const existe = await this.filtrarUsuario(undefined, isbn);
         console.log(existe?.length); //retorna o tamanho da lista
         const quantidadeCadastrada: number = existe?.length || 0; //se retornar algum undefined(null) quantidadeCadastrada recebe 0
         if(quantidadeCadastrada > 0 ){ //se tiver alguem na lista, ou seja, maior que 0
@@ -24,54 +24,54 @@ export class UsuarioService {
         return novoUsuario;
     }
 
-    async atualizarLivro(usuarioData: any): Promise<Usuario> {
+    async atualizarUsuario(usuarioData: any): Promise<Usuario> {
         const { id, nome, email, senha } = usuarioData;
         if (!id || !nome || !email || !senha) {
             throw new Error("Informações incompletas");
         }
-        await this.filtrarLivro(id, undefined);
+        await this.filtrarUsuario(id, undefined);
 
         const usuarioAtualizado = await this.UsuarioRepository.updateUsuario(id, nome, email, senha);
         console.log("Service - Update", usuarioAtualizado);
         return usuarioAtualizado;
     }
 
-    async deletarLivro(usuarioData: any): Promise<Usuario> {
+    async deletarUsuario(usuarioData: any): Promise<Usuario> {
         const { id, nome, email, senha } = usuarioData;
         if (!id || !nome || !email || !senha) {
             throw new Error("Informações incompletas");
         }
-        await this.filtrarLivro(id, undefined);
+        await this.filtrarUsuario(id, undefined);
 
         const usuarioDeletado = await this.UsuarioRepository.deleteUsuario(id, nome, email, senha);
         console.log("Service - Delete", usuarioDeletado);
         return usuarioDeletado;
     }
 
-    async filtrarLivro(id: any, isbn: any): Promise<Usuario[]|undefined> {
+    async filtrarUsuario(id: any, isbn: any): Promise<Usuario[]|undefined> {
         if(id){
             const idNumber : number = parseInt(id)
-            const livros: Usuario[]|undefined = await this.UsuarioRepository.filterUsuarioId(idNumber);  //você sempre recebe uma lista do mysql2 (Usuario[])
-            if(livros?.length ===0){
+            const Usuarios: Usuario[]|undefined = await this.UsuarioRepository.filterUsuarioId(idNumber);  //você sempre recebe uma lista do mysql2 (Usuario[])
+            if(Usuarios?.length ===0){
                 throw new Error("Id não encontrado");
             }
-            console.log("Service - Filtrar", livros);
-            return livros;
+            console.log("Service - Filtrar", Usuarios);
+            return Usuarios;
         }
         
         else if(isbn){
-            const livros: Usuario[]|undefined = await this.UsuarioRepository.filterUsuarioIsbn(isbn);
-            console.log("Service - Filtrar", livros);
-            return livros;
+            const Usuarios: Usuario[]|undefined = await this.UsuarioRepository.filterUsuarioIsbn(isbn);
+            console.log("Service - Filtrar", Usuarios);
+            return Usuarios;
         }
 
         return undefined;
 
     }
     
-    async listarTodosLivros(): Promise<Usuario[]> {
-        const livros = await this.UsuarioRepository.filterAllUsuarios();
-        console.log("Service - Listar Todos", livros);
-        return livros;
+    async listarTodosUsuarios(): Promise<Usuario[]> {
+        const Usuarios = await this.UsuarioRepository.filterAllUsuarios();
+        console.log("Service - Listar Todos", Usuarios);
+        return Usuarios;
     }
 }

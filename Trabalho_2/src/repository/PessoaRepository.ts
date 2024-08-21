@@ -1,6 +1,7 @@
 import { executarComandoSQL } from "../database/mysql";
 import { Pessoa } from "../model/entity/Pessoa";
 
+
 export class PessoaRepository{
 
     constructor(){
@@ -17,95 +18,90 @@ export class PessoaRepository{
         )`;
 
         try {
-                const resultado =  await executarComandoSQL(query, []);
-                console.log('Query executada com sucesso:', resultado);
+            const resultado =  await executarComandoSQL(query, []);
+            console.log('Query executada com sucesso:', resultado);
         } catch (err) {
             console.error('Error');
         }
     }
 
-    async insertPessoa(title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Pessoa>{
-        const query = "INSERT INTO library.Pessoa (title, author, publishedDate, isbn, pages, language, publisher) VALUES (?, ?, ?, ?, ?, ?, ?)" ;
+    async insertPessoa(pessoa:Pessoa) :Promise<Pessoa>{
+        const query = "INSERT INTO library.Pessoa (id, nome, email) VALUES (?, ?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher]);
-            console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
-            const Pessoa = new Pessoa(resultado.insertId, title, author, publishedDate, isbn, pages, language, publisher);
+            const resultado = await executarComandoSQL(query, [pessoa.id, pessoa.nome, pessoa.email]);
+            console.log('Pessoa inserida com sucesso, ID: ', resultado.insertId);
+            pessoa.id = resultado.insertId;
             return new Promise<Pessoa>((resolve)=>{
-                resolve(Pessoa);
+                resolve(pessoa);
             })
         } catch (err) {
-            console.error('Erro ao inserir o livro:', err);
+            console.error('Erro ao inserir a pessoa:', err);
             throw err;
         }
     }
 
-    async updatePessoa( id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Pessoa>{
-        const query = "UPDATE library.Pessoa set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;" ;
+    async updatePessoa(pessoa:Pessoa) :Promise<Pessoa>{
+        const query = "UPDATE library.Pessoa set nome = ?, email = ? where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [title, author, publishedDate, isbn, pages, language, publisher, id]);
-            console.log('Livro atualizado com sucesso, ID: ', resultado);
-            const Pessoa = new Pessoa(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const resultado = await executarComandoSQL(query, [pessoa.nome, pessoa.email, pessoa.id]);
+            console.log('Pessoa atualizada com sucesso, ID: ', resultado);
             return new Promise<Pessoa>((resolve)=>{
-                resolve(Pessoa);
+                resolve(pessoa);
             })
         } catch (err:any) {
-            console.error(`Erro ao atualizar o livro de ID ${id} gerando o erro: ${err}`);
+            console.error(`Erro ao atualizar a pessoa de ID ${pessoa.id} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async deletePessoa(id?: number, title?:string, author?: string, publishedDate?: string, isbn?:string, pages?: number, language?: string, publisher?: string) :Promise<Pessoa>{
-        const query = "DELETE FROM library.Pessoa  where id = ?;" ;
+    async deletePessoa(pessoa:Pessoa) :Promise<Pessoa>{
+        const query = "DELETE FROM library.Pessoa where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [id]);
-            console.log('Produto deletado com sucesso, ID: ', resultado);
-            const Pessoa = new Pessoa(id, title, author, publishedDate, isbn, pages, language, publisher);
+            const resultado = await executarComandoSQL(query, [pessoa.id]);
+            console.log('Pessoa deletada com sucesso: ', pessoa);
             return new Promise<Pessoa>((resolve)=>{
-                resolve(Pessoa);
+                resolve(pessoa);
             })
         } catch (err:any) {
-            console.error(`Falha ao deletar o livro de ID ${id} gerando o erro: ${err}`);
+            console.error(`Falha ao deletar a pessoa de ID ${pessoa.id} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async filterPessoaId(id: number) :Promise<Pessoa[]|undefined>{ //lista ou null
+    async filterPessoaById(id: number) :Promise<Pessoa>{
         const query = "SELECT * FROM library.Pessoa where id = ?" ;
 
         try {
-            const resultado: Pessoa[] = await executarComandoSQL(query, [id]);
-            if(resultado.length === 0){
-                console.error("Id não encontrado");
-            }
-            console.log('Livro localizado com sucesso, ID: ', resultado);
-            return new Promise<Pessoa[]|undefined>((resolve)=>{  //lista ou null
+            const resultado = await executarComandoSQL(query, [id]);
+            console.log('Pessoa localizada com sucesso, ID: ', resultado);
+            return new Promise<Pessoa>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
-            console.error(`Falha ao procurar o livro de ID ${id} gerando o erro: ${err}`);
+            console.error(`Falha ao procurar a pessoa de ID ${id} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async filterPessoaIsbn(isbn: string) :Promise<Pessoa[]|undefined>{ //lista ou null
-        const query = "SELECT * FROM library.Pessoa where isbn = ?" ;
+    async filterPessoaByName(nome: string) :Promise<Pessoa[]>{
+        const query = "SELECT * FROM library.Pessoa where nome = ?" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [isbn]);
-            console.log('Livro localizado com sucesso, ISBN: ', resultado);
-            return new Promise<Pessoa[]|undefined>((resolve)=>{  //lista ou null
+            const resultado:Pessoa[] = await executarComandoSQL(query, [nome]);
+            console.log('Pessoa localizada com sucesso, Nome: ', resultado);
+            return new Promise<Pessoa[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
-            console.error(`Falha ao procurar o livro de ISBN ${isbn} gerando o erro: ${err}`);
+            console.error(`Falha ao procurar a pessoa ${nome} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async filterAllPessoas() :Promise<Pessoa[]>{
+    async filterAllPessoa() :Promise<Pessoa[]>{
         const query = "SELECT * FROM library.Pessoa" ;
 
         try {
@@ -114,10 +110,10 @@ export class PessoaRepository{
                 resolve(resultado);
             })
         } catch (err:any) {
-            console.error(`Falha ao listar os livros gerando o erro: ${err}`);
+            console.error(`Falha ao listar as pessoas gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    
+
 }

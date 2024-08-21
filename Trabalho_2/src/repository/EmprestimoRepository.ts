@@ -21,22 +21,22 @@ export class EmprestimoRepository{
         )`;
 
         try {
-                const resultado =  await executarComandoSQL(query, []);
-                console.log('Query executada com sucesso:', resultado);
+            const resultado =  await executarComandoSQL(query, []);
+            console.log('Query executada com sucesso:', resultado);
         } catch (err) {
             console.error('Error');
         }
     }
 
-    async insertEmprestimo(livroId?:number, usuarioId?: number, dataEmprestimo?: string, dataDevolucao?:string) :Promise<Emprestimo>{
-        const query = "INSERT INTO library.Emprestimo (livroId, usuarioId, dataEmprestimo, dataDevolucao) VALUES (?, ?, ?, ?)" ;
+    async insertLivro(livro:Livro) :Promise<Livro>{
+        const query = "INSERT INTO library.Livro (id, titulo, autor, categoriaId) VALUES (?, ?, ?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [livroId, usuarioId, dataEmprestimo, dataDevolucao]);
-            console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
-            const Emprestimo = new Emprestimo(resultado.insertId, livroId, usuarioId, dataEmprestimo, dataDevolucao);
-            return new Promise<Emprestimo>((resolve)=>{
-                resolve(Emprestimo);
+            const resultado = await executarComandoSQL(query, [livro.id, livro.titulo, livro.autor, livro.categoriaId]);
+            console.log('livro inserido com sucesso, ID: ', resultado.insertId);
+            livro.id = resultado.insertId;
+            return new Promise<Livro>((resolve)=>{
+                resolve(livro);
             })
         } catch (err) {
             console.error('Erro ao inserir o livro:', err);
@@ -44,48 +44,43 @@ export class EmprestimoRepository{
         }
     }
 
-    async updateEmprestimo( id?: number,livroId?:number, usuarioId?: number, dataEmprestimo?: string, dataDevolucao?:string) :Promise<Emprestimo>{
-        const query = "UPDATE library.Emprestimo set title = ?, author = ?, publishedDate = ?, isbn = ?, pages = ?, language = ?, publisher = ? where id = ?;" ;
+    async updateLivro(livro:Livro) :Promise<Livro>{
+        const query = "UPDATE library.Livro set titulo = ?, autor = ? where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [livroId, usuarioId, dataEmprestimo, dataDevolucao, id]);
+            const resultado = await executarComandoSQL(query, [livro.titulo, livro.autor, livro.id]);
             console.log('Livro atualizado com sucesso, ID: ', resultado);
-            const Emprestimo = new Emprestimo(id, livroId, usuarioId, dataEmprestimo, dataDevolucao);
-            return new Promise<Emprestimo>((resolve)=>{
-                resolve(Emprestimo);
+            return new Promise<Livro>((resolve)=>{
+                resolve(livro);
             })
         } catch (err:any) {
-            console.error(`Erro ao atualizar o livro de ID ${id} gerando o erro: ${err}`);
+            console.error(`Erro ao atualizar o livro de ID ${livro.id} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async deleteEmprestimo(id?: number,livroId?:number, usuarioId?: number, dataEmprestimo?: string, dataDevolucao?:string) :Promise<Emprestimo>{
-        const query = "DELETE FROM library.Emprestimo  where id = ?;" ;
+    async deleteLivro(livro:Livro) :Promise<Livro>{
+        const query = "DELETE FROM library.Livro where id = ?;" ;
+
+        try {
+            const resultado = await executarComandoSQL(query, [livro.id]);
+            console.log('livro deletado com sucesso: ', livro);
+            return new Promise<Livro>((resolve)=>{
+                resolve(livro);
+            })
+        } catch (err:any) {
+            console.error(`Falha ao deletar o livro de ID ${livro.id} gerando o erro: ${err}`);
+            throw err;
+        }
+    }
+
+    async filterLivroById(id: number) :Promise<Livro>{
+        const query = "SELECT * FROM library.Livro where id = ?" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
-            console.log('Produto deletado com sucesso, ID: ', resultado);
-            const Emprestimo = new Emprestimo(id, livroId, usuarioId, dataEmprestimo, dataDevolucao);
-            return new Promise<Emprestimo>((resolve)=>{
-                resolve(Emprestimo);
-            })
-        } catch (err:any) {
-            console.error(`Falha ao deletar o livro de ID ${id} gerando o erro: ${err}`);
-            throw err;
-        }
-    }
-
-    async filterEmprestimoId(id: number) :Promise<Emprestimo[]|undefined>{ //lista ou null
-        const query = "SELECT * FROM library.Emprestimo where id = ?" ;
-
-        try {
-            const resultado: Emprestimo[] = await executarComandoSQL(query, [id]);
-            if(resultado.length === 0){
-                console.error("Id não encontrado");
-            }
             console.log('Livro localizado com sucesso, ID: ', resultado);
-            return new Promise<Emprestimo[]|undefined>((resolve)=>{  //lista ou null
+            return new Promise<Livro>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -94,27 +89,27 @@ export class EmprestimoRepository{
         }
     }
 
-    async filterEmprestimoIsbn(isbn: string) :Promise<Emprestimo[]|undefined>{ //lista ou null
-        const query = "SELECT * FROM library.Emprestimo where isbn = ?" ;
+    async filterLivroByName(titulo: string) :Promise<Livro[]>{
+        const query = "SELECT * FROM library.Livro where titulo = ?" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [isbn]);
-            console.log('Livro localizado com sucesso, ISBN: ', resultado);
-            return new Promise<Emprestimo[]|undefined>((resolve)=>{  //lista ou null
+            const resultado:Livro[] = await executarComandoSQL(query, [titulo]);
+            console.log('Livro localizado com sucesso, ID: ', resultado);
+            return new Promise<Livro[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
-            console.error(`Falha ao procurar o livro de ISBN ${isbn} gerando o erro: ${err}`);
+            console.error(`Falha ao procurar o livro ${titulo} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async filterAllEmprestimos() :Promise<Emprestimo[]>{
-        const query = "SELECT * FROM library.Emprestimo" ;
+    async filterAllLivro() :Promise<Livro[]>{
+        const query = "SELECT * FROM library.Livro" ;
 
         try {
             const resultado = await executarComandoSQL(query, []);
-            return new Promise<Emprestimo[]>((resolve)=>{
+            return new Promise<Livro[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -123,5 +118,5 @@ export class EmprestimoRepository{
         }
     }
 
-    
+
 }
