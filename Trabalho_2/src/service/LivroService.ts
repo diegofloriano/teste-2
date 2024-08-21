@@ -1,77 +1,60 @@
-import { parseJsonSourceFileConfigFileContent } from "typescript";
-import { Livro } from "../model/entity/LivroEntity";
+import { LivroEntity } from "../model/entity/LivroEntity";
 import { LivroRepository } from "../repository/LivroRepository";
 
-export class LivroService {
+export class livroService{
 
-    LivroRepository: LivroRepository = new LivroRepository();
+    livroRepository: LivroRepository = new LivroRepository();
 
-    async cadastrarLivro(livroData: any): Promise<Livro> {
-        const { titulo, autor, categoriaId } = livroData;
-        if (!titulo || !autor || !categoriaId) {
-            throw new Error("Informações incompletas");
-        }
-
-        const existe = await this.filtrarLivro(undefined, isbn);
-        console.log(existe?.length); //retorna o tamanho da lista
-        const quantidadeCadastrada: number = existe?.length || 0; //se retornar algum undefined(null) quantidadeCadastrada recebe 0
-        if(quantidadeCadastrada > 0 ){ //se tiver alguem na lista, ou seja, maior que 0
-            throw new Error("ISBN já existe!"); //erro
-        }
-
-        const novoLivro = await this.LivroRepository.insertLivro(titulo, autor, categoriaId);
-        console.log("Service - Insert", novoLivro);
-        return novoLivro;
-    }
-
-    async atualizarLivro(livroData: any): Promise<Livro> {
-        const { id, titulo, autor, categoriaId } = livroData;
-        if (!id || !titulo || !autor || !categoriaId) {
-            throw new Error("Informações incompletas");
-        }
-        await this.filtrarLivro(id, undefined);
-
-        const livroAtualizado = await this.LivroRepository.updateLivro(id, titulo, autor, categoriaId);
-        console.log("Service - Update", livroAtualizado);
-        return livroAtualizado;
-    }
-
-    async deletarLivro(livroData: any): Promise<Livro> {
-        const { id, titulo, autor, categoriaId } = livroData;
-        if (!id || !titulo || !autor || !categoriaId) {
-            throw new Error("Informações incompletas");
-        }
-        await this.filtrarLivro(id, undefined);
-
-        const livroDeletado = await this.LivroRepository.deleteLivro(id, titulo, autor, categoriaId);
-        console.log("Service - Delete", livroDeletado);
-        return livroDeletado;
-    }
-
-    async filtrarLivro(id: any, isbn: any): Promise<Livro[]|undefined> {
-        if(id){
-            const idNumber : number = parseInt(id)
-            const livros: Livro[]|undefined = await this.LivroRepository.filterLivroId(idNumber);  //você sempre recebe uma lista do mysql2 (Livro[])
-            if(livros?.length ===0){
-                throw new Error("Id não encontrado");
-            }
-            console.log("Service - Filtrar", livros);
-            return livros;
-        }
+    async cadastrarLivro(livroData: any): Promise<LivroEntity> {
+        const { idPessoa, senha} = livroData;
         
-        else if(isbn){
-            const livros: Livro[]|undefined = await this.LivroRepository.filterLivroIsbn(isbn);
-            console.log("Service - Filtrar", livros);
-            return livros;
-        }
+        const livro = new LivroEntity(idPessoa, senha)
 
-        return undefined;
-
+        const novolivro =  await this.livroRepository.insertLivro(livro);
+        console.log("Service - Insert ", novolivro);
+        return novolivro;
     }
-    
-    async listarTodosLivros(): Promise<Livro[]> {
-        const livros = await this.LivroRepository.filterAllLivros();
-        console.log("Service - Listar Todos", livros);
+
+    async atualizarLivro(livroData: any): Promise<LivroEntity> {
+        const { id, idPessoa, senha } = livroData;
+
+        const livro = new LivroEntity(id, idPessoa, senha)
+
+        await this.livroRepository.updateLivro(livro);
+        console.log("Service - Update ", livro);
+        return livro;
+    }
+
+    async deletarLivro(livroData: any): Promise<LivroEntity> {
+        const { id, idPessoa, senha } = livroData;
+
+        const livro = new LivroEntity(id, idPessoa, senha)
+
+        await this.livroRepository.deleteLivro(livro);
+        console.log("Service - Delete ", livro);
+        return livro;
+    }
+
+    async filtrarLivroById(livroData: any): Promise<LivroEntity> {
+        const idNumber = parseInt(livroData, 10);
+
+        const livro =  await this.livroRepository.filterLivroById(idNumber);
+        console.log("Service - Filtrar", livro);
+        return livro;
+    }
+
+    async filtrarLivroByName(livroData: any): Promise<LivroEntity[]> {
+        const name:string = livroData;
+
+        const livros =  await this.livroRepository.filterLivroByName(name);
+        console.log("Service - Filtrar", livros);
         return livros;
     }
+
+    async listarTodosLivros(): Promise<LivroEntity[]> {
+        const livros =  await this.livroRepository.filterAllLivro();
+        console.log("Service - Filtrar Todos", livros);
+        return livros;
+    }
+
 }

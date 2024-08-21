@@ -1,4 +1,4 @@
-import { Product } from "../model/entity/Product";
+import { Product } from "../model/entity/ProductEntity";
 import { ProductRepository } from "../repository/ProductRepository";
 
 export class ProductService{

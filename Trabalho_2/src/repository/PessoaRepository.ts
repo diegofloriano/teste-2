@@ -1,5 +1,5 @@
 import { executarComandoSQL } from "../database/mysql";
-import { Pessoa } from "../model/entity/Pessoa";
+import { PessoaEntity } from "../model/entity/PessoaEntity";
 
 
 export class PessoaRepository{
@@ -25,14 +25,14 @@ export class PessoaRepository{
         }
     }
 
-    async insertPessoa(pessoa:Pessoa) :Promise<Pessoa>{
+    async insertPessoa(pessoa:PessoaEntity) :Promise<PessoaEntity>{
         const query = "INSERT INTO library.Pessoa (id, nome, email) VALUES (?, ?, ?)" ;
 
         try {
             const resultado = await executarComandoSQL(query, [pessoa.id, pessoa.nome, pessoa.email]);
             console.log('Pessoa inserida com sucesso, ID: ', resultado.insertId);
             pessoa.id = resultado.insertId;
-            return new Promise<Pessoa>((resolve)=>{
+            return new Promise<PessoaEntity>((resolve)=>{
                 resolve(pessoa);
             })
         } catch (err) {
@@ -41,13 +41,13 @@ export class PessoaRepository{
         }
     }
 
-    async updatePessoa(pessoa:Pessoa) :Promise<Pessoa>{
+    async updatePessoa(pessoa:PessoaEntity) :Promise<PessoaEntity>{
         const query = "UPDATE library.Pessoa set nome = ?, email = ? where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [pessoa.nome, pessoa.email, pessoa.id]);
             console.log('Pessoa atualizada com sucesso, ID: ', resultado);
-            return new Promise<Pessoa>((resolve)=>{
+            return new Promise<PessoaEntity>((resolve)=>{
                 resolve(pessoa);
             })
         } catch (err:any) {
@@ -56,13 +56,13 @@ export class PessoaRepository{
         }
     }
 
-    async deletePessoa(pessoa:Pessoa) :Promise<Pessoa>{
+    async deletePessoa(pessoa:PessoaEntity) :Promise<PessoaEntity>{
         const query = "DELETE FROM library.Pessoa where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [pessoa.id]);
             console.log('Pessoa deletada com sucesso: ', pessoa);
-            return new Promise<Pessoa>((resolve)=>{
+            return new Promise<PessoaEntity>((resolve)=>{
                 resolve(pessoa);
             })
         } catch (err:any) {
@@ -71,13 +71,13 @@ export class PessoaRepository{
         }
     }
 
-    async filterPessoaById(id: number) :Promise<Pessoa>{
+    async filterPessoaById(id: number) :Promise<PessoaEntity>{
         const query = "SELECT * FROM library.Pessoa where id = ?" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Pessoa localizada com sucesso, ID: ', resultado);
-            return new Promise<Pessoa>((resolve)=>{
+            return new Promise<PessoaEntity>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -86,13 +86,13 @@ export class PessoaRepository{
         }
     }
 
-    async filterPessoaByName(nome: string) :Promise<Pessoa[]>{
+    async filterPessoaByName(nome: string) :Promise<PessoaEntity[]>{
         const query = "SELECT * FROM library.Pessoa where nome = ?" ;
 
         try {
-            const resultado:Pessoa[] = await executarComandoSQL(query, [nome]);
+            const resultado:PessoaEntity[] = await executarComandoSQL(query, [nome]);
             console.log('Pessoa localizada com sucesso, Nome: ', resultado);
-            return new Promise<Pessoa[]>((resolve)=>{
+            return new Promise<PessoaEntity[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -101,12 +101,12 @@ export class PessoaRepository{
         }
     }
 
-    async filterAllPessoa() :Promise<Pessoa[]>{
+    async filterAllPessoa() :Promise<PessoaEntity[]>{
         const query = "SELECT * FROM library.Pessoa" ;
 
         try {
             const resultado = await executarComandoSQL(query, []);
-            return new Promise<Pessoa[]>((resolve)=>{
+            return new Promise<PessoaEntity[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {

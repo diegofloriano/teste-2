@@ -1,5 +1,5 @@
 import { executarComandoSQL } from "../database/mysql";
-import { Categoria } from "../model/entity/Categoria";
+import { CategoriaEntity } from "../model/entity/CategoriaEntity";
 
 export class CategoriaRepository{
 
@@ -16,107 +16,102 @@ export class CategoriaRepository{
         )`;
 
         try {
-                const resultado =  await executarComandoSQL(query, []);
-                console.log('Query executada com sucesso:', resultado);
+            const resultado =  await executarComandoSQL(query, []);
+            console.log('Query executada com sucesso:', resultado);
         } catch (err) {
             console.error('Error');
         }
     }
 
-    async insertCategoria(nome?: string) :Promise<Categoria>{
-        const query = "INSERT INTO library.Categoria (nome) VALUES (?)" ;
+    async insertCategoria(categoria:CategoriaEntity) :Promise<CategoriaEntity>{
+        const query = "INSERT INTO library.Categoria (id, nome) VALUES (?, ?, ?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [nome]);
-            console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
-            const Categoria = new Categoria(resultado.insertId, nome);
-            return new Promise<Categoria>((resolve)=>{
-                resolve(Categoria);
+            const resultado = await executarComandoSQL(query, [categoria.id, categoria.nome]);
+            console.log('Categoria inserida com sucesso, ID: ', resultado.insertId);
+            categoria.id = resultado.insertId;
+            return new Promise<CategoriaEntity>((resolve)=>{
+                resolve(categoria);
             })
         } catch (err) {
-            console.error('Erro ao inserir o livro:', err);
+            console.error('Erro ao inserir a categoria:', err);
             throw err;
         }
     }
 
-    async updateCategoria( id?: number, nome?:string) :Promise<Categoria>{
+    async updateCategoria(categoria:CategoriaEntity) :Promise<CategoriaEntity>{
         const query = "UPDATE library.Categoria set nome = ? where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [nome, id]);
-            console.log('Livro atualizado com sucesso, ID: ', resultado);
-            const Categoria = new Categoria(id, nome);
-            return new Promise<Categoria>((resolve)=>{
-                resolve(Categoria);
+            const resultado = await executarComandoSQL(query, [categoria.nome, categoria.id]);
+            console.log('categoria atualizada com sucesso, ID: ', resultado);
+            return new Promise<CategoriaEntity>((resolve)=>{
+                resolve(categoria);
             })
         } catch (err:any) {
-            console.error(`Erro ao atualizar o livro de ID ${id} gerando o erro: ${err}`);
+            console.error(`Erro ao atualizar a categoria de ID ${categoria.id} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async deleteCategoria(id?: number, nome?:string) :Promise<Categoria>{
-        const query = "DELETE FROM library.Categoria  where id = ?;" ;
+    async deleteCategoria(categoria:CategoriaEntity) :Promise<CategoriaEntity>{
+        const query = "DELETE FROM library.Categoria where id = ?;" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [id]);
-            console.log('Produto deletado com sucesso, ID: ', resultado);
-            const Categoria = new Categoria(id, nome);
-            return new Promise<Categoria>((resolve)=>{
-                resolve(Categoria);
+            const resultado = await executarComandoSQL(query, [categoria.id]);
+            console.log('categoria deletada com sucesso: ', categoria);
+            return new Promise<CategoriaEntity>((resolve)=>{
+                resolve(categoria);
             })
         } catch (err:any) {
-            console.error(`Falha ao deletar o livro de ID ${id} gerando o erro: ${err}`);
+            console.error(`Falha ao deletar a categoria de ID ${categoria.id} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async filterCategoriaId(id: number) :Promise<Categoria[]|undefined>{ //lista ou null
+    async filterCategoriaById(id: number) :Promise<CategoriaEntity>{
         const query = "SELECT * FROM library.Categoria where id = ?" ;
 
         try {
-            const resultado: Categoria[] = await executarComandoSQL(query, [id]);
-            if(resultado.length === 0){
-                console.error("Id não encontrado");
-            }
-            console.log('Livro localizado com sucesso, ID: ', resultado);
-            return new Promise<Categoria[]|undefined>((resolve)=>{  //lista ou null
+            const resultado = await executarComandoSQL(query, [id]);
+            console.log('categoria localizada com sucesso, ID: ', resultado);
+            return new Promise<CategoriaEntity>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
-            console.error(`Falha ao procurar o livro de ID ${id} gerando o erro: ${err}`);
+            console.error(`Falha ao procurar a categoria de ID ${id} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async filterCategoriaIsbn(isbn: string) :Promise<Categoria[]|undefined>{ //lista ou null
-        const query = "SELECT * FROM library.Categoria where isbn = ?" ;
+    async filterCategoriaByName(nome: string) :Promise<CategoriaEntity[]>{
+        const query = "SELECT * FROM library.Categoria where nome = ?" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [isbn]);
-            console.log('Livro localizado com sucesso, ISBN: ', resultado);
-            return new Promise<Categoria[]|undefined>((resolve)=>{  //lista ou null
+            const resultado:CategoriaEntity[] = await executarComandoSQL(query, [nome]);
+            console.log('categoria localizada com sucesso, ID: ', resultado);
+            return new Promise<CategoriaEntity[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
-            console.error(`Falha ao procurar o livro de ISBN ${isbn} gerando o erro: ${err}`);
+            console.error(`Falha ao procurar a categoria ${nome} gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    async filterAllCategorias() :Promise<Categoria[]>{
+    async filterAllCategoria() :Promise<CategoriaEntity[]>{
         const query = "SELECT * FROM library.Categoria" ;
 
         try {
             const resultado = await executarComandoSQL(query, []);
-            return new Promise<Categoria[]>((resolve)=>{
+            return new Promise<CategoriaEntity[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
-            console.error(`Falha ao listar os livros gerando o erro: ${err}`);
+            console.error(`Falha ao listar as categorias gerando o erro: ${err}`);
             throw err;
         }
     }
 
-    
+
 }

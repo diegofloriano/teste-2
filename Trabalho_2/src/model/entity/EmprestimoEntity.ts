@@ -1,5 +1,5 @@
 import { stringParaData, verificaFormatoData } from "../../util/DataUtil";
-export class Emprestimo{
+export class EmprestimoEntity{
     id: number;
     livroId: string;
     usuarioId: string;

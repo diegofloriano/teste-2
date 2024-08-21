@@ -1,4 +1,4 @@
-export class livroEntity{
+export class LivroEntity{
     id: number;
     titulo: string;
     autor: string;

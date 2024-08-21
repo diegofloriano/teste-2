@@ -1,5 +1,5 @@
 import { executarComandoSQL } from "../database/mysql";
-import { Livro } from "../model/entity/LivroEntity";
+import { LivroEntity } from "../model/entity/LivroEntity";
 
 export class LivroRepository{
 
@@ -26,14 +26,14 @@ export class LivroRepository{
         }
     }
 
-    async insertLivro(livro:Livro) :Promise<Livro>{
+    async insertLivro(livro:LivroEntity) :Promise<LivroEntity>{
         const query = "INSERT INTO library.Livro (id, titulo, autor, categoriaId) VALUES (?, ?, ?, ?)" ;
 
         try {
             const resultado = await executarComandoSQL(query, [livro.id, livro.titulo, livro.autor, livro.categoriaId]);
             console.log('livro inserido com sucesso, ID: ', resultado.insertId);
             livro.id = resultado.insertId;
-            return new Promise<Livro>((resolve)=>{
+            return new Promise<LivroEntity>((resolve)=>{
                 resolve(livro);
             })
         } catch (err) {
@@ -42,13 +42,13 @@ export class LivroRepository{
         }
     }
 
-    async updateLivro(livro:Livro) :Promise<Livro>{
+    async updateLivro(livro:LivroEntity) :Promise<LivroEntity>{
         const query = "UPDATE library.Livro set titulo = ?, autor = ? where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [livro.titulo, livro.autor, livro.id]);
             console.log('Livro atualizado com sucesso, ID: ', resultado);
-            return new Promise<Livro>((resolve)=>{
+            return new Promise<LivroEntity>((resolve)=>{
                 resolve(livro);
             })
         } catch (err:any) {
@@ -57,13 +57,13 @@ export class LivroRepository{
         }
     }
 
-    async deleteLivro(livro:Livro) :Promise<Livro>{
+    async deleteLivro(livro:LivroEntity) :Promise<LivroEntity>{
         const query = "DELETE FROM library.Livro where id = ?;" ;
 
         try {
             const resultado = await executarComandoSQL(query, [livro.id]);
             console.log('livro deletado com sucesso: ', livro);
-            return new Promise<Livro>((resolve)=>{
+            return new Promise<LivroEntity>((resolve)=>{
                 resolve(livro);
             })
         } catch (err:any) {
@@ -72,13 +72,13 @@ export class LivroRepository{
         }
     }
 
-    async filterLivroById(id: number) :Promise<Livro>{
+    async filterLivroById(id: number) :Promise<LivroEntity>{
         const query = "SELECT * FROM library.Livro where id = ?" ;
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
             console.log('Livro localizado com sucesso, ID: ', resultado);
-            return new Promise<Livro>((resolve)=>{
+            return new Promise<LivroEntity>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -87,13 +87,13 @@ export class LivroRepository{
         }
     }
 
-    async filterLivroByName(titulo: string) :Promise<Livro[]>{
+    async filterLivroByName(titulo: string) :Promise<LivroEntity[]>{
         const query = "SELECT * FROM library.Livro where titulo = ?" ;
 
         try {
-            const resultado:Livro[] = await executarComandoSQL(query, [titulo]);
+            const resultado:LivroEntity[] = await executarComandoSQL(query, [titulo]);
             console.log('Livro localizado com sucesso, ID: ', resultado);
-            return new Promise<Livro[]>((resolve)=>{
+            return new Promise<LivroEntity[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -102,12 +102,12 @@ export class LivroRepository{
         }
     }
 
-    async filterAllLivro() :Promise<Livro[]>{
+    async filterAllLivro() :Promise<LivroEntity[]>{
         const query = "SELECT * FROM library.Livro" ;
 
         try {
             const resultado = await executarComandoSQL(query, []);
-            return new Promise<Livro[]>((resolve)=>{
+            return new Promise<LivroEntity[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {

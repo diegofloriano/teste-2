@@ -1,77 +1,60 @@
-import { parseJsonSourceFileConfigFileContent } from "typescript";
-import { Usuario } from "../model/entity/Usuario";
+import { UsuarioEntity } from "../model/entity/UsuarioEntity";
 import { UsuarioRepository } from "../repository/UsuarioRepository";
 
-export class UsuarioService {
+export class usuarioService{
 
-    UsuarioRepository: UsuarioRepository = new UsuarioRepository();
+    usuarioRepository: UsuarioRepository = new UsuarioRepository();
 
-    async cadastrarUsuario(usuarioData: any): Promise<Usuario> {
-        const { nome, email, senha } = usuarioData;
-        if (!nome || !email || !senha) {
-            throw new Error("Informações incompletas");
-        }
+    async cadastrarUsuario(usuarioData: any): Promise<UsuarioEntity> {
+        const { idPessoa, senha} = usuarioData;
+        
+        const usuario = new UsuarioEntity(idPessoa, senha)
 
-        const existe = await this.filtrarUsuario(undefined, isbn);
-        console.log(existe?.length); //retorna o tamanho da lista
-        const quantidadeCadastrada: number = existe?.length || 0; //se retornar algum undefined(null) quantidadeCadastrada recebe 0
-        if(quantidadeCadastrada > 0 ){ //se tiver alguem na lista, ou seja, maior que 0
-            throw new Error("ISBN já existe!"); //erro
-        }
-
-        const novoUsuario = await this.UsuarioRepository.insertUsuario(nome, email, senha);
-        console.log("Service - Insert", novoUsuario);
+        const novoUsuario =  await this.usuarioRepository.insertUsuario(usuario);
+        console.log("Service - Insert ", novoUsuario);
         return novoUsuario;
     }
 
-    async atualizarUsuario(usuarioData: any): Promise<Usuario> {
-        const { id, nome, email, senha } = usuarioData;
-        if (!id || !nome || !email || !senha) {
-            throw new Error("Informações incompletas");
-        }
-        await this.filtrarUsuario(id, undefined);
+    async atualizarUsuario(usuarioData: any): Promise<UsuarioEntity> {
+        const { id, idPessoa, senha } = usuarioData;
 
-        const usuarioAtualizado = await this.UsuarioRepository.updateUsuario(id, nome, email, senha);
-        console.log("Service - Update", usuarioAtualizado);
-        return usuarioAtualizado;
+        const usuario = new UsuarioEntity(id, idPessoa, senha)
+
+        await this.usuarioRepository.updateUsuario(usuario);
+        console.log("Service - Update ", usuario);
+        return usuario;
     }
 
-    async deletarUsuario(usuarioData: any): Promise<Usuario> {
-        const { id, nome, email, senha } = usuarioData;
-        if (!id || !nome || !email || !senha) {
-            throw new Error("Informações incompletas");
-        }
-        await this.filtrarUsuario(id, undefined);
+    async deletarUsuario(usuarioData: any): Promise<UsuarioEntity> {
+        const { id, idPessoa, senha } = usuarioData;
 
-        const usuarioDeletado = await this.UsuarioRepository.deleteUsuario(id, nome, email, senha);
-        console.log("Service - Delete", usuarioDeletado);
-        return usuarioDeletado;
+        const usuario = new UsuarioEntity(id, idPessoa, senha)
+
+        await this.usuarioRepository.deleteUsuario(usuario);
+        console.log("Service - Delete ", usuario);
+        return usuario;
     }
 
-    async filtrarUsuario(id: any, isbn: any): Promise<Usuario[]|undefined> {
-        if(id){
-            const idNumber : number = parseInt(id)
-            const Usuarios: Usuario[]|undefined = await this.UsuarioRepository.filterUsuarioId(idNumber);  //você sempre recebe uma lista do mysql2 (Usuario[])
-            if(Usuarios?.length ===0){
-                throw new Error("Id não encontrado");
-            }
-            console.log("Service - Filtrar", Usuarios);
-            return Usuarios;
-        }
-        
-        else if(isbn){
-            const Usuarios: Usuario[]|undefined = await this.UsuarioRepository.filterUsuarioIsbn(isbn);
-            console.log("Service - Filtrar", Usuarios);
-            return Usuarios;
-        }
+    async filtrarUsuarioById(usuarioData: any): Promise<UsuarioEntity> {
+        const idNumber = parseInt(usuarioData, 10);
 
-        return undefined;
+        const usuario =  await this.usuarioRepository.filterUsuarioById(idNumber);
+        console.log("Service - Filtrar", usuario);
+        return usuario;
+    }
 
+    async filtrarUsuarioByName(usuarioData: any): Promise<UsuarioEntity[]> {
+        const name:string = usuarioData;
+
+        const usuarios =  await this.usuarioRepository.filterUsuarioByName(name);
+        console.log("Service - Filtrar", usuarios);
+        return usuarios;
     }
-    
-    async listarTodosUsuarios(): Promise<Usuario[]> {
-        const Usuarios = await this.UsuarioRepository.filterAllUsuarios();
-        console.log("Service - Listar Todos", Usuarios);
-        return Usuarios;
+
+    async listarTodosusuarios(): Promise<UsuarioEntity[]> {
+        const usuarios =  await this.usuarioRepository.filterAllUsuario();
+        console.log("Service - Filtrar Todos", usuarios);
+        return usuarios;
     }
+
 }

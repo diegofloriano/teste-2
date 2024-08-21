@@ -1,77 +1,60 @@
-import { parseJsonSourceFileConfigFileContent } from "typescript";
-import { Emprestimo } from "../model/entity/Emprestimo";
+import { EmprestimoEntity } from "../model/entity/EmprestimoEntity";
 import { EmprestimoRepository } from "../repository/EmprestimoRepository";
 
-export class EmprestimoService {
+export class emprestimoService{
 
-    EmprestimoRepository: EmprestimoRepository = new EmprestimoRepository();
+    emprestimoRepository: EmprestimoRepository = new EmprestimoRepository();
 
-    async cadastraremprestimo(emprestimoData: any): Promise<Emprestimo> {
-        const { emprestimoId, usuarioId, dataEmprestimo, dataDevolucao } = emprestimoData;
-        if (!emprestimoId || !usuarioId || !dataEmprestimo || !dataDevolucao) {
-            throw new Error("Informações incompletas");
-        }
+    async cadastrarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
+        const { name, price, expirationDate } = emprestimoData;
+        
+        const emprestimo = new EmprestimoEntity(undefined, name, price, expirationDate)
 
-        const existe = await this.filtraremprestimo(undefined, isbn);
-        console.log(existe?.length); //retorna o tamanho da lista
-        const quantidadeCadastrada: number = existe?.length || 0; //se retornar algum undefined(null) quantidadeCadastrada recebe 0
-        if(quantidadeCadastrada > 0 ){ //se tiver alguem na lista, ou seja, maior que 0
-            throw new Error("ISBN já existe!"); //erro
-        }
-
-        const novoemprestimo = await this.EmprestimoRepository.insertEmprestimo(emprestimoId, usuarioId, dataEmprestimo, dataDevolucao);
-        console.log("Service - Insert", novoemprestimo);
+        const novoemprestimo =  await this.emprestimoRepository.insertEmprestimo(emprestimo);
+        console.log("Service - Insert ", novoemprestimo);
         return novoemprestimo;
     }
 
-    async atualizaremprestimo(emprestimoData: any): Promise<Emprestimo> {
-        const { id, emprestimoId, usuarioId, dataEmprestimo, dataDevolucao } = emprestimoData;
-        if (!id || !emprestimoId || !usuarioId || !dataEmprestimo || !dataDevolucao) {
-            throw new Error("Informações incompletas");
-        }
-        await this.filtraremprestimo(id, undefined);
+    async atualizarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
+        const { id, name, price, expirationDate } = emprestimoData;
 
-        const emprestimoAtualizado = await this.EmprestimoRepository.updateEmprestimo(id, emprestimoId, usuarioId, dataEmprestimo, dataDevolucao);
-        console.log("Service - Update", emprestimoAtualizado);
-        return emprestimoAtualizado;
+        const emprestimo = new EmprestimoEntity(id, name, price, expirationDate)
+
+        await this.emprestimoRepository.updateEmprestimo(emprestimo);
+        console.log("Service - Update ", emprestimo);
+        return emprestimo;
     }
 
-    async deletaremprestimo(emprestimoData: any): Promise<Emprestimo> {
-        const { id, emprestimoId, usuarioId, dataEmprestimo, dataDevolucao } = emprestimoData;
-        if (!id || !emprestimoId || !usuarioId || !dataEmprestimo || !dataDevolucao) {
-            throw new Error("Informações incompletas");
-        }
-        await this.filtraremprestimo(id, undefined);
+    async deletarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
+        const { id, name, price, expirationDate } = emprestimoData;
 
-        const emprestimoDeletado = await this.EmprestimoRepository.deleteEmprestimo(id, emprestimoId, usuarioId, dataEmprestimo, dataDevolucao);
-        console.log("Service - Delete", emprestimoDeletado);
-        return emprestimoDeletado;
+        const emprestimo = new EmprestimoEntity(id, name, price, expirationDate)
+
+        await this.emprestimoRepository.deleteEmprestimo(emprestimo);
+        console.log("Service - Delete ", emprestimo);
+        return emprestimo;
     }
 
-    async filtraremprestimo(id: any, isbn: any): Promise<Emprestimo[]|undefined> {
-        if(id){
-            const idNumber : number = parseInt(id)
-            const emprestimos: Emprestimo[]|undefined = await this.EmprestimoRepository.filterEmprestimoId(idNumber);  //você sempre recebe uma lista do mysql2 (Emprestimo[])
-            if(emprestimos?.length ===0){
-                throw new Error("Id não encontrado");
-            }
-            console.log("Service - Filtrar", emprestimos);
-            return emprestimos;
-        }
-        
-        else if(isbn){
-            const emprestimos: Emprestimo[]|undefined = await this.EmprestimoRepository.filterEmprestimoIsbn(isbn);
-            console.log("Service - Filtrar", emprestimos);
-            return emprestimos;
-        }
+    async filtrarEmprestimoById(emprestimoData: any): Promise<EmprestimoEntity> {
+        const idNumber = parseInt(emprestimoData, 10);
 
-        return undefined;
-
+        const emprestimo =  await this.emprestimoRepository.filterEmprestimoById(idNumber);
+        console.log("Service - Filtrar", emprestimo);
+        return emprestimo;
     }
-    
-    async listarTodosemprestimos(): Promise<Emprestimo[]> {
-        const emprestimos = await this.EmprestimoRepository.filterAllEmprestimos();
-        console.log("Service - Listar Todos", emprestimos);
+
+    async filtrarEmprestimoByName(emprestimoData: any): Promise<EmprestimoEntity[]> {
+        const name:string = emprestimoData;
+
+        const emprestimos =  await this.emprestimoRepository.filterEmprestimoByName(name);
+        console.log("Service - Filtrar", emprestimos);
         return emprestimos;
     }
+
+    async listarTodosEmprestimos(): Promise<EmprestimoEntity[]> {
+        const emprestimos =  await this.emprestimoRepository.filterAllEmprestimo();
+        console.log("Service - Filtrar Todos", emprestimos);
+        return emprestimos;
+    }
+
 }
