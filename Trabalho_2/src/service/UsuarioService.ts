@@ -1,14 +1,24 @@
 import { UsuarioEntity } from "../model/entity/UsuarioEntity";
+import { PessoaRepository } from "../repository/PessoaRepository";
 import { UsuarioRepository } from "../repository/UsuarioRepository";
+import { PessoaEntity } from "../model/entity/PessoaEntity";
 
 export class UsuarioService{
 
+    pessoaRepository: PessoaRepository = new PessoaRepository();
     usuarioRepository: UsuarioRepository = new UsuarioRepository();
 
     async cadastrarUsuario(usuarioData: any): Promise<UsuarioEntity> {
         const { idPessoa, senha} = usuarioData;
         
         const usuario = new UsuarioEntity(idPessoa, senha)
+
+        const existe = await this.filtrarPessoaById(idPessoa);
+        console.log(existe); //retorna o tamanho da lista
+        
+        if(existe === null ){
+            throw new Error("Pessoa não existe!"); 
+        }
 
         const novoUsuario =  await this.usuarioRepository.insertUsuario(usuario);
         console.log("Service - Insert ", novoUsuario);
@@ -49,6 +59,14 @@ export class UsuarioService{
         const usuarios =  await this.usuarioRepository.filterUsuarioByName(name);
         console.log("Service - Filtrar", usuarios);
         return usuarios;
+    }
+
+    async filtrarPessoaById(usuarioData: any): Promise<PessoaEntity> {
+        const idNumber = parseInt(usuarioData, 10);
+
+        const pessoa =  await this.pessoaRepository.filterPessoaById(idNumber);
+        console.log("Service - Filtrar", pessoa);
+        return pessoa;
     }
 
     async listarTodosUsuarios(): Promise<UsuarioEntity[]> {
