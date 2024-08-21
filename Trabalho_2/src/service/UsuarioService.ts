@@ -1,7 +1,7 @@
 import { UsuarioEntity } from "../model/entity/UsuarioEntity";
 import { UsuarioRepository } from "../repository/UsuarioRepository";
 
-export class usuarioService{
+export class UsuarioService{
 
     usuarioRepository: UsuarioRepository = new UsuarioRepository();
 
@@ -51,7 +51,7 @@ export class usuarioService{
         return usuarios;
     }
 
-    async listarTodosusuarios(): Promise<UsuarioEntity[]> {
+    async listarTodosUsuarios(): Promise<UsuarioEntity[]> {
         const usuarios =  await this.usuarioRepository.filterAllUsuario();
         console.log("Service - Filtrar Todos", usuarios);
         return usuarios;

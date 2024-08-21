@@ -1,7 +1,7 @@
 import { LivroEntity } from "../model/entity/LivroEntity";
 import { LivroRepository } from "../repository/LivroRepository";
 
-export class livroService{
+export class LivroService{
 
     livroRepository: LivroRepository = new LivroRepository();
 

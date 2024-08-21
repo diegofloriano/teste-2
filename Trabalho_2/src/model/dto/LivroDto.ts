@@ -4,16 +4,11 @@ export class LivroDto{
     autor: string;
     categoriaId: string;
     
-
-
-
-
-    constructor(id?: number, titulo?:string, autor?: string, categoriaId?: string ){
-        this.id = id || 0;
-        this.titulo = titulo || '';
-        this.autor = autor || '';
-        this.categoriaId = categoriaId || '';
+    constructor(id?: any, titulo?:any, autor?: any, categoriaId?: any ){
+        this.id = id;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.categoriaId = categoriaId;
 
     }
-
 }

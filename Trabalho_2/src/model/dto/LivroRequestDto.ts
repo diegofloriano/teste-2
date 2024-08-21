@@ -1,13 +1,13 @@
-
 export class LivroRequestDto {
-    name: string;
-    price: number;
-    expirationDate: string;
+    titulo: string;
+    autor: string;
+    categoriaId: number;
 
 
-    constructor(name?: string, price?: number, expirationDate?: string) {
-        this.name = name || '';
-        this.price = price || 0;
-        this.expirationDate = (expirationDate || '');
+    constructor(titulo?: string, autor?: string, categoriaId?: number) {
+        this.titulo = titulo || '';
+        this.autor = autor || '';
+        this.categoriaId = categoriaId || 0;
+        
     }
 }

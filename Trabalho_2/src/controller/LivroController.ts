@@ -3,10 +3,10 @@ import { Body, Controller, Delete, Get, Path, Post, Put, Query, Res, Route, Tags
 import { LivroRequestDto } from "../model/dto/LivroRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { LivroDto } from "../model/dto/LivroDto";
-import { Livro } from "../model/entity/LivroEntity";
+import { LivroEntity } from "../model/entity/LivroEntity";
 
 @Route("livro")
-@Tags("livro")
+@Tags("Livro")
 export class LivroController extends Controller {
     livroService = new LivroService();
 
@@ -73,7 +73,7 @@ export class LivroController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const livros: livroEntity[] = await this.livroService.filtrarLivroByName(name);
+            const livros: LivroEntity[] = await this.livroService.filtrarLivroByName(name);
             return success(200, new BasicResponseDto("Livro encontrado!", livros));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
@@ -86,7 +86,7 @@ export class LivroController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const livros: livroEntity[] = await this.livroService.listarTodosLivros();
+            const livros: LivroEntity[] = await this.livroService.listarTodosLivros();
             return success(200, new BasicResponseDto("Livros listados com sucesso!", livros));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));

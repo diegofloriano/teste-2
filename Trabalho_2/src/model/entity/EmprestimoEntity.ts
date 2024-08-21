@@ -6,9 +6,6 @@ export class EmprestimoEntity{
     dataEmprestimo: Date;
     dataDevolucao: Date;
 
-
-
-
     constructor(id?: number, livroId?:string, usuarioId?: string, dataEmprestimo?: string, dataDevolucao?:string){
         this.validatesInformation(livroId, usuarioId, dataEmprestimo, dataDevolucao);
         this.id = id || 0;

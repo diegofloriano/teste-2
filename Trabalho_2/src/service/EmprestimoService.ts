@@ -1,7 +1,7 @@
 import { EmprestimoEntity } from "../model/entity/EmprestimoEntity";
 import { EmprestimoRepository } from "../repository/EmprestimoRepository";
 
-export class emprestimoService{
+export class EmprestimoService{
 
     emprestimoRepository: EmprestimoRepository = new EmprestimoRepository();
 
