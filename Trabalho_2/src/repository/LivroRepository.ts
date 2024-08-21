@@ -14,7 +14,7 @@ export class LivroRepository{
             titulo VARCHAR(255) NOT NULL,
             autor VARCHAR(255) NOT NULL,
             categoriaId INT NOT NULL,
-            FOREING KEY (categoriaId) REFERENCES Categoria(categoriaId)
+            FOREIGN KEY (categoriaId) REFERENCES Categoria(categoriaId)
            
         )`;
 
@@ -27,10 +27,10 @@ export class LivroRepository{
     }
 
     async insertLivro(livro:LivroEntity) :Promise<LivroEntity>{
-        const query = "INSERT INTO library.Livro (id, titulo, autor, categoriaId) VALUES (?, ?, ?, ?)" ;
+        const query = "INSERT INTO library.Livro (titulo, autor, categoriaId) VALUES (?, ?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [livro.id, livro.titulo, livro.autor, livro.categoriaId]);
+            const resultado = await executarComandoSQL(query, [livro.titulo, livro.autor, livro.categoriaId]);
             console.log('livro inserido com sucesso, ID: ', resultado.insertId);
             livro.id = resultado.insertId;
             return new Promise<LivroEntity>((resolve)=>{

@@ -26,9 +26,9 @@ export class UsuarioService{
     }
 
     async atualizarUsuario(usuarioData: any): Promise<UsuarioEntity> {
-        const { id, idPessoa, senha } = usuarioData;
+        const { idPessoa, senha } = usuarioData;
 
-        const usuario = new UsuarioEntity(id, idPessoa, senha)
+        const usuario = new UsuarioEntity(undefined, idPessoa, senha)
 
         await this.usuarioRepository.updateUsuario(usuario);
         console.log("Service - Update ", usuario);

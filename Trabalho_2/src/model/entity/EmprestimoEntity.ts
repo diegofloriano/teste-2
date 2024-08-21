@@ -1,16 +1,16 @@
 import { stringParaData, verificaFormatoData } from "../../util/DataUtil";
 export class EmprestimoEntity{
     id: number;
-    livroId: string;
-    usuarioId: string;
+    livroId: number;
+    usuarioId: number;
     dataEmprestimo: Date;
     dataDevolucao: Date;
 
-    constructor(id?: number, livroId?:string, usuarioId?: string, dataEmprestimo?: string, dataDevolucao?:string){
+    constructor(id?: number, livroId?:number, usuarioId?: number, dataEmprestimo?: string, dataDevolucao?:string){
         this.validatesInformation(livroId, usuarioId, dataEmprestimo, dataDevolucao);
         this.id = id || 0;
-        this.livroId = livroId || '';
-        this.usuarioId = usuarioId || '';
+        this.livroId = livroId || 0;
+        this.usuarioId = usuarioId || 0;
         this.dataEmprestimo = stringParaData(dataEmprestimo || '');
         this.dataDevolucao = stringParaData(dataDevolucao || '');
     }

@@ -13,7 +13,7 @@ export class PessoaRepository{
         CREATE TABLE IF NOT EXISTS library.Pessoa (
             id INT AUTO_INCREMENT PRIMARY KEY,
             nome VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL
             
         )`;
 
@@ -26,10 +26,10 @@ export class PessoaRepository{
     }
 
     async insertPessoa(pessoa:PessoaEntity) :Promise<PessoaEntity>{
-        const query = "INSERT INTO library.Pessoa (id, nome, email) VALUES (?, ?, ?)" ;
+        const query = "INSERT INTO library.Pessoa (nome, email) VALUES (?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [pessoa.id, pessoa.nome, pessoa.email]);
+            const resultado = await executarComandoSQL(query, [pessoa.nome, pessoa.email]);
             console.log('Pessoa inserida com sucesso, ID: ', resultado.insertId);
             pessoa.id = resultado.insertId;
             return new Promise<PessoaEntity>((resolve)=>{

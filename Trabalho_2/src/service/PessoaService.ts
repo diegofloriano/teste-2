@@ -6,9 +6,9 @@ export class PessoaService{
     pessoaRepository: PessoaRepository = new PessoaRepository();
 
     async cadastrarPessoa(pessoaData: any): Promise<PessoaEntity> {
-        const { nome, email} = pessoaData;
+        const { nome, email } = pessoaData;
         
-        const pessoa = new PessoaEntity(nome, email)
+        const pessoa = new PessoaEntity(undefined, nome, email)
 
         const novaPessoa =  await this.pessoaRepository.insertPessoa(pessoa);
         console.log("Service - Insert ", novaPessoa);

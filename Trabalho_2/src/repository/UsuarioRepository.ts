@@ -13,7 +13,7 @@ export class UsuarioRepository{
             id INT AUTO_INCREMENT PRIMARY KEY,
             idPessoa VARCHAR(255) NOT NULL,
             senha VARCHAR(255) NOT NULL,
-            FOREING KEY (idPessoa) REFERENCES Usuario(idPessoa),
+            FOREIGN KEY (idPessoa) REFERENCES Usuario(idPessoa)
             
         )`;
 
@@ -26,10 +26,10 @@ export class UsuarioRepository{
     }
 
     async insertUsuario(usuario:UsuarioEntity) :Promise<UsuarioEntity>{
-        const query = "INSERT INTO library.Usuario (id, idPessoa, senha) VALUES (?, ?, ?)" ;
+        const query = "INSERT INTO library.Usuario (idPessoa, senha) VALUES (?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [usuario.id, usuario.idPessoa, usuario.senha]);
+            const resultado = await executarComandoSQL(query, [usuario.idPessoa, usuario.senha]);
             console.log('usuario inserido com sucesso, ID: ', resultado.insertId);
             usuario.id = resultado.insertId;
             return new Promise<UsuarioEntity>((resolve)=>{

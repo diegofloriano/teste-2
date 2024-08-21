@@ -15,8 +15,8 @@ export class EmprestimoRepository{
             usuarioId INT NOT NULL,
             dataEmprestimo DATE NOT NULL,
             dataDevolucao DATE NOT NULL,
-            FOREING KEY (livroId) REFERENCES Livro(livroId),
-            FOREING KEY (usuarioId) REFERENCES Usuario(usuarioId)
+            FOREIGN KEY (livroId) REFERENCES Livro(livroId),
+            FOREIGN KEY (usuarioId) REFERENCES Usuario(usuarioId)
             
         )`;
 
@@ -29,10 +29,10 @@ export class EmprestimoRepository{
     }
 
     async insertEmprestimo(emprestimo:EmprestimoEntity) :Promise<EmprestimoEntity>{
-        const query = "INSERT INTO library.Emprestimo (id, livroId, usuarioId, dataEmprestimo, dataDevolucao) VALUES (?, ?, ?, ?, ?)" ;
+        const query = "INSERT INTO library.Emprestimo (livroId, usuarioId, dataEmprestimo, dataDevolucao) VALUES (?, ?, ?, ?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [emprestimo.id, emprestimo.livroId, emprestimo.usuarioId, emprestimo.dataEmprestimo, emprestimo.dataDevolucao]);
+            const resultado = await executarComandoSQL(query, [emprestimo.livroId, emprestimo.usuarioId, emprestimo.dataEmprestimo, emprestimo.dataDevolucao]);
             console.log('emprestimo inserido com sucesso, ID: ', resultado.insertId);
             emprestimo.id = resultado.insertId;
             return new Promise<EmprestimoEntity>((resolve)=>{

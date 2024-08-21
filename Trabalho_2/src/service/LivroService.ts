@@ -8,7 +8,7 @@ export class LivroService{
     async cadastrarLivro(livroData: any): Promise<LivroEntity> {
         const { titulo, autor, categoriaId} = livroData;
         
-        const livro = new LivroEntity(titulo, autor, categoriaId)
+        const livro = new LivroEntity(undefined, titulo, autor, categoriaId)
 
         const novoLivro =  await this.livroRepository.insertLivro(livro);
         console.log("Service - Insert ", novoLivro);

@@ -2,17 +2,17 @@ export class LivroEntity{
     id: number;
     titulo: string;
     autor: string;
-    categoriaId: string;
+    categoriaId: number;
     
 
 
 
 
-    constructor(id?: number, titulo?:string, autor?: string, categoriaId?: string ){
+    constructor(id?: number, titulo?:string, autor?: string, categoriaId?: number ){
         this.id = id || 0;
         this.titulo = titulo || '';
         this.autor = autor || '';
-        this.categoriaId = categoriaId || '';
+        this.categoriaId = categoriaId || 0;
 
     }
 

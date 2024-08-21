@@ -11,7 +11,7 @@ export class CategoriaRepository{
         const query = `
         CREATE TABLE IF NOT EXISTS library.Categoria (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            nome VARCHAR(255) NOT NULL,
+            nome VARCHAR(255) NOT NULL
             
         )`;
 
@@ -23,11 +23,11 @@ export class CategoriaRepository{
         }
     }
 
-    async insertCategoria(categoria:CategoriaEntity) :Promise<CategoriaEntity>{
-        const query = "INSERT INTO library.Categoria (id, nome) VALUES (?, ?, ?, ?)" ;
+    async insertCategoria(categoria: CategoriaEntity) :Promise<CategoriaEntity>{
+        const query = "INSERT INTO library.Categoria (nome) VALUES (?)" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [categoria.id, categoria.nome]);
+            const resultado = await executarComandoSQL(query, [categoria.nome]);
             console.log('Categoria inserida com sucesso, ID: ', resultado.insertId);
             categoria.id = resultado.insertId;
             return new Promise<CategoriaEntity>((resolve)=>{

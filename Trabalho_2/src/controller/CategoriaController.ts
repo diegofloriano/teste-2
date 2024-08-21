@@ -18,7 +18,7 @@ export class CategoriaController extends Controller {
     ): Promise<void> {
         try {
             const categoria = await this.categoriaService.cadastrarCategoria(dto);
-            return success(201, new BasicResponseDto("Categoria criado com sucesso!", categoria));
+            return success(201, new BasicResponseDto("Categoria criada com sucesso!", categoria));
         } catch (error: any) {
             return fail(400, new BasicResponseDto(error.message, undefined));
         }
@@ -32,7 +32,7 @@ export class CategoriaController extends Controller {
     ): Promise<void> {
         try {
             const categoria = await this.categoriaService.atualizarCategoria(dto);
-            return success(200, new BasicResponseDto("Categoria atualizado com sucesso!", categoria));
+            return success(200, new BasicResponseDto("Categoria atualizada com sucesso!", categoria));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -46,7 +46,7 @@ export class CategoriaController extends Controller {
     ): Promise<void> {
         try {
             const categoria = await this.categoriaService.deletarCategoria(dto);
-            return success(200, new BasicResponseDto("Categoria deletado com sucesso!", categoria));
+            return success(200, new BasicResponseDto("Categoria deletada com sucesso!", categoria));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -60,7 +60,7 @@ export class CategoriaController extends Controller {
     ): Promise<void> {
         try {
             const categoria = await this.categoriaService.filtrarCategoriaById(id);
-            return success(200, new BasicResponseDto("Categoria encontrado!", categoria));
+            return success(200, new BasicResponseDto("Categoria encontrada!", categoria));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -74,7 +74,7 @@ export class CategoriaController extends Controller {
     ): Promise<void> {
         try {
             const categorias: CategoriaEntity[] = await this.categoriaService.filtrarCategoriaByName(name);
-            return success(200, new BasicResponseDto("Categoria encontrado!", categorias));
+            return success(200, new BasicResponseDto("Categoria encontrada!", categorias));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -87,7 +87,7 @@ export class CategoriaController extends Controller {
     ): Promise<void> {
         try {
             const categorias: CategoriaEntity[] = await this.categoriaService.listarTodosCategorias();
-            return success(200, new BasicResponseDto("Categorias listados com sucesso!", categorias));
+            return success(200, new BasicResponseDto("Categorias listadas com sucesso!", categorias));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }

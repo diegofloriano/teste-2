@@ -8,7 +8,7 @@ export class CategoriaService{
     async cadastrarCategoria(categoriaData: any): Promise<CategoriaEntity> {
         const { nome } = categoriaData;
         
-        const categoria = new CategoriaEntity(nome)
+        const categoria = new CategoriaEntity(undefined, nome)
 
         const novaCategoria =  await this.categoriaRepository.insertCategoria(categoria);
         console.log("Service - Insert ", novaCategoria);
