@@ -79,6 +79,7 @@ export class LivroRepository{
             const resultado: LivroEntity[] = await executarComandoSQL(query, [id]);
             if(resultado.length === 0){
                 console.error("Id do Livro não encontrado");
+                throw new Error("Livro não existe");
             }
             console.log('Livro localizado com sucesso, ID: ', resultado);
             return new Promise<LivroEntity[]>((resolve)=>{

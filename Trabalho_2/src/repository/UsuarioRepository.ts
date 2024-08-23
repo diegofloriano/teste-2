@@ -77,6 +77,7 @@ export class UsuarioRepository{
             const resultado: UsuarioEntity[] = await executarComandoSQL(query, [id]);
             if(resultado.length === 0){
                 console.error("Id do Usuario não encontrado");
+                throw new Error("Pessoa não existe");
             }
             console.log('Usuario localizado com sucesso, ID: ', resultado);
             return new Promise<UsuarioEntity[]|undefined>((resolve)=>{

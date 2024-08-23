@@ -18,15 +18,9 @@ export class EmprestimoService{
 
         const pessoaExiste = await this.filtrarUsuarioById(usuarioId);
         console.log(pessoaExiste?.length); 
-        if(pessoaExiste?.length === 0){
-            throw new Error("Pessoa não existe")
-        }
 
         const livroExiste = await this.filtrarLivroById(livroId);
         console.log(livroExiste?.length); 
-        if(livroExiste?.length === 0){
-            throw new Error("Livro não existe");
-        } 
 
         const novoEmprestimo =  await this.emprestimoRepository.insertEmprestimo(emprestimo);
         console.log("Service - Insert ", novoEmprestimo);
