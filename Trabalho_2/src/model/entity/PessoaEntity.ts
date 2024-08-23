@@ -5,10 +5,19 @@ export class PessoaEntity{
    
 
     constructor(id?: number, nome?:string, email?: string){
+        this.validatesInformation(nome, email);
         this.id = id || 0;
         this.nome = nome || '';
         this.email = email || '';
   
     }
-
+    private validatesInformation(nome:any, email:any){
+        let error ='';
+        if (typeof nome !== 'string' || typeof email !== 'string') {
+            error += ("Informações incompletas ou incorretas. ");
+        }
+        if(error != ''){
+            throw new Error(error);
+        }
+    }
 }

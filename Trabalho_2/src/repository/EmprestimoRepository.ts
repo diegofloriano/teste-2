@@ -15,8 +15,8 @@ export class EmprestimoRepository{
             usuarioId INT NOT NULL,
             dataEmprestimo DATE NOT NULL,
             dataDevolucao DATE NOT NULL,
-            FOREIGN KEY (livroId) REFERENCES Livro(livroId),
-            FOREIGN KEY (usuarioId) REFERENCES Usuario(usuarioId)
+            FOREIGN KEY (livroId) REFERENCES Livro(id),
+            FOREIGN KEY (usuarioId) REFERENCES Usuario(id)
             
         )`;
 

@@ -14,7 +14,7 @@ export class EmprestimoService{
     async cadastrarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
         const { livroId, usuarioId, dataEmprestimo, dataDevolução } = emprestimoData;
         
-        const emprestimo = new EmprestimoEntity(undefined, livroId, usuarioId, dataEmprestimo, dataDevolução)
+        const emprestimo = new EmprestimoEntity(undefined, livroId, usuarioId, dataEmprestimo, dataDevolução);
 
         const pessoaExiste = await this.filtrarUsuarioById(usuarioId);
         console.log(pessoaExiste?.length); 
