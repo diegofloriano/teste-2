@@ -13,7 +13,7 @@ export class UsuarioRepository{
             id INT AUTO_INCREMENT PRIMARY KEY,
             senha VARCHAR(255) NOT NULL,
             idPessoa INT NOT NULL,
-            FOREIGN KEY (idPessoa) REFERENCES library.Pessoa(idPessoa)
+            FOREIGN KEY (idPessoa) REFERENCES library.Pessoa(id)
         )`;
 
         try {
@@ -70,13 +70,16 @@ export class UsuarioRepository{
         }
     }
 
-    async filterUsuarioById(id: number) :Promise<UsuarioEntity>{
+    async filterUsuarioById(id: number) :Promise<UsuarioEntity[]|undefined>{
         const query = "SELECT * FROM library.Usuario where id = ?" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [id]);
+            const resultado: UsuarioEntity[] = await executarComandoSQL(query, [id]);
+            if(resultado.length === 0){
+                console.error("Id do Usuario não encontrado");
+            }
             console.log('Usuario localizado com sucesso, ID: ', resultado);
-            return new Promise<UsuarioEntity>((resolve)=>{
+            return new Promise<UsuarioEntity[]|undefined>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {

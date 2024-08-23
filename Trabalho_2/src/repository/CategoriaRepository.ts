@@ -69,13 +69,16 @@ export class CategoriaRepository{
         }
     }
 
-    async filterCategoriaById(id: number) :Promise<CategoriaEntity>{
+    async filterCategoriaById(id: number) :Promise<CategoriaEntity[]|undefined>{
         const query = "SELECT * FROM library.Categoria where id = ?" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [id]);
+            const resultado: CategoriaEntity[] = await executarComandoSQL(query, [id]);
+            if(resultado.length === 0){
+                console.error("Id da Categoria não encontrada");
+            }
             console.log('categoria localizada com sucesso, ID: ', resultado);
-            return new Promise<CategoriaEntity>((resolve)=>{
+            return new Promise<CategoriaEntity[]|undefined>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {

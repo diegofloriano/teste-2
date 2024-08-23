@@ -71,13 +71,16 @@ export class PessoaRepository{
         }
     }
 
-    async filterPessoaById(id: number) :Promise<PessoaEntity>{
+    async filterPessoaById(id: number) :Promise<PessoaEntity[]|undefined>{
         const query = "SELECT * FROM library.Pessoa where id = ?" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [id]);
+            const resultado: PessoaEntity[] = await executarComandoSQL(query, [id]);
+            if(resultado.length === 0){
+                console.error("Id da Pessoa não encontrada");
+            }
             console.log('Pessoa localizada com sucesso, ID: ', resultado);
-            return new Promise<PessoaEntity>((resolve)=>{
+            return new Promise<PessoaEntity[]|undefined>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {

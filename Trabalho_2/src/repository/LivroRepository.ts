@@ -72,13 +72,16 @@ export class LivroRepository{
         }
     }
 
-    async filterLivroById(id: number) :Promise<LivroEntity>{
+    async filterLivroById(id: number) :Promise<LivroEntity[]|undefined>{
         const query = "SELECT * FROM library.Livro where id = ?" ;
 
         try {
-            const resultado = await executarComandoSQL(query, [id]);
+            const resultado: LivroEntity[] = await executarComandoSQL(query, [id]);
+            if(resultado.length === 0){
+                console.error("Id do Livro não encontrado");
+            }
             console.log('Livro localizado com sucesso, ID: ', resultado);
-            return new Promise<LivroEntity>((resolve)=>{
+            return new Promise<LivroEntity[]>((resolve)=>{
                 resolve(resultado);
             })
         } catch (err:any) {
@@ -88,11 +91,12 @@ export class LivroRepository{
     }
 
   
-    async filterLivroByName(titulo: string) :Promise<LivroEntity[]>{
+    async filterLivroByName(titulo: string) :Promise<LivroEntity[]|undefined>{
         const query = "SELECT * FROM library.Livro where titulo = ?" ;
 
         try {
-            const resultado:LivroEntity[] = await executarComandoSQL(query, [titulo]);
+            const resultado: LivroEntity[] = await executarComandoSQL(query, [titulo]);
+            
             console.log('Livro localizado com sucesso, ID: ', resultado);
             return new Promise<LivroEntity[]>((resolve)=>{
                 resolve(resultado);

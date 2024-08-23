@@ -660,7 +660,7 @@ export function RegisterRoutes(app: Router) {
 
             async function LivroController_filtrarLivroPorNome(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    name: {"in":"query","name":"name","required":true,"dataType":"string"},
+                    titulo: {"in":"query","name":"titulo","required":true,"dataType":"string"},
                     notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
                     success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
             };

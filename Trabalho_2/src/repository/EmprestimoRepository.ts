@@ -79,6 +79,9 @@ export class EmprestimoRepository{
 
         try {
             const resultado = await executarComandoSQL(query, [id]);
+            if(resultado.length === 0){
+                console.error("Id de Emprestimo não encontrado");
+            }
             console.log('emprestimo localizado com sucesso, ID: ', resultado);
             return new Promise<EmprestimoEntity>((resolve)=>{
                 resolve(resultado);

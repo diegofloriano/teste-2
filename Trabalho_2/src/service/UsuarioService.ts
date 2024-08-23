@@ -13,11 +13,12 @@ export class UsuarioService{
         
         const usuario = new UsuarioEntity(undefined, senha, idPessoa)
 
-        const existe = await this.filtrarPessoaById(idPessoa);
-       
-        if(!existe ){ 
-            throw new Error("Pessoa não existe!");  
-        }
+        const pessoaExiste = await this.filtrarPessoaById(idPessoa);
+        console.log(pessoaExiste?.length);
+        if(pessoaExiste?.length === 0){
+            throw new Error("Pessoa não existe");
+        } 
+
         const novoUsuario =  await this.usuarioRepository.insertUsuario(usuario);
         console.log("Service - Insert ", novoUsuario);
         return novoUsuario;
@@ -44,7 +45,7 @@ export class UsuarioService{
         return usuario;
     }
 
-    async filtrarUsuarioById(usuarioData: any): Promise<UsuarioEntity> {
+    async filtrarUsuarioById(usuarioData: any): Promise<UsuarioEntity[]|undefined> {
         const idNumber = parseInt(usuarioData, 10);
 
         const usuario =  await this.usuarioRepository.filterUsuarioById(idNumber);
@@ -60,18 +61,17 @@ export class UsuarioService{
         return usuarios;
     }
 
-    async filtrarPessoaById(CategoriaData: any): Promise<PessoaEntity> {
-        const idNumber = parseInt(CategoriaData, 10);
-
-        const Pessoa =  await this.pessoaRepository.filterPessoaById(idNumber);
-        console.log("Service - Filtrar", Pessoa);
-        return Pessoa;
-    }
-
     async listarTodosUsuarios(): Promise<UsuarioEntity[]> {
         const usuarios =  await this.usuarioRepository.filterAllUsuario();
         console.log("Service - Filtrar Todos", usuarios);
         return usuarios;
     }
+
+    async filtrarPessoaById(id: any): Promise<PessoaEntity[]|undefined> {
+        const idNumber : number = parseInt(id)
+        const pessoa: PessoaEntity[]|undefined = await this.pessoaRepository.filterPessoaById(idNumber);  
+        console.log("Service - Filtrar", pessoa);
+        return pessoa;
+}
 
 }

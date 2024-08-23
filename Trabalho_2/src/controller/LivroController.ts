@@ -68,12 +68,12 @@ export class LivroController extends Controller {
 
     @Get()
     async filtrarLivroPorNome(
-        @Query() name: string,
+        @Query() titulo: string,
         @Res() notFound: TsoaResponse<400, BasicResponseDto>,
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const livros: LivroEntity[] = await this.livroService.filtrarLivroByName(name);
+            const livros: LivroEntity[]|undefined = await this.livroService.filtrarLivroByName(titulo);
             return success(200, new BasicResponseDto("Livro encontrado!", livros));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));

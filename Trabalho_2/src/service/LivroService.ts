@@ -12,13 +12,12 @@ export class LivroService{
         
         const livro = new LivroEntity(undefined, titulo, autor, categoriaId)
         
-        const existe = await this.filtrarCategoriaById(categoriaId);
-       
-        if(!existe ){ 
-            throw new Error("Categoria não existe!"); 
+        const categoriaExiste = await this.filtrarCategoriaById(categoriaId);
+        console.log(categoriaExiste?.length); 
+        if(categoriaExiste?.length === 0){
+            throw new Error("Categoria não existe");
         }
-
-        
+               
         const novoLivro =  await this.livroRepository.insertLivro(livro);
         console.log("Service - Insert ", novoLivro);
         return novoLivro;
@@ -44,7 +43,7 @@ export class LivroService{
         return livro;
     }
 
-    async filtrarLivroById(livroData: any): Promise<LivroEntity> {
+    async filtrarLivroById(livroData: any): Promise<LivroEntity[]|undefined> {
         const idNumber = parseInt(livroData, 10);
 
         const livro =  await this.livroRepository.filterLivroById(idNumber);
@@ -52,21 +51,14 @@ export class LivroService{
         return livro;
     }
 
-    async filtrarCategoriaById(CategoriaData: any): Promise<CategoriaEntity> {
-        const idNumber = parseInt(CategoriaData, 10);
+    async filtrarLivroByName(livroData: any): Promise<LivroEntity[]|undefined> {
+        const titulo:string = livroData;
 
-        const Categoria =  await this.categoriaRepository.filterCategoriaById(idNumber);
-        console.log("Service - Filtrar", Categoria);
-        return Categoria;
-    }
-
-    async filtrarLivroByName(livroData: any): Promise<LivroEntity[]> {
-        const name:string = livroData;
-
-        const livros =  await this.livroRepository.filterLivroByName(name);
+        const livros: LivroEntity[]|undefined =  await this.livroRepository.filterLivroByName(titulo);
         console.log("Service - Filtrar", livros);
         return livros;
     }
+
 
     async listarTodosLivros(): Promise<LivroEntity[]> {
         const livros =  await this.livroRepository.filterAllLivro();
@@ -74,4 +66,10 @@ export class LivroService{
         return livros;
     }
 
+    async filtrarCategoriaById(id: any): Promise<CategoriaEntity[]|undefined> {
+            const idNumber : number = parseInt(id)
+            const categoria: CategoriaEntity[]|undefined = await this.categoriaRepository.filterCategoriaById(idNumber);  
+            console.log("Service - Filtrar", categoria);
+            return categoria;
+    }
 }

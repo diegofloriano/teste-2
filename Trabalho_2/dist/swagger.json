@@ -909,7 +909,7 @@
 				"parameters": [
 					{
 						"in": "query",
-						"name": "name",
+						"name": "titulo",
 						"required": true,
 						"schema": {
 							"type": "string"
